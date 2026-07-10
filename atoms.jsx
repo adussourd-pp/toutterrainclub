@@ -7,7 +7,7 @@ const TtcLogo = ({ size = 28 }) => (
   </svg>
 );
 
-const Brand = ({ to = "index.html" }) => (
+const Brand = ({ to = "/" }) => (
   <a href={to} className="brand" aria-label="Tout Terrain Club — accueil">
     <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
       <span style={{ fontWeight: 800 }}>tout terrain club</span>
@@ -167,7 +167,7 @@ const FooterPublic = () => (
           <p style={{ color: "var(--muted)", maxWidth: "32ch", marginTop: 14, lineHeight: 1.55 }}>
             Social trail run, born in Nice, techno lovers.
           </p>
-          <div style={{ display: "flex", gap: 8, marginTop: 18 }}>
+          <div style={{ display: "flex", gap: 8, marginTop: 26 }}>
             <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="chip muted">Strava</a>
             <a href="https://www.instagram.com/toutterrainclub/" target="_blank" rel="noopener" className="chip muted">Instagram</a>
             <span className="chip muted">Communauté</span>
@@ -176,7 +176,7 @@ const FooterPublic = () => (
         <div className="footer-col">
           <h4>Le club</h4>
           <a href="#">Charte des valeurs</a>
-          <a href="#">Mentions légales</a>
+          <a href="mentions-legales.html">Mentions légales</a>
           <a href="mailto:toutterrainclub@gmail.com">toutterrainclub@gmail.com</a>
         </div>
       </div>

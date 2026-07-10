@@ -10,7 +10,7 @@ const RacHero = () => (
         <span>Vol. 1 · l'archive</span>
         <span>{R().when} · {R().where}</span>
       </div>
-      <div style={{ marginBottom: 18 }}>
+      <div style={{ marginBottom: 30 }}>
         <span className="rac-badge">◍ Édition passée</span>
       </div>
       <h1 className="t2t-hero-title" style={{ fontSize: "clamp(56px, 11vw, 190px)" }}>
@@ -158,6 +158,7 @@ const RacOutro = () => (
   <section className="t2t-final">
     <div className="glow"></div>
     <div className="wrap">
+      <div className="t2t-final-stamp"><window.Tampons.TamponRaclette /></div>
       <div className="sub">Vol. 1 · Raclette · Janvier 2026</div>
       <h2>Un chapitre<br/><span className="uv">de plus</span>.</h2>
       <div className="t2t-final-cta">

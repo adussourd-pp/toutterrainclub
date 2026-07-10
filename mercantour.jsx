@@ -22,7 +22,7 @@ const MercHero = () => (
       </div>
       <h1 className="t2t-hero-title" style={{ fontSize: "clamp(56px, 11vw, 180px)" }}>
         <span className="l1">De la mer</span>
-        <span className="l2"><span className="techno">au sommet du Mercantour</span><span style={{ color: "#fff" }}>.</span></span>
+        <span className="l2"><span className="techno">au sommet</span><span style={{ color: "#fff" }}>.</span></span>
       </h1>
       <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 34 }}>
         <div>
@@ -31,7 +31,6 @@ const MercHero = () => (
             de la Vallée des Merveilles, et une nuit qu'on n'oubliera pas. Course au choix,
             tous niveaux. Le reste, on le partage.
           </p>
-          <PartnerRow />
         </div>
         <div className="t2t-hero-cta" style={{ flexDirection: "row", justifyContent: "flex-end", flexWrap: "wrap" }}>
           <a href="#reserver" className="btn btn-uv">Réserver ma place →</a>
@@ -270,13 +269,11 @@ const MercReserve = () => (
   <section className="t2t-final" id="reserver">
     <div className="glow"></div>
     <div className="wrap">
+      <div className="t2t-final-stamp"><window.Tampons.TamponMercantour /></div>
       <div className="sub">Édition Mercantour · {M().when} · places limitées</div>
       <h2>Prends ta<br/><span className="uv">place</span>.</h2>
       <div className="t2t-final-cta">
         <a href="https://tally.so/r/b5GkPg" target="_blank" rel="noopener" className="btn btn-uv">Réserver le week-end →</a>
-      </div>
-      <div style={{ marginTop: 34 }}>
-        <PartnerRow />
       </div>
     </div>
   </section>

@@ -172,6 +172,7 @@ const MCOutro = () => (
   <section className="t2t-final">
     <div className="glow"></div>
     <div className="wrap">
+      <div className="t2t-final-stamp"><window.Tampons.TamponMontChauve /></div>
       <div className="sub">Édition #00 · Mont Chauve · Octobre 2025</div>
       <h2>Et ce<br/><span className="uv">n'était que</span> le début.</h2>
       <div className="t2t-final-cta">
