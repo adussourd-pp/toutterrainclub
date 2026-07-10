@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Trail to Techno — Tout Terrain Club</title>
+<title>Tout Terrain Club — Mentions légales</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,57 +17,23 @@
 </head>
 <body>
 
-<div id="root" data-screen-label="Trail to Techno"></div>
+<div id="root" data-screen-label="Mentions légales"></div>
 
-<script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="data.jsx"></script>
 <script type="text/babel" src="atoms.jsx"></script>
-<script type="text/babel" src="tampons.jsx"></script>
-<script type="text/babel" src="t2t.jsx"></script>
+<script type="text/babel" src="legal.jsx"></script>
 
 <script type="text/babel">
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "density": "compact"
-}/*EDITMODE-END*/;
-
 function App() {
-  const [tweaks, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
-
-  React.useEffect(() => {
-    document.documentElement.style.setProperty("--density", tweaks.density === "compact" ? "0.8" : "1");
-  }, [tweaks.density]);
-
   return (
-    <div className="page t2t-page">
-      <HeaderPublic active="Trail to Techno" />
-      <T2T.T2THeroPhoto />
-      <T2T.T2TManifesto />
-      <T2T.T2TName />
-      <T2T.T2TPillars />
-      <T2T.T2TIncludes />
-      <T2T.T2TEditions />
-      <T2T.T2TVision />
-      <window.PartnersBand />
-      <T2T.T2TFinal />
+    <div className="page">
+      <HeaderPublic />
+      <window.Legal.LegalHero />
+      <window.Legal.LegalBody />
       <FooterPublic />
-
-      <window.TweaksPanel title="Tweaks · Trail to Techno">
-        <window.TweakSection title="Densité">
-          <window.TweakRadio
-            label="Espacements"
-            value={tweaks.density}
-            options={[
-              { value: "compact", label: "Compact" },
-              { value: "aere", label: "Aéré" },
-            ]}
-            onChange={(v) => setTweak("density", v)}
-          />
-        </window.TweakSection>
-      </window.TweaksPanel>
     </div>
   );
 }
-
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 

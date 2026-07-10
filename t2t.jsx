@@ -8,7 +8,7 @@ const T2THeroPhoto = () => (
         <span className="l1">Trail</span>
         <span className="l2"><span className="to">to</span><span className="techno">Techno</span></span>
       </h1>
-      <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 36 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 36 }}>
         <p className="t2t-hero-lede" style={{ fontSize: 18 }}>
           Un but à atteindre ensemble. Une sortie trail en pleine nature,
           chacun à son rythme, prolongée par une soirée qui vient la célébrer.
@@ -108,18 +108,18 @@ const T2TEditions = () => (
           Ça a commencé sur le Mont Chauve, filmé comme un clip avec NOLT &amp; Resonance Musics. Depuis, chaque édition écrit sa propre nuit.
         </p>
       </div>
-      <div className="t2t-editions">
-        <a href="edition-mercantour.html" className="t2t-edition live current">
-          <div className="em"><img src="img/lake.jpg" alt="Mercantour" loading="lazy" /></div>
+      <div className="t2t-editions t2t-editions--stamps">
+        <a href="edition-mercantour.html" className="t2t-edition stamped current" style={{ "--ed": "#e23a2a" }}>
+          <div className="em"><window.Tampons.TamponMercantour /></div>
           <div className="eb">
-            <span className="est">● En cours · Ouvert · Août 2026</span>
+            <span className="est"><b className="ed-pill">Ouvert</b> · Août 2026</span>
             <span className="eh">Édition Mercantour</span>
             <span className="ee">De la mer au sommet. Nice → Cime du Gelas, 3 143 m. Refuge : le Relais des Merveilles.</span>
             <span className="go">Découvrir le week-end →</span>
           </div>
         </a>
-        <a href="edition-raclette.html" className="t2t-edition live archive">
-          <div className="em"><img src="img/rac-party.jpg" alt="Édition Raclette" loading="lazy" /></div>
+        <a href="edition-raclette.html" className="t2t-edition stamped locked" data-ed="raclette" style={{ "--ed": "#e2892e" }} onClick={() => window.unlockEdition && window.unlockEdition("raclette")}>
+          <div className="em"><window.Tampons.TamponRaclette /></div>
           <div className="eb">
             <span className="est">◍ Archive · Janvier 2026</span>
             <span className="eh">Édition Raclette</span>
@@ -127,8 +127,8 @@ const T2TEditions = () => (
             <span className="go">Revivre l'édition →</span>
           </div>
         </a>
-        <a href="edition-mont-chauve.html" className="t2t-edition live archive">
-          <div className="em"><img src="img/mc-card.jpg" alt="Édition Mont Chauve" loading="lazy" /></div>
+        <a href="edition-mont-chauve.html" className="t2t-edition stamped locked" data-ed="montchauve" style={{ "--ed": "#7ddf64" }} onClick={() => window.unlockEdition && window.unlockEdition("montchauve")}>
+          <div className="em"><window.Tampons.TamponMontChauve /></div>
           <div className="eb">
             <span className="est">◍ L'origine · Octobre 2025</span>
             <span className="eh">Édition Mont Chauve</span>
