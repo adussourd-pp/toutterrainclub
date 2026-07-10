@@ -2439,4 +2439,31 @@ img { display: block; max-width: 100%; }
   .adh-dc-badge { position: static; display: inline-flex; margin-bottom: 12px; }
   .adh-card { padding: 30px 24px 34px; box-shadow: 6px 6px 0 var(--green); }
   .adh-benefit { padding: 24px 20px 26px; }
+
+  /* Lisibilité : moins de tout petit texte sur mobile */
+  .eyebrow, .t2t-eyebrow, .t2t-kicker, .adh-hero-eyebrow,
+  .chip, .live-pill, .t2t-hero-meta,
+  .art-card .meta, .proj-card .foot, .cd-lab,
+  .footer-col h4, .footer-base,
+  .partners-sub, .partner .p-role, .t2t-word .wsub,
+  .t2t-loc-row .k { font-size: 12px; }
+
+  .stat .lab, .battle-numbers .lab, .t2t-fact .l,
+  .t2t-expo-stat .l, .t2t-daynight .eb,
+  .t2t-edition .est, .t2t-commu-card .cc-tag, .t2t-commu-card .cc-foot,
+  .t2t-metabar .mk, .adh-level .lv,
+  .bracket-cell .bc-eb, .bracket-cell .bc-st, .bracket-cell .bc-time { font-size: 11px; }
+
+  .hero-lede, .join-lede, .t2t-pillar-body .pe, .t2t-loc-row .v,
+  .t2t-word .wdef, .adh-benefit .bv, .t2t-slot .h { font-size: 16px; }
+
+  .art-card .ex, .proj-card .ex, .dir-cell .ex,
+  .t2t-commu-card .cc-ex, .battle-lede { font-size: 15px; }
+
+  .t2t-include .iv, .t2t-edition .ee, .t2t-daynight .sm,
+  .adh-dc-item .v { font-size: 14px; }
+
+  .race-meta, .t2t-slot .time, .t2t-slot .s { font-size: 13px; }
+  .t2t-kindchip { font-size: 10px; }
+  .footer { font-size: 14px; }
 }
