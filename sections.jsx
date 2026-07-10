@@ -295,7 +295,7 @@ const JoinCta = () => (
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: 260 }}>
           <a href="adhesion-2027.html" className="btn btn-primary">Adhérer →</a>
-          <a href="#" className="btn btn-dark" style={{ background: "transparent", color: "var(--paper)", borderColor: "rgba(255,255,255,0.3)" }}>Nos sorties sur Strava</a>
+          <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn btn-dark" style={{ background: "transparent", color: "var(--paper)", borderColor: "rgba(255,255,255,0.3)" }}>Nos sorties sur Strava</a>
           <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".06em", color: "rgba(250,250,247,0.5)", textTransform: "uppercase", marginTop: 8 }}>
             Sorties gratuites · départ Nice
           </div>

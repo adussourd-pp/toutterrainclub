@@ -28,7 +28,7 @@ const HeroEditorial = () => (
         </div>
         <div className="hero-cta">
           <a href="#" className="btn btn-primary">Voir les courses →</a>
-          <a href="#" className="btn">Rejoindre</a>
+          <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn">Rejoindre</a>
         </div>
       </div>
     </div>
@@ -62,7 +62,7 @@ const HeroSplit = () => (
           ))}
         </div>
         <div className="hero-cta">
-          <a href="#" className="btn btn-primary">Rejoindre →</a>
+          <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn btn-primary">Rejoindre →</a>
         </div>
       </div>
     </div>
