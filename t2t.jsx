@@ -8,7 +8,7 @@ const T2THeroPhoto = () => (
         <span className="l1">Trail</span>
         <span className="l2"><span className="to">to</span><span className="techno">Techno</span></span>
       </h1>
-      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 36 }}>
+      <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 36 }}>
         <p className="t2t-hero-lede" style={{ fontSize: 18 }}>
           Un but à atteindre ensemble. Une sortie trail en pleine nature,
           chacun à son rythme, prolongée par une soirée qui vient la célébrer.

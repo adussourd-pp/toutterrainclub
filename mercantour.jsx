@@ -24,7 +24,7 @@ const MercHero = () => (
         <span className="l1">De la mer</span>
         <span className="l2"><span className="techno">au sommet du Mercantour</span><span style={{ color: "#fff" }}>.</span></span>
       </h1>
-      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 34 }}>
+      <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 34 }}>
         <div>
           <p className="t2t-hero-lede" style={{ fontSize: 17, marginBottom: 22 }}>
             Deux jours pour relier Nice à la Cime du Gelas (3 143 m), un refuge posé au cœur
