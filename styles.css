@@ -978,7 +978,8 @@ img { display: block; max-width: 100%; }
 }
 
 /* === Join === */
-.join {
+/* scopé aux <section> : "join" est aussi une variante de .t2t-commu-card */
+section.join {
   background: var(--ink);
   color: var(--paper);
   padding: calc(80px * var(--density)) 0;
@@ -2075,8 +2076,9 @@ img { display: block; max-width: 100%; }
   .t2t-pass.featured { transform: none; }
   .t2t-format { grid-template-columns: 1fr auto; }
   .t2t-format .fc, .t2t-format .fd { display: none; }
-  .t2t-authion { grid-template-columns: 1fr; }
-  .t2t-authion .abadge { justify-self: start; }
+  /* .wrap renforce la spécificité : la règle de base est définie plus bas dans le fichier */
+  .wrap .t2t-authion { grid-template-columns: 1fr; }
+  .t2t-authion .abadge { justify-self: start; white-space: normal; }
 }
 
 /* Itinéraires bis — commu */
@@ -2399,7 +2401,7 @@ img { display: block; max-width: 100%; }
   .articles { padding: calc(72px * var(--density)) 0 calc(64px * var(--density)); }
   .projects { padding: calc(72px * var(--density)) 0; }
   .battle { padding: calc(64px * var(--density)) 0 calc(56px * var(--density)); }
-  .join, .directions { padding: calc(56px * var(--density)) 0; }
+  section.join, .directions { padding: calc(56px * var(--density)) 0; }
   .t2t-teaser { padding: calc(64px * var(--density)) 0 calc(56px * var(--density)); }
   .t2t-sec { padding: calc(64px * var(--density)) 0; }
   .t2t-final { padding: calc(80px * var(--density)) 0; }
