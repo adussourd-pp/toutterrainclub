@@ -366,9 +366,9 @@ const T2TTeaser = () => (
 
 const WeeklyRuns = () => {
   const runs = [
-    { day: "Lundi", name: "Happy Trail", desc: "Plus court, plus accessible. La porte d'entrée du club — et ça prend de l'ampleur.", meta: "Format découverte", tag: "Tous niveaux" },
-    { day: "Lundi", name: "La Boucle", desc: "Le grand tour hebdo. Ça grimpe, mais ça reste convivial — le rendez-vous des jambes qui veulent du D+.", meta: "12 km · 500 D+", tag: "Intermédiaire" },
-    { day: "Jeudi", name: "Jeudi à l'aventure", desc: "Le parcours change chaque semaine. Exploration, surprise, terrain nouveau à chaque fois.", meta: "Surprise hebdo", tag: "Variable" },
+    { day: "Lundi", name: "Happy Trail", emoji: "🌞", desc: "Plus court, plus accessible. La porte d'entrée du club — et ça prend de l'ampleur.", meta: "Format découverte", tag: "Tous niveaux" },
+    { day: "Lundi", name: "La Boucle", emoji: "⛰️", desc: "Le grand tour hebdo. Ça grimpe, mais ça reste convivial — le rendez-vous des jambes qui veulent du D+.", meta: "12 km · 500 D+", tag: "Intermédiaire" },
+    { day: "Jeudi", name: "Jeudi à l'aventure", emoji: "🧭", desc: "Le parcours change chaque semaine. Exploration, surprise, terrain nouveau à chaque fois.", meta: "Surprise hebdo", tag: "Variable" },
   ];
   return (
     <section className="next-race">
@@ -389,6 +389,7 @@ const WeeklyRuns = () => {
         <div className="mini-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
           {runs.map((r, i) => (
             <a key={i} href="#" className="proj-card">
+              <span style={{ position: "absolute", top: 18, right: 18, fontSize: 22, lineHeight: 1 }} aria-hidden="true">{r.emoji}</span>
               <div>
                 <div className="num">{r.day}</div>
                 <h3 className="h">{r.name}</h3>
