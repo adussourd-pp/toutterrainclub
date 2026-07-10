@@ -130,7 +130,7 @@ const AdhCard = () => (
             <li><span className="ck">✓</span><span>Tarif de lancement réservé aux inscrits</span></li>
             <li><span className="ck">✓</span><span>Zéro engagement — juste une place sur la liste</span></li>
           </ul>
-          <a href="https://tally.so/r/9q5LMQ" target="_blank" rel="noopener" className="btn btn-primary">M'inscrire sur la liste d'attente →</a>
+          <a href="mailto:toutterrainclub@gmail.com?subject=Liste%20d'attente%20adh%C3%A9sion%20TTC" className="btn btn-primary">M'inscrire sur la liste d'attente →</a>
         </div>
       </div>
     </div>

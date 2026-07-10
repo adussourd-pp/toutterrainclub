@@ -10,14 +10,14 @@ const RacHero = () => (
         <span>Vol. 1 · l'archive</span>
         <span>{R().when} · {R().where}</span>
       </div>
-      <div style={{ marginBottom: 18 }}>
+      <div style={{ marginBottom: 30 }}>
         <span className="rac-badge">◍ Édition passée</span>
       </div>
       <h1 className="t2t-hero-title" style={{ fontSize: "clamp(56px, 11vw, 190px)" }}>
         <span className="l1">Édition</span>
         <span className="l2"><span className="techno">Raclette.</span></span>
       </h1>
-      <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 32 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 32 }}>
         <p className="t2t-hero-lede" style={{ fontSize: 17 }}>{R().intro}</p>
         <div className="t2t-hero-cta" style={{ flexDirection: "row", justifyContent: "flex-end", flexWrap: "wrap" }}>
           <a href="edition-mercantour.html" className="btn btn-uv">La prochaine édition →</a>
@@ -158,6 +158,7 @@ const RacOutro = () => (
   <section className="t2t-final">
     <div className="glow"></div>
     <div className="wrap">
+      <div className="t2t-final-stamp"><window.Tampons.TamponRaclette /></div>
       <div className="sub">Vol. 1 · Raclette · Janvier 2026</div>
       <h2>Un chapitre<br/><span className="uv">de plus</span>.</h2>
       <div className="t2t-final-cta">

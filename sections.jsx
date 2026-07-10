@@ -114,7 +114,7 @@ const BattleTeaser = () => {
       </svg>
 
       <div className="wrap battle-inner">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
           <div className="battle-tag">
             <span className="live"></span>
             <span>1ère édition · organisée par le TTC</span>
@@ -160,7 +160,7 @@ const BattleTeaser = () => {
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 16, marginTop: 56, marginBottom: 20 }}>
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginTop: 56, marginBottom: 20 }}>
           <div>
             <div className="eyebrow" style={{ color: "rgba(250,250,247,0.6)" }}>Déroulé de la course</div>
             <div style={{ fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 36, letterSpacing: "-.03em", marginTop: 6 }}>
@@ -247,7 +247,7 @@ const Projects = () => (
 const Directions = () => (
   <section className="directions">
     <div className="wrap">
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 24 }}>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 24 }}>
         <div className="eyebrow">★ Quatre directions</div>
         <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "var(--muted)", letterSpacing: ".06em" }}>
           ce qu'on fait, ce qu'on partage, ce qu'on défend
@@ -295,7 +295,7 @@ const JoinCta = () => (
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: 260 }}>
           <a href="adhesion-2027.html" className="btn btn-primary">Adhérer →</a>
-          <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn btn-dark" style={{ background: "transparent", color: "var(--paper)", borderColor: "rgba(255,255,255,0.3)" }}>Nos sorties sur Strava</a>
+          <a href="#" className="btn btn-dark" style={{ background: "transparent", color: "var(--paper)", borderColor: "rgba(255,255,255,0.3)" }}>Nos sorties sur Strava</a>
           <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".06em", color: "rgba(250,250,247,0.5)", textTransform: "uppercase", marginTop: 8 }}>
             Sorties gratuites · départ Nice
           </div>
@@ -366,9 +366,9 @@ const T2TTeaser = () => (
 
 const WeeklyRuns = () => {
   const runs = [
-    { day: "Lundi", name: "Happy Trail", emoji: "🌞", desc: "Plus court, plus accessible. La porte d'entrée du club — et ça prend de l'ampleur.", meta: "Format découverte", tag: "Tous niveaux" },
-    { day: "Lundi", name: "La Boucle", emoji: "⛰️", desc: "Le grand tour hebdo. Ça grimpe, mais ça reste convivial — le rendez-vous des jambes qui veulent du D+.", meta: "12 km · 500 D+", tag: "Intermédiaire" },
-    { day: "Jeudi", name: "Jeudi à l'aventure", emoji: "🧭", desc: "Le parcours change chaque semaine. Exploration, surprise, terrain nouveau à chaque fois.", meta: "Surprise hebdo", tag: "Variable" },
+    { day: "Lundi", name: "Happy Trail", desc: "Plus court, plus accessible. La porte d'entrée du club — et ça prend de l'ampleur.", meta: "Format découverte", tag: "Tous niveaux" },
+    { day: "Lundi", name: "La Boucle", desc: "Le grand tour hebdo. Ça grimpe, mais ça reste convivial — le rendez-vous des jambes qui veulent du D+.", meta: "12 km · 500 D+", tag: "Intermédiaire" },
+    { day: "Jeudi", name: "Jeudi à l'aventure", desc: "Le parcours change chaque semaine. Exploration, surprise, terrain nouveau à chaque fois.", meta: "Surprise hebdo", tag: "Variable" },
   ];
   return (
     <section className="next-race">
@@ -377,7 +377,7 @@ const WeeklyRuns = () => {
           <span className="pulse"></span>
           <span className="eyebrow">★ Nos rendez-vous hebdo</span>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", flexWrap: "wrap", gap: 24, marginBottom: 40 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 24, marginBottom: 40 }}>
           <h2 className="race-title" style={{ margin: 0 }}>On court<br/>ensemble.</h2>
           <div style={{ maxWidth: "36ch" }}>
             <p style={{ color: "var(--muted)", fontSize: 15, lineHeight: 1.55, margin: 0 }}>
@@ -386,10 +386,9 @@ const WeeklyRuns = () => {
             <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="chip" style={{ marginTop: 14, textDecoration: "none" }}>● Postées chaque semaine sur Strava →</a>
           </div>
         </div>
-        <div className="mini-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
           {runs.map((r, i) => (
             <a key={i} href="#" className="proj-card">
-              <span style={{ position: "absolute", top: 18, right: 18, fontSize: 22, lineHeight: 1 }} aria-hidden="true">{r.emoji}</span>
               <div>
                 <div className="num">{r.day}</div>
                 <h3 className="h">{r.name}</h3>

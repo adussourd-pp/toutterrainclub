@@ -28,7 +28,7 @@ const HeroEditorial = () => (
         </div>
         <div className="hero-cta">
           <a href="#" className="btn btn-primary">Voir les courses →</a>
-          <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn">Rejoindre</a>
+          <a href="#" className="btn">Rejoindre</a>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@ const HeroEditorial = () => (
 const HeroSplit = () => (
   <section className="hero">
     <div className="wrap">
-      <div className="split-2col" style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 56, alignItems: "end" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 56, alignItems: "end" }}>
         <h1 className="hero-title" style={{ fontSize: "clamp(56px, 8vw, 116px)" }}>
           Tout terrain<br/>
           <span className="marker">Tous</span> ensemble.
@@ -52,7 +52,7 @@ const HeroSplit = () => (
         <p className="hero-lede">
           Social trail run, born in Nice, techno lovers.
         </p>
-        <div className="mini-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
           {window.DIRECTIONS.slice(0, 3).map((d) => (
             <div key={d.n}>
               <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".16em", color: "var(--muted)" }}>{d.n}</div>
@@ -62,7 +62,7 @@ const HeroSplit = () => (
           ))}
         </div>
         <div className="hero-cta">
-          <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn btn-primary">Rejoindre →</a>
+          <a href="#" className="btn btn-primary">Rejoindre →</a>
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@ const HeroDossard = () => (
         <span className="eyebrow">DOSSARD #014 · TTC · NICE</span>
         <span className="eyebrow">SAISON 2026 → 2027</span>
       </div>
-      <div className="dossard-grid" style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 48, alignItems: "center" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 48, alignItems: "center" }}>
         <div style={{
           width: 220, height: 280,
           background: "var(--paper)",
