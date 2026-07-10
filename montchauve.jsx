@@ -27,7 +27,7 @@ const MCHero = () => (
         <span className="l1">Mont</span>
         <span className="l2"><span className="techno">Chauve.</span></span>
       </h1>
-      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 30 }}>
+      <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 30 }}>
         <div>
           <p className="t2t-hero-lede" style={{ fontSize: 17, marginBottom: 20 }}>{MC().intro}</p>
           <MCPartners />

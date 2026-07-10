@@ -17,7 +17,7 @@ const RacHero = () => (
         <span className="l1">Édition</span>
         <span className="l2"><span className="techno">Raclette.</span></span>
       </h1>
-      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 32 }}>
+      <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 32 }}>
         <p className="t2t-hero-lede" style={{ fontSize: 17 }}>{R().intro}</p>
         <div className="t2t-hero-cta" style={{ flexDirection: "row", justifyContent: "flex-end", flexWrap: "wrap" }}>
           <a href="edition-mercantour.html" className="btn btn-uv">La prochaine édition →</a>

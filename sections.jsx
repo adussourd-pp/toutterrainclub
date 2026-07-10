@@ -114,7 +114,7 @@ const BattleTeaser = () => {
       </svg>
 
       <div className="wrap battle-inner">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
           <div className="battle-tag">
             <span className="live"></span>
             <span>1ère édition · organisée par le TTC</span>
@@ -160,7 +160,7 @@ const BattleTeaser = () => {
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginTop: 56, marginBottom: 20 }}>
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 16, marginTop: 56, marginBottom: 20 }}>
           <div>
             <div className="eyebrow" style={{ color: "rgba(250,250,247,0.6)" }}>Déroulé de la course</div>
             <div style={{ fontFamily: "var(--f-display)", fontWeight: 800, fontSize: 36, letterSpacing: "-.03em", marginTop: 6 }}>
@@ -247,7 +247,7 @@ const Projects = () => (
 const Directions = () => (
   <section className="directions">
     <div className="wrap">
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 24 }}>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 8, marginBottom: 24 }}>
         <div className="eyebrow">★ Quatre directions</div>
         <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, color: "var(--muted)", letterSpacing: ".06em" }}>
           ce qu'on fait, ce qu'on partage, ce qu'on défend
@@ -377,7 +377,7 @@ const WeeklyRuns = () => {
           <span className="pulse"></span>
           <span className="eyebrow">★ Nos rendez-vous hebdo</span>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", gap: 24, marginBottom: 40 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end", flexWrap: "wrap", gap: 24, marginBottom: 40 }}>
           <h2 className="race-title" style={{ margin: 0 }}>On court<br/>ensemble.</h2>
           <div style={{ maxWidth: "36ch" }}>
             <p style={{ color: "var(--muted)", fontSize: 15, lineHeight: 1.55, margin: 0 }}>
@@ -386,7 +386,7 @@ const WeeklyRuns = () => {
             <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="chip" style={{ marginTop: 14, textDecoration: "none" }}>● Postées chaque semaine sur Strava →</a>
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        <div className="mini-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
           {runs.map((r, i) => (
             <a key={i} href="#" className="proj-card">
               <div>
