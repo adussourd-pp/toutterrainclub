@@ -27,8 +27,8 @@ const MercHero = () => (
       <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 34 }}>
         <div>
           <p className="t2t-hero-lede" style={{ fontSize: 17, marginBottom: 22 }}>
-            Deux jours pour relier Nice à la Cime du Gelas (3 143 m), un refuge posé au cœur
-            de la Vallée des Merveilles, et une nuit qu'on n'oubliera pas. Course au choix,
+            Deux jours pour relier Nice à la Cime du Gelas (3 143 m), un refuge posé dans
+            la vallée de la Gordolasque, et une nuit qu'on n'oubliera pas. Course au choix,
             tous niveaux. Le reste, on le partage.
           </p>
         </div>
@@ -44,7 +44,7 @@ const MercMetabar = () => (
   <div className="wrap">
     <div className="t2t-metabar">
       <div className="m"><div className="mk">Quand</div><div className="mv">{M().when}</div></div>
-      <div className="m"><div className="mk">Où</div><div className="mv">Vallée des Merveilles</div></div>
+      <div className="m"><div className="mk">Où</div><div className="mv">Vallée de la Gordolasque</div></div>
       <div className="m"><div className="mk">Camp de base</div><div className="mv">{M().base}</div></div>
       <div className="m"><div className="mk">Format phare</div><div className="mv">L'expédition · mer → sommet</div></div>
     </div>
@@ -167,7 +167,8 @@ const MercLocation = () => (
           <h2 className="t2t-h2">Relais des<br/><span className="uv">Merveilles</span></h2>
         </div>
         <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
-          Un refuge de pierre et de bois au bord des lacs, à deux pas des gravures rupestres.
+          Un refuge de pierre et de bois dans la vallée de la Gordolasque, entre Fenestre
+          et Merveilles, sous les yeux des gardiens du Mercantour — Gelas, Clapier…
           Notre QG pour le week-end : on y dort, on y mange, on y danse.
         </p>
       </div>

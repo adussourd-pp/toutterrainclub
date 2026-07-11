@@ -41,7 +41,7 @@ const HeaderPublic = ({ active = "Accueil" }) => {
 
 const PromoStrip = () => (
   <div className="promo-strip">
-    <span><span className="dot">●</span> Trail to Techno · Édition Mercantour · Août 2026 · Vallée des Merveilles</span>
+    <span><span className="dot">●</span> Trail to Techno · Édition Mercantour · Août 2026 · Vallée de la Gordolasque</span>
     <span style={{ opacity: 0.4 }}>·</span>
     <span>Depuis Nice · Saison 2026</span>
     <span style={{ opacity: 0.4 }}>·</span>

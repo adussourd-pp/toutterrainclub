@@ -126,7 +126,7 @@ window.T2T_INCLUDES = T2T_INCLUDES;
 const MERCANTOUR = {
   name: "Édition Mercantour",
   when: "Août 2026",
-  where: "Vallée des Merveilles · Parc du Mercantour",
+  where: "Vallée de la Gordolasque · Parc du Mercantour",
   base: "Relais des Merveilles",
   partners: ["tout terrain club", "Relais des Merveilles", "Näak"],
   // stats réelles issues des GPX de la traversée (J1 + J2)
@@ -176,9 +176,9 @@ const MERCANTOUR = {
       ],
     },
     {
-      day: "Dimanche", date: "Lac de l'Authion", phase: "day",
+      day: "Dimanche", date: "Lac Autier", phase: "day",
       items: [
-        { t: "10:00", h: "Testing Näak · Lac de l'Authion", s: "Sortie tranquille autour du lac, sans chrono", kind: "trail" },
+        { t: "10:00", h: "Testing Näak · Lac Autier", s: "Montée tranquille jusqu'au lac, sans chrono", kind: "trail" },
         { t: "14:00", h: "Sunset closing", s: "Dernier café, on se dit à l'an prochain", kind: "night" },
       ],
     },
@@ -192,12 +192,12 @@ const MERCANTOUR = {
     saturday: [
       { name: "Le 10K", km: "≈ 10 km", tag: "Boucle découverte", ex: "Une boucle accessible autour du refuge pour venir vivre le week-end sans gros volume.", soon: true },
       { name: "Le 25K", km: "≈ 25 km", tag: "Plus sportif", ex: "Un tracé plus engagé sur les sentiers de la Vallée des Merveilles pour les jambes affûtées.", soon: true },
-      { name: "La Rando", km: "Allure libre", tag: "Sans chrono", ex: "Montée contemplative jusqu'au refuge, à son rythme. Pauses photo, gravures rupestres, zéro pression.", soon: true },
+      { name: "La Rando", km: "Allure libre", tag: "Sans chrono", ex: "Montée contemplative jusqu'au refuge, à son rythme. Sur les traces de Belle et Sébastien et des routes du Sel, zéro pression.", soon: true },
       { name: "Rejoindre l'expé", km: "Relais → refuge", tag: "Aller à leur rencontre", ex: "Départ du Relais des Merveilles, montée jusqu'au refuge de Nice pour accueillir la team expédition et redescendre avec elle. La montagne à plusieurs.", soon: false },
     ],
     sunday: {
-      title: "Testing Näak · Lac de l'Authion",
-      ex: "Le dimanche, on tourne autour du lac de l'Authion : sortie tranquille et testing produits Näak en conditions réelles. Zéro chrono, juste le partage.",
+      title: "Testing Näak · Lac Autier",
+      ex: "Le dimanche, on monte au lac Autier : sortie tranquille et testing produits Näak en conditions réelles. Zéro chrono, juste le partage.",
     },
   },
 };
