@@ -125,7 +125,7 @@ window.T2T_INCLUDES = T2T_INCLUDES;
 // ===== Édition Mercantour (le week-end en vente) =====
 const MERCANTOUR = {
   name: "Édition Mercantour",
-  when: "Août 2026",
+  when: "8–9 août 2026",
   where: "Vallée de la Gordolasque · Parc du Mercantour",
   base: "Relais des Merveilles",
   partners: ["tout terrain club", "Relais des Merveilles", "Näak"],
@@ -153,21 +153,21 @@ const MERCANTOUR = {
   ],
   program: [
     {
-      day: "Jeudi soir", date: "Nice · le grand départ", phase: "day",
+      day: "Jeudi soir", date: "6 août · Nice", phase: "day",
       items: [
         { t: "19:00", h: "Soirée de départ · Nice", s: "On envoie la team expé, les pieds dans la mer", kind: "night" },
         { t: "20:00", h: "Départ de l'expédition", s: "Cap sur les 3 143 m — La Jonction commence", kind: "trail" },
       ],
     },
     {
-      day: "Vendredi", date: "En live sur WhatsApp", phase: "day",
+      day: "Vendredi", date: "7 août · en live", phase: "day",
       items: [
         { t: "Journée", h: "On suit la team en direct", s: "Canal WhatsApp « Partage ta sortie » — photos, points GPS, moral", kind: "trail" },
         { t: "En montée", h: "Cols, crêtes, refuges", s: "La team avale le dénivelé vers le Relais des Merveilles", kind: "trail" },
       ],
     },
     {
-      day: "Samedi", date: "Relais des Merveilles", phase: "peak",
+      day: "Samedi", date: "8 août · Relais des Merveilles", phase: "peak",
       items: [
         { t: "09:00", h: "Boucles commu au départ du Relais", s: "10K · 20K · rando — chacun choisit son format", kind: "trail" },
         { t: "15:00", h: "Arrivée de la team expé au Relais", s: "On les accueille à la fin de La Jonction", kind: "trail" },
@@ -176,7 +176,7 @@ const MERCANTOUR = {
       ],
     },
     {
-      day: "Dimanche", date: "Lac Autier", phase: "day",
+      day: "Dimanche", date: "9 août · Lac Autier", phase: "day",
       items: [
         { t: "10:00", h: "Testing Näak · Lac Autier", s: "Montée tranquille jusqu'au lac, sans chrono", kind: "trail" },
         { t: "14:00", h: "Sunset closing", s: "Dernier café, on se dit à l'an prochain", kind: "night" },
@@ -199,6 +199,28 @@ const MERCANTOUR = {
       title: "Testing Näak · Lac Autier",
       ex: "Le dimanche, on monte au lac Autier : sortie tranquille et testing produits Näak en conditions réelles. Zéro chrono, juste le partage.",
     },
+  },
+  // Tarifs — billetterie SumUp (formules tout inclus, seule la nuit change)
+  pricing: {
+    formulas: [
+      { name: "Camping", price: "80", sub: "27 emplacements · esprit bivouac" },
+      { name: "Dortoir", price: "105", sub: "29 places · l'esprit refuge", featured: true, badge: "Le QG de la meute" },
+      { name: "Chambre 4 pers", price: "125", sub: "4 chambres dispo" },
+      { name: "Chambre double", price: "135", sub: "Plus qu'une dispo !" },
+    ],
+    included: [
+      "Accès aux traces du samedi : 10 km, 25 km, rando détente ou chill",
+      "Apéro cocktail : pissaladière, tapenade, guacamole",
+      "Grand buffet : entrée, plat, fromages, dessert, café — vin compris (1 bouteille pour 6)",
+      "Set techno & ambiance TTC jusqu'au bout de la nuit",
+      "Literie fournie : draps, oreillers, taies et couvertures",
+      "Dimanche : petit-déj léger (boisson chaude + tartines) + testing Näak",
+    ],
+    options: [
+      "+31 € · Brunch du dimanche au Relais",
+      "+13 € · Pique-nique après le testing Näak",
+    ],
+    corkage: "Droit de bouchon : 7 €/bouteille",
   },
 };
 

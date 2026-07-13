@@ -112,7 +112,7 @@ const T2TEditions = () => (
         <a href="edition-mercantour.html" className="t2t-edition stamped current" style={{ "--ed": "#e23a2a" }}>
           <div className="em"><window.Tampons.TamponMercantour /></div>
           <div className="eb">
-            <span className="est"><b className="ed-pill">Ouvert</b> · Août 2026</span>
+            <span className="est"><b className="ed-pill">Ouvert</b> · 8–9 août 2026</span>
             <span className="eh">Édition Mercantour</span>
             <span className="ee">De la mer au sommet. Nice → Cime du Gelas, 3 143 m. Refuge : le Relais des Merveilles.</span>
             <span className="go">Découvrir le week-end →</span>

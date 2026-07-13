@@ -33,7 +33,7 @@ const MercHero = () => (
           </p>
         </div>
         <div className="t2t-hero-cta" style={{ flexDirection: "row", justifyContent: "flex-end", flexWrap: "wrap" }}>
-          <a href="#reserver" className="btn btn-uv">Réserver ma place →</a>
+          <a href="#tarifs" className="btn btn-uv">Tarifs &amp; réservation →</a>
         </div>
       </div>
     </div>
@@ -65,6 +65,7 @@ const MercExpo = () => {
           <p style={{ maxWidth: "32ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
             Les pieds dans la Méditerranée au départ. La neige des 3 000 à l'arrivée.
             Une équipe de {e.team}, deux jours, une ligne qui ne redescend jamais vraiment.
+            Départ de Nice le jeudi 6 août au soir.
           </p>
         </div>
 
@@ -235,7 +236,7 @@ const MercProgram = () => (
       <div className="t2t-sec-head">
         <div>
           <div className="t2t-eyebrow">★ Le déroulé</div>
-          <h2 className="t2t-h2">Du jeudi soir<br/>au <span className="uv">dimanche</span>.</h2>
+          <h2 className="t2t-h2">Du jeudi 6 août<br/>au <span className="uv">dimanche 9</span>.</h2>
         </div>
         <div style={{ display: "flex", gap: 14 }}>
           <span className="t2t-kindchip trail">● Montagne</span>
@@ -265,6 +266,56 @@ const MercProgram = () => (
     </div>
   </section>
 );
+
+const MercPricing = () => {
+  const p = M().pricing;
+  return (
+    <section className="t2t-sec" id="tarifs">
+      <div className="wrap">
+        <div className="t2t-sec-head">
+          <div>
+            <div className="t2t-eyebrow">★ Les tarifs · tout inclus</div>
+            <h2 className="t2t-h2">Choisis ton<br/><span className="uv">couchage</span>.</h2>
+          </div>
+          <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
+            Le week-end complet est compris dans chaque formule — traces, apéro, buffet,
+            DJ set, literie et petit-déj. Seul le confort de la nuit change.
+          </p>
+        </div>
+        <div className="t2t-passes cols-4">
+          {p.formulas.map((f) => (
+            <div key={f.name} className={`t2t-pass ${f.featured ? "featured" : ""}`}>
+              <div className="pname">
+                <span className="n">{f.name}</span>
+                {f.badge && <span className="badge">{f.badge}</span>}
+              </div>
+              <div className="price">{f.price}<span className="cur"> €</span></div>
+              <div className="psub">{f.sub}</div>
+            </div>
+          ))}
+        </div>
+        <div className="t2t-pass" style={{ marginTop: 16 }}>
+          <div className="pname">
+            <span className="n" style={{ fontSize: 19 }}>Inclus dans toutes les formules</span>
+            <span className="badge">Samedi 8 → dimanche 9</span>
+          </div>
+          <ul style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "10px 28px" }}>
+            {p.included.map((it, i) => (
+              <li key={i}><span className="ck">✓</span><span>{it}</span></li>
+            ))}
+          </ul>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginTop: 22 }}>
+          <a href="https://tally.so/r/b5GkPg" target="_blank" rel="noopener" className="btn btn-uv">Réserver ma formule →</a>
+          {p.options.map((o, i) => (
+            <span key={i} className="t2t-daychip">{o}</span>
+          ))}
+          <span className="t2t-finetext">{p.corkage}</span>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const MercReserve = () => (
   <section className="t2t-final" id="reserver">
@@ -324,4 +375,4 @@ const MercCommu = () => {
   );
 };
 
-window.MERC = { MercHero, MercMetabar, MercExpo, MercFormats, MercCommu, MercLocation, MercNight, MercProgram, MercReserve };
+window.MERC = { MercHero, MercMetabar, MercExpo, MercFormats, MercCommu, MercLocation, MercNight, MercProgram, MercPricing, MercReserve };
