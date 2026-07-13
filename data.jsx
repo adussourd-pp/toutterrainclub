@@ -203,8 +203,8 @@ const MERCANTOUR = {
   // Tarifs — billetterie SumUp (formules tout inclus, seule la nuit change)
   pricing: {
     formulas: [
-      { name: "Camping", price: "80", sub: "27 emplacements · esprit bivouac" },
-      { name: "Dortoir", price: "105", sub: "29 places · l'esprit refuge", featured: true, badge: "Le QG de la meute" },
+      { name: "Camping", price: "80", sub: "Plus que 20 places · esprit bivouac" },
+      { name: "Dortoir", price: "105", sub: "Plus que 15 places · l'esprit refuge", featured: true, badge: "Le QG de la meute" },
       { name: "Chambre 4 pers", price: "125", sub: "Plus que 2 chambres !" },
       { name: "Chambre double", price: "135", sub: "Victime de son succès", soldout: true },
     ],
