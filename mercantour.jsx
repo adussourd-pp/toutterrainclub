@@ -277,9 +277,8 @@ const MercPricing = () => {
             <div className="t2t-eyebrow">★ Les tarifs · tout inclus</div>
             <h2 className="t2t-h2">Choisis ton<br/><span className="uv">couchage</span>.</h2>
           </div>
-          <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
-            Le week-end complet est compris dans chaque formule — traces, apéro, buffet,
-            DJ set, literie et petit-déj. Seul le confort de la nuit change.
+          <p style={{ maxWidth: "38ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
+            {p.comprend} Seul le confort de la nuit change.
           </p>
         </div>
         <div className="t2t-passes cols-4">
@@ -311,6 +310,9 @@ const MercPricing = () => {
             <span key={i} className="t2t-daychip">{o}</span>
           ))}
           <span className="t2t-finetext">{p.corkage}</span>
+        </div>
+        <div className="t2t-warning">
+          <b>⚠️ Important :</b> {p.warning}
         </div>
       </div>
     </section>
