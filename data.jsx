@@ -205,8 +205,8 @@ const MERCANTOUR = {
     formulas: [
       { name: "Camping", price: "80", sub: "27 emplacements · esprit bivouac" },
       { name: "Dortoir", price: "105", sub: "29 places · l'esprit refuge", featured: true, badge: "Le QG de la meute" },
-      { name: "Chambre 4 pers", price: "125", sub: "4 chambres dispo" },
-      { name: "Chambre double", price: "135", sub: "Plus qu'une dispo !" },
+      { name: "Chambre 4 pers", price: "125", sub: "Plus que 2 chambres !" },
+      { name: "Chambre double", price: "135", sub: "Victime de son succès", soldout: true },
     ],
     included: [
       "Accès aux traces du samedi : 10 km, 25 km, rando détente ou chill",

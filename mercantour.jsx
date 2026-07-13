@@ -284,10 +284,10 @@ const MercPricing = () => {
         </div>
         <div className="t2t-passes cols-4">
           {p.formulas.map((f) => (
-            <div key={f.name} className={`t2t-pass ${f.featured ? "featured" : ""}`}>
+            <div key={f.name} className={`t2t-pass ${f.featured ? "featured" : ""} ${f.soldout ? "soldout" : ""}`}>
               <div className="pname">
                 <span className="n">{f.name}</span>
-                {f.badge && <span className="badge">{f.badge}</span>}
+                {f.soldout ? <span className="badge off">Complet</span> : f.badge && <span className="badge">{f.badge}</span>}
               </div>
               <div className="price">{f.price}<span className="cur"> €</span></div>
               <div className="psub">{f.sub}</div>

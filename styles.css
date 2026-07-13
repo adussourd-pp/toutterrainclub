@@ -2410,6 +2410,12 @@ section.join {
 .t2t-finetext { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; color: rgba(244,239,255,0.55); }
 .t2t-page.light .t2t-finetext { color: var(--muted); }
 
+/* Formule complète (soldout) */
+.t2t-pass.soldout { opacity: 0.55; border-style: dashed; }
+.t2t-pass.soldout .price { text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: var(--uv); }
+.t2t-pass .badge.off { background: transparent; border: 1px solid rgba(244,239,255,0.4); color: rgba(244,239,255,0.7); }
+.t2t-page.light .t2t-pass .badge.off { border-color: rgba(24,24,32,0.35); color: #55554e; }
+
 /* ============================================================
    RESPONSIVE — tablette & mobile
    Les !important servent à neutraliser les styles inline des JSX.
