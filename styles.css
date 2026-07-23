@@ -2418,6 +2418,16 @@ section.join {
   margin: 4px 0 2px;
 }
 
+/* Photo dans une carte format (ex. Chill Max) */
+.cc-photo {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+  margin: 4px 0 2px;
+}
+
 /* Options d'un format (ex. la Jonction : directe / par le balcon) */
 .cc-opt {
   border-top: 1px solid rgba(244,239,255,0.14);

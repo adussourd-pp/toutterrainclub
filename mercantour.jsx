@@ -144,12 +144,18 @@ const MercFormats = () => {
                     <span className="cc-km">{f.km}</span>
                   </div>
                   <span className="cc-tag">{f.tag}</span>
-                  {f.profile && (
-                    <svg className="cc-profile" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true">
-                      <path d={`${f.profile} L300 84 L0 84 Z`} fill="var(--uv)" opacity="0.14" />
-                      <path d={f.profile} fill="none" stroke="var(--uv)" strokeWidth="1.8" />
-                    </svg>
-                  )}
+                  {(f.profile || f.useExpoProfile) && (() => {
+                    const d = f.useExpoProfile ? M().expo.profile : f.profile;
+                    const w = f.useExpoProfile ? 1000 : 300;
+                    const h = f.useExpoProfile ? 260 : 84;
+                    return (
+                      <svg className="cc-profile" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" aria-hidden="true">
+                        <path d={`${d} L${w} ${h} L0 ${h} Z`} fill="var(--uv)" opacity="0.14" />
+                        <path d={d} fill="none" stroke="var(--uv)" strokeWidth={f.useExpoProfile ? 3.2 : 1.8} />
+                      </svg>
+                    );
+                  })()}
+                  {f.img && <img className="cc-photo" src={f.img} alt={f.name} loading="lazy" />}
                   <p className="cc-ex" style={f.profile ? { flex: "none", margin: 0 } : undefined}>{f.dplus}</p>
                   {f.options && (
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -184,6 +190,12 @@ const MercFormats = () => {
             <div className="sun-day">Dimanche 9 août</div>
             <div className="sun-h">{c.sunday.title}</div>
             <p className="sun-x">{c.sunday.ex}</p>
+            {c.sunday.profile && (
+              <svg className="cc-profile" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true" style={{ maxWidth: 440 }}>
+                <path d={`${c.sunday.profile} L300 84 L0 84 Z`} fill="var(--uv)" opacity="0.14" />
+                <path d={c.sunday.profile} fill="none" stroke="var(--uv)" strokeWidth="1.8" />
+              </svg>
+            )}
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               {c.sunday.stats.map((s, i) => <span key={i} className="t2t-daychip">{s}</span>)}
             </div>

@@ -148,7 +148,7 @@ const MERCANTOUR = {
     {
       badge: "●●●", name: "Engagé", sub: "Haute montagne · confirmé",
       items: [
-        { name: "L'expédition", km: "97 km", dplus: "6 500 D+", tag: "2 jours · mer → sommet", foot: "Sur sélection", hero: true },
+        { name: "L'expédition", km: "97 km", dplus: "6 500 D+", tag: "2 jours · mer → sommet", foot: "Sur sélection", hero: true, useExpoProfile: true },
         { name: "Le Tour de la Vallée des Merveilles", km: "19 km", dplus: "≈ 1 550 D+ · pointe à 2 699 m", tag: "Plus sportif · confirmé", gpx: "gpx/tour-vallee-des-merveilles.gpx",
           profile: "M0.0 75.8 L3.3 75.4 L6.7 74.5 L10.0 73.3 L13.3 71.8 L16.7 69.8 L20.0 68.3 L23.3 65.1 L26.7 62.7 L30.0 58.8 L33.3 54.4 L36.7 53.5 L40.0 50.5 L43.3 46.8 L46.7 45.9 L50.0 46.0 L53.3 45.9 L56.7 44.8 L60.0 42.6 L63.3 41.2 L66.7 41.3 L70.0 41.5 L73.3 41.1 L76.7 38.9 L80.0 37.9 L83.3 37.0 L86.7 35.4 L90.0 32.6 L93.3 29.8 L96.7 29.3 L100.0 28.8 L103.3 28.3 L106.7 28.3 L110.0 26.6 L113.3 21.8 L116.7 16.6 L120.0 11.9 L123.3 8.0 L126.7 12.1 L130.0 15.2 L133.3 16.8 L136.7 19.7 L140.0 21.9 L143.3 22.5 L146.7 23.4 L150.0 25.8 L153.3 24.5 L156.7 21.1 L160.0 16.9 L163.3 17.2 L166.7 21.0 L170.0 24.5 L173.3 27.5 L176.7 28.4 L180.0 29.9 L183.3 32.4 L186.7 33.5 L190.0 34.2 L193.3 35.1 L196.7 38.0 L200.0 39.5 L203.3 39.9 L206.7 40.9 L210.0 42.6 L213.3 42.6 L216.7 40.9 L220.0 38.0 L223.3 35.3 L226.7 32.5 L230.0 30.8 L233.3 28.9 L236.7 26.5 L240.0 24.3 L243.3 20.8 L246.7 19.7 L250.0 24.6 L253.3 28.9 L256.7 32.9 L260.0 37.8 L263.3 40.6 L266.7 42.7 L270.0 45.6 L273.3 47.4 L276.7 50.3 L280.0 54.6 L283.3 57.5 L286.7 61.5 L290.0 66.5 L293.3 70.6 L296.7 74.7 L300.0 76.0" },
         { name: "Le Clapier", km: "16,5 km", dplus: "≈ 1 550 D+ · sommet à 3 039 m", tag: "Boucle sommet · engagé", gpx: "gpx/le-clapier.gpx",
@@ -172,7 +172,7 @@ const MERCANTOUR = {
       badge: "●○○", name: "Tranquille", sub: "Zéro chrono, zéro pression",
       items: [
         { name: "La Rando", km: "Allure libre", dplus: "à la carte", tag: "Sans chrono · contemplatif", foot: "Ouvert à tous" },
-        { name: "Le Chill Max", km: "Refuge only", dplus: "0 D+", tag: "Zéro course · juste la vibe", foot: "C'est cadeau" },
+        { name: "Le Chill Max", km: "Refuge only", dplus: "0 D+", tag: "Zéro course · juste la vibe", foot: "C'est cadeau", img: "img/terrace.jpg" },
       ],
     },
   ],
@@ -226,6 +226,7 @@ const MERCANTOUR = {
       stats: ["≈ 7 km", "≈ 600 D+", "Lac à 2 275 m"],
       gpx: "gpx/boucle-lac-autier.gpx",
       img: "img/lake.jpg",
+      profile: "M0.0 76.0 L3.3 75.9 L6.7 75.6 L10.0 75.1 L13.3 74.8 L16.7 74.5 L20.0 74.0 L23.3 73.6 L26.7 73.1 L30.0 72.2 L33.3 71.5 L36.7 70.8 L40.0 70.1 L43.3 69.0 L46.7 67.3 L50.0 66.4 L53.3 65.4 L56.7 64.6 L60.0 64.2 L63.3 63.1 L66.7 60.9 L70.0 59.2 L73.3 59.2 L76.7 56.3 L80.0 53.9 L83.3 51.0 L86.7 48.8 L90.0 47.1 L93.3 44.6 L96.7 42.7 L100.0 40.3 L103.3 38.3 L106.7 36.5 L110.0 33.6 L113.3 31.0 L116.7 29.0 L120.0 26.6 L123.3 25.3 L126.7 22.6 L130.0 19.5 L133.3 16.7 L136.7 13.5 L140.0 10.1 L143.3 8.2 L146.7 8.1 L150.0 8.4 L153.3 8.7 L156.7 8.6 L160.0 8.8 L163.3 11.7 L166.7 15.2 L170.0 18.4 L173.3 21.0 L176.7 23.6 L180.0 26.2 L183.3 27.1 L186.7 29.7 L190.0 31.7 L193.3 34.2 L196.7 36.5 L200.0 38.5 L203.3 40.6 L206.7 42.7 L210.0 44.5 L213.3 47.1 L216.7 49.0 L220.0 52.0 L223.3 54.5 L226.7 57.9 L230.0 59.1 L233.3 59.3 L236.7 61.1 L240.0 63.0 L243.3 63.3 L246.7 63.8 L250.0 64.5 L253.3 65.3 L256.7 66.5 L260.0 67.9 L263.3 68.8 L266.7 69.3 L270.0 70.2 L273.3 71.1 L276.7 71.9 L280.0 72.5 L283.3 72.9 L286.7 73.1 L290.0 73.4 L293.3 73.8 L296.7 74.2 L300.0 74.4",
     },
   },
   // Tarifs — billetterie SumUp (formules tout inclus, seule la nuit change)
