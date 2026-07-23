@@ -172,7 +172,7 @@ const MERCANTOUR = {
       badge: "●○○", name: "Tranquille", sub: "Zéro chrono, zéro pression",
       items: [
         { name: "La Rando", km: "Allure libre", dplus: "à la carte", tag: "Sans chrono · contemplatif", foot: "Ouvert à tous" },
-        { name: "Le Chill Max", km: "Refuge only", dplus: "0 D+", tag: "Zéro course · juste la vibe", foot: "C'est cadeau", img: "img/terrace.jpg" },
+        { name: "Le Chill Max", km: "Refuge only", dplus: "0 D+", tag: "Zéro course · juste la vibe", foot: "C'est cadeau", img: "img/chillmax.jpg" },
       ],
     },
   ],
@@ -225,7 +225,7 @@ const MERCANTOUR = {
       ex: "Le dimanche, on monte au lac Autier : boucle tranquille et testing produits Näak en conditions réelles. Zéro chrono, juste le partage.",
       stats: ["≈ 7 km", "≈ 600 D+", "Lac à 2 275 m"],
       gpx: "gpx/boucle-lac-autier.gpx",
-      img: "img/lake.jpg",
+      img: "img/lacauthier.jpg",
       profile: "M0.0 76.0 L3.3 75.9 L6.7 75.6 L10.0 75.1 L13.3 74.8 L16.7 74.5 L20.0 74.0 L23.3 73.6 L26.7 73.1 L30.0 72.2 L33.3 71.5 L36.7 70.8 L40.0 70.1 L43.3 69.0 L46.7 67.3 L50.0 66.4 L53.3 65.4 L56.7 64.6 L60.0 64.2 L63.3 63.1 L66.7 60.9 L70.0 59.2 L73.3 59.2 L76.7 56.3 L80.0 53.9 L83.3 51.0 L86.7 48.8 L90.0 47.1 L93.3 44.6 L96.7 42.7 L100.0 40.3 L103.3 38.3 L106.7 36.5 L110.0 33.6 L113.3 31.0 L116.7 29.0 L120.0 26.6 L123.3 25.3 L126.7 22.6 L130.0 19.5 L133.3 16.7 L136.7 13.5 L140.0 10.1 L143.3 8.2 L146.7 8.1 L150.0 8.4 L153.3 8.7 L156.7 8.6 L160.0 8.8 L163.3 11.7 L166.7 15.2 L170.0 18.4 L173.3 21.0 L176.7 23.6 L180.0 26.2 L183.3 27.1 L186.7 29.7 L190.0 31.7 L193.3 34.2 L196.7 36.5 L200.0 38.5 L203.3 40.6 L206.7 42.7 L210.0 44.5 L213.3 47.1 L216.7 49.0 L220.0 52.0 L223.3 54.5 L226.7 57.9 L230.0 59.1 L233.3 59.3 L236.7 61.1 L240.0 63.0 L243.3 63.3 L246.7 63.8 L250.0 64.5 L253.3 65.3 L256.7 66.5 L260.0 67.9 L263.3 68.8 L266.7 69.3 L270.0 70.2 L273.3 71.1 L276.7 71.9 L280.0 72.5 L283.3 72.9 L286.7 73.1 L290.0 73.4 L293.3 73.8 L296.7 74.2 L300.0 74.4",
     },
   },
