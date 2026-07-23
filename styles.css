@@ -2410,6 +2410,56 @@ section.join {
 .t2t-finetext { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; color: rgba(244,239,255,0.55); }
 .t2t-page.light .t2t-finetext { color: var(--muted); }
 
+/* Mini profil altimétrique dans les cartes formats */
+.cc-profile {
+  width: 100%;
+  height: 54px;
+  display: block;
+  margin: 4px 0 2px;
+}
+
+/* Options d'un format (ex. la Jonction : directe / par le balcon) */
+.cc-opt {
+  border-top: 1px solid rgba(244,239,255,0.14);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-start;
+}
+.cc-opt .on { font-family: var(--f-display); font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+.cc-opt .od { font-size: 13px; line-height: 1.5; color: rgba(244,239,255,0.65); }
+.t2t-page.light .cc-opt { border-top-color: var(--rule); }
+.t2t-page.light .cc-opt .on { color: #181820; }
+.t2t-page.light .cc-opt .od { color: #55554e; }
+
+/* Encart Dimanche — boucle du lac Autier */
+.t2t-sunday {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  border: 1px solid rgba(244,239,255,0.16);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 24px;
+  background: rgba(244,239,255,0.02);
+}
+.t2t-sunday .sun-photo { position: relative; min-height: 280px; }
+.t2t-sunday .sun-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.t2t-sunday .sun-body {
+  padding: 30px 30px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+}
+.t2t-sunday .sun-day { font-family: var(--f-display); font-weight: 800; font-size: 26px; letter-spacing: -0.02em; color: var(--uv); }
+.t2t-sunday .sun-h { font-family: var(--f-display); font-weight: 700; font-size: 22px; letter-spacing: -0.02em; }
+.t2t-sunday .sun-x { font-size: 14px; line-height: 1.55; color: rgba(244,239,255,0.72); max-width: 52ch; margin: 0; }
+.t2t-page.light .t2t-sunday { background: #ffffff; border-color: var(--rule); }
+.t2t-page.light .t2t-sunday .sun-h { color: #181820; }
+.t2t-page.light .t2t-sunday .sun-x { color: #55554e; }
+
 /* Avertissement (activités non encadrées) */
 .t2t-warning {
   margin-top: 22px;
@@ -2420,7 +2470,6 @@ section.join {
   font-size: 13px;
   line-height: 1.55;
   color: rgba(244,239,255,0.85);
-  max-width: 78ch;
 }
 .t2t-page.light .t2t-warning {
   color: #33332e;
@@ -2587,6 +2636,9 @@ section.join {
   .t2t-teaser-cta > span { margin-left: 0 !important; }
   .t2t-passes.cols-4 { grid-template-columns: 1fr; }
   .t2t-pass { padding: 24px 20px 26px; }
+  .t2t-sunday { grid-template-columns: 1fr; }
+  .t2t-sunday .sun-photo { min-height: 210px; }
+  .t2t-sunday .sun-body { padding: 24px 20px 28px; }
 
   /* Adhésion */
   .adh-discord { padding: 30px 22px 34px; }

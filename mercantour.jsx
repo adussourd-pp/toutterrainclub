@@ -130,35 +130,68 @@ const MercFormats = () => {
             même bande. Les traces GPX sont à télécharger sur chaque format.
           </p>
         </div>
-        <div className="t2t-commu">
-          {M().formats.map((f, i) => (
-            <div key={i} className={`t2t-commu-card ${f.hero ? "join" : ""}`}>
-              <div className="cc-top">
-                <span className="cc-name">{f.name}</span>
-                <span className="cc-km">{f.km}</span>
-              </div>
-              <span className="cc-tag">{f.tag}</span>
-              <p className="cc-ex">{f.dplus}</p>
-              {f.gpx
-                ? <a className="cc-foot cc-live" href={f.gpx} download style={{ textDecoration: "none" }}>⤓ Trace GPX · télécharger</a>
-                : <span className={`cc-foot ${f.soon ? "cc-soon" : "cc-live"}`}>
-                    {f.soon ? "◷ Trace bientôt" : `● ${f.foot || "Ouvert"}`}
-                  </span>}
+        {M().levels.map((lvl) => (
+          <div key={lvl.name} style={{ marginBottom: 30 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14, flexWrap: "wrap" }}>
+              <span className="t2t-daychip">{lvl.badge} {lvl.name}</span>
+              <span className="t2t-finetext">{lvl.sub}</span>
             </div>
-          ))}
-        </div>
-        <p className="t2t-finetext" style={{ marginTop: 16, maxWidth: "80ch", lineHeight: 1.6 }}>
+            <div className="t2t-commu">
+              {lvl.items.map((f, i) => (
+                <div key={i} className={`t2t-commu-card ${f.hero ? "join" : ""}`}>
+                  <div className="cc-top">
+                    <span className="cc-name">{f.name}</span>
+                    <span className="cc-km">{f.km}</span>
+                  </div>
+                  <span className="cc-tag">{f.tag}</span>
+                  {f.profile && (
+                    <svg className="cc-profile" viewBox="0 0 300 84" preserveAspectRatio="none" aria-hidden="true">
+                      <path d={`${f.profile} L300 84 L0 84 Z`} fill="var(--uv)" opacity="0.14" />
+                      <path d={f.profile} fill="none" stroke="var(--uv)" strokeWidth="1.8" />
+                    </svg>
+                  )}
+                  <p className="cc-ex" style={f.profile ? { flex: "none", margin: 0 } : undefined}>{f.dplus}</p>
+                  {f.options && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {f.options.map((o, j) => (
+                        <div key={j} className="cc-opt">
+                          <span className="on">{o.t}</span>
+                          <span className="od">{o.d}</span>
+                          <a className="cc-foot cc-live" href={o.gpx} download style={{ textDecoration: "none" }}>⤓ Trace GPX</a>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {!f.options && (f.gpx
+                    ? <a className="cc-foot cc-live" href={f.gpx} download style={{ textDecoration: "none", marginTop: "auto" }}>⤓ Trace GPX · télécharger</a>
+                    : <span className={`cc-foot ${f.soon ? "cc-soon" : "cc-live"}`} style={{ marginTop: "auto" }}>
+                        {f.soon ? "◷ Trace bientôt" : `● ${f.foot || "Ouvert"}`}
+                      </span>)}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+        <p className="t2t-finetext" style={{ maxWidth: "80ch", lineHeight: 1.6 }}>
           Les traces du Balcon du Gelas et de la Jonction sont les allers — le retour se fait par le même chemin.
-          Et ça se combine : enchaîne le Balcon du Gelas puis la Jonction au refuge de Nice, ou rejoins l'expé directement au niveau du balcon.
         </p>
 
-        <div className="t2t-authion">
-          <div className="aday">Dimanche</div>
-          <div>
-            <div className="ah">{c.sunday.title}</div>
-            <div className="ax">{c.sunday.ex}</div>
+        <div className="t2t-sunday" id="dimanche">
+          <div className="sun-photo">
+            <img src={c.sunday.img} alt="Le lac Autier" loading="lazy" />
           </div>
-          <div className="abadge">Testing Näak · sans chrono</div>
+          <div className="sun-body">
+            <div className="sun-day">Dimanche 9 août</div>
+            <div className="sun-h">{c.sunday.title}</div>
+            <p className="sun-x">{c.sunday.ex}</p>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {c.sunday.stats.map((s, i) => <span key={i} className="t2t-daychip">{s}</span>)}
+            </div>
+            <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", marginTop: 4 }}>
+              <a className="cc-foot cc-live" href={c.sunday.gpx} download style={{ textDecoration: "none" }}>⤓ Trace GPX · télécharger</a>
+              <span className="t2t-finetext">Testing Näak · sans chrono</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

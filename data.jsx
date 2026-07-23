@@ -143,16 +143,38 @@ const MERCANTOUR = {
     splitX: 833.7,
     maxE: 3008,
   },
-  // stats issues des traces GPX réelles (dossier /gpx)
-  formats: [
-    { name: "L'expédition", km: "97 km", dplus: "6 500 D+", tag: "2 jours · mer → sommet", foot: "Sur sélection", hero: true },
-    { name: "Le Tour de la Vallée des Merveilles", km: "19 km", dplus: "≈ 1 550 D+ · pointe à 2 699 m", tag: "Plus sportif · confirmé", gpx: "gpx/tour-vallee-des-merveilles.gpx" },
-    { name: "Le Clapier", km: "16,5 km", dplus: "≈ 1 550 D+ · sommet à 3 039 m", tag: "Boucle sommet · engagé", gpx: "gpx/le-clapier.gpx" },
-    { name: "Le Balcon du Gelas", km: "≈ 14 km A/R", dplus: "≈ 1 330 D+ · jusqu'à 2 933 m · combinable avec la Jonction", tag: "Raide et panoramique", gpx: "gpx/balcon-du-gelas.gpx" },
-    { name: "La Jonction", km: "≈ 10 km A/R", dplus: "≈ 560 D+ · refuge de Nice (2 232 m)", tag: "Rejoindre l'expé au refuge de Nice", gpx: "gpx/la-jonction.gpx" },
-    { name: "La Boucle Autier", km: "≈ 7 km", dplus: "≈ 600 D+ · lac Autier", tag: "Boucle découverte · tous niveaux", gpx: "gpx/boucle-lac-autier.gpx" },
-    { name: "La Rando", km: "Allure libre", dplus: "à la carte", tag: "Sans chrono · contemplatif", foot: "Ouvert à tous" },
-    { name: "Le Chill Max", km: "Refuge only", dplus: "0 D+", tag: "Zéro course · juste la vibe", foot: "C'est cadeau" },
+  // Formats du samedi, groupés par niveau — stats et profils issus des GPX réels (dossier /gpx)
+  levels: [
+    {
+      badge: "●●●", name: "Engagé", sub: "Haute montagne · confirmé",
+      items: [
+        { name: "L'expédition", km: "97 km", dplus: "6 500 D+", tag: "2 jours · mer → sommet", foot: "Sur sélection", hero: true },
+        { name: "Le Tour de la Vallée des Merveilles", km: "19 km", dplus: "≈ 1 550 D+ · pointe à 2 699 m", tag: "Plus sportif · confirmé", gpx: "gpx/tour-vallee-des-merveilles.gpx",
+          profile: "M0.0 75.8 L3.3 75.4 L6.7 74.5 L10.0 73.3 L13.3 71.8 L16.7 69.8 L20.0 68.3 L23.3 65.1 L26.7 62.7 L30.0 58.8 L33.3 54.4 L36.7 53.5 L40.0 50.5 L43.3 46.8 L46.7 45.9 L50.0 46.0 L53.3 45.9 L56.7 44.8 L60.0 42.6 L63.3 41.2 L66.7 41.3 L70.0 41.5 L73.3 41.1 L76.7 38.9 L80.0 37.9 L83.3 37.0 L86.7 35.4 L90.0 32.6 L93.3 29.8 L96.7 29.3 L100.0 28.8 L103.3 28.3 L106.7 28.3 L110.0 26.6 L113.3 21.8 L116.7 16.6 L120.0 11.9 L123.3 8.0 L126.7 12.1 L130.0 15.2 L133.3 16.8 L136.7 19.7 L140.0 21.9 L143.3 22.5 L146.7 23.4 L150.0 25.8 L153.3 24.5 L156.7 21.1 L160.0 16.9 L163.3 17.2 L166.7 21.0 L170.0 24.5 L173.3 27.5 L176.7 28.4 L180.0 29.9 L183.3 32.4 L186.7 33.5 L190.0 34.2 L193.3 35.1 L196.7 38.0 L200.0 39.5 L203.3 39.9 L206.7 40.9 L210.0 42.6 L213.3 42.6 L216.7 40.9 L220.0 38.0 L223.3 35.3 L226.7 32.5 L230.0 30.8 L233.3 28.9 L236.7 26.5 L240.0 24.3 L243.3 20.8 L246.7 19.7 L250.0 24.6 L253.3 28.9 L256.7 32.9 L260.0 37.8 L263.3 40.6 L266.7 42.7 L270.0 45.6 L273.3 47.4 L276.7 50.3 L280.0 54.6 L283.3 57.5 L286.7 61.5 L290.0 66.5 L293.3 70.6 L296.7 74.7 L300.0 76.0" },
+        { name: "Le Clapier", km: "16,5 km", dplus: "≈ 1 550 D+ · sommet à 3 039 m", tag: "Boucle sommet · engagé", gpx: "gpx/le-clapier.gpx",
+          profile: "M0.0 75.7 L3.3 75.5 L6.7 75.4 L10.0 75.1 L13.3 74.7 L16.7 73.5 L20.0 72.2 L23.3 70.5 L26.7 68.6 L30.0 67.6 L33.3 65.5 L36.7 62.9 L40.0 61.0 L43.3 60.1 L46.7 57.8 L50.0 56.2 L53.3 54.8 L56.7 54.6 L60.0 53.9 L63.3 53.5 L66.7 52.9 L70.0 52.0 L73.3 51.5 L76.7 51.3 L80.0 51.0 L83.3 50.6 L86.7 50.3 L90.0 49.8 L93.3 49.5 L96.7 47.1 L100.0 44.3 L103.3 41.6 L106.7 39.2 L110.0 37.5 L113.3 35.2 L116.7 33.2 L120.0 32.9 L123.3 31.6 L126.7 29.0 L130.0 26.1 L133.3 23.4 L136.7 20.7 L140.0 16.7 L143.3 12.9 L146.7 9.1 L150.0 9.8 L153.3 13.5 L156.7 17.4 L160.0 21.1 L163.3 23.6 L166.7 26.5 L170.0 29.2 L173.3 32.0 L176.7 32.4 L180.0 34.2 L183.3 36.2 L186.7 37.7 L190.0 39.5 L193.3 41.6 L196.7 44.3 L200.0 46.9 L203.3 49.6 L206.7 49.9 L210.0 50.2 L213.3 50.6 L216.7 50.9 L220.0 51.3 L223.3 51.5 L226.7 51.9 L230.0 52.8 L233.3 53.6 L236.7 54.0 L240.0 54.5 L243.3 55.0 L246.7 56.2 L250.0 58.1 L253.3 60.4 L256.7 61.3 L260.0 62.7 L263.3 64.6 L266.7 67.4 L270.0 68.4 L273.3 69.8 L276.7 71.2 L280.0 72.7 L283.3 73.8 L286.7 75.2 L290.0 75.4 L293.3 75.5 L296.7 75.7 L300.0 76.0" },
+      ],
+    },
+    {
+      badge: "●●○", name: "Sportif", sub: "Ça grimpe, mais ça se partage",
+      items: [
+        { name: "Le Balcon du Gelas", km: "≈ 14 km A/R", dplus: "≈ 1 330 D+ · jusqu'à 2 933 m", tag: "Raide et panoramique", gpx: "gpx/balcon-du-gelas.gpx",
+          profile: "M0.0 76.0 L3.3 75.9 L6.7 75.6 L10.0 75.4 L13.3 75.2 L16.7 74.9 L20.0 74.7 L23.3 74.4 L26.7 73.9 L30.0 73.6 L33.3 73.2 L36.7 72.9 L40.0 72.3 L43.3 71.4 L46.7 71.0 L50.0 70.5 L53.3 70.0 L56.7 69.9 L60.0 69.4 L63.3 68.3 L66.7 67.2 L70.0 66.4 L73.3 65.4 L76.7 65.0 L80.0 64.4 L83.3 63.2 L86.7 61.9 L90.0 60.6 L93.3 59.5 L96.7 58.0 L100.0 57.0 L103.3 56.3 L106.7 56.6 L110.0 56.5 L113.3 56.0 L116.7 54.9 L120.0 53.4 L123.3 51.8 L126.7 50.7 L130.0 49.7 L133.3 49.0 L136.7 48.9 L140.0 49.1 L143.3 49.0 L146.7 48.9 L150.0 49.1 L153.3 49.1 L156.7 49.0 L160.0 48.9 L163.3 48.5 L166.7 48.1 L170.0 47.2 L173.3 46.8 L176.7 46.1 L180.0 45.4 L183.3 44.4 L186.7 43.8 L190.0 42.6 L193.3 41.7 L196.7 41.2 L200.0 40.6 L203.3 36.5 L206.7 35.3 L210.0 31.7 L213.3 31.7 L216.7 30.4 L220.0 29.2 L223.3 29.2 L226.7 28.0 L230.0 26.6 L233.3 25.2 L236.7 25.2 L240.0 25.2 L243.3 23.7 L246.7 23.7 L250.0 22.0 L253.3 20.4 L256.7 20.4 L260.0 18.5 L263.3 16.7 L266.7 15.0 L270.0 14.3 L273.3 13.6 L276.7 13.6 L280.0 13.6 L283.3 12.9 L286.7 12.3 L290.0 11.6 L293.3 10.8 L296.7 9.9 L300.0 8.0" },
+        { name: "La Jonction", km: "≈ 10 km A/R", dplus: "≈ 560 D+ · refuge de Nice (2 232 m)", tag: "Rejoindre l'expé au refuge de Nice",
+          profile: "M0.0 76.0 L3.3 75.9 L6.7 75.4 L10.0 75.1 L13.3 74.7 L16.7 74.5 L20.0 74.1 L23.3 73.6 L26.7 73.3 L30.0 72.9 L33.3 72.2 L36.7 71.7 L40.0 71.1 L43.3 70.4 L46.7 70.1 L50.0 69.3 L53.3 68.4 L56.7 67.2 L60.0 66.2 L63.3 65.5 L66.7 64.8 L70.0 64.0 L73.3 63.5 L76.7 63.3 L80.0 62.7 L83.3 60.9 L86.7 59.2 L90.0 57.5 L93.3 56.4 L96.7 55.3 L100.0 53.7 L103.3 53.2 L106.7 52.3 L110.0 50.6 L113.3 48.6 L116.7 46.8 L120.0 44.7 L123.3 42.7 L126.7 40.9 L130.0 38.6 L133.3 37.0 L136.7 35.7 L140.0 35.5 L143.3 35.9 L146.7 35.8 L150.0 35.5 L153.3 34.3 L156.7 32.2 L160.0 29.9 L163.3 27.4 L166.7 25.3 L170.0 23.8 L173.3 22.2 L176.7 20.6 L180.0 20.2 L183.3 20.1 L186.7 20.6 L190.0 20.6 L193.3 20.2 L196.7 20.1 L200.0 20.4 L203.3 20.5 L206.7 20.4 L210.0 20.2 L213.3 20.0 L216.7 19.8 L220.0 19.1 L223.3 18.5 L226.7 16.8 L230.0 16.3 L233.3 15.4 L236.7 14.4 L240.0 13.1 L243.3 12.1 L246.7 11.3 L250.0 10.8 L253.3 10.9 L256.7 11.3 L260.0 11.6 L263.3 12.0 L266.7 12.6 L270.0 12.1 L273.3 12.0 L276.7 11.8 L280.0 11.8 L283.3 11.7 L286.7 11.3 L290.0 11.0 L293.3 10.9 L296.7 9.2 L300.0 8.0",
+          options: [
+            { t: "Option directe", d: "Relais → refuge de Nice · ≈ 10 km A/R · ≈ 560 D+", gpx: "gpx/la-jonction.gpx" },
+            { t: "Option par le Balcon", d: "On rejoint l'expé au niveau du Balcon du Gelas, puis bascule sur le refuge — plus long, plus raide", gpx: "gpx/balcon-du-gelas.gpx" },
+          ] },
+      ],
+    },
+    {
+      badge: "●○○", name: "Tranquille", sub: "Zéro chrono, zéro pression",
+      items: [
+        { name: "La Rando", km: "Allure libre", dplus: "à la carte", tag: "Sans chrono · contemplatif", foot: "Ouvert à tous" },
+        { name: "Le Chill Max", km: "Refuge only", dplus: "0 D+", tag: "Zéro course · juste la vibe", foot: "C'est cadeau" },
+      ],
+    },
   ],
   program: [
     {
@@ -172,7 +194,7 @@ const MERCANTOUR = {
     {
       day: "Samedi", date: "8 août · Relais des Merveilles", phase: "peak",
       items: [
-        { t: "09:00", h: "Boucles commu au départ du Relais", s: "Autier · Merveilles · Clapier · rando — chacun son format", kind: "trail" },
+        { t: "09:00", h: "Boucles commu au départ du Relais", s: "Merveilles · Clapier · Balcon · Jonction · rando — chacun son format", kind: "trail" },
         { t: "15:00", h: "Arrivée de la team expé au Relais", s: "On monte les accueillir au refuge de Nice par la Jonction", kind: "trail" },
         { t: "19:30", h: "Repas de refuge", s: "Relais des Merveilles · produits du coin", kind: "night" },
         { t: "22:00", h: "DJ set", s: "La piste s'ouvre sous les étoiles", kind: "night" },
@@ -199,8 +221,11 @@ const MERCANTOUR = {
       { name: "Rejoindre l'expé", km: "Relais → refuge", tag: "Aller à leur rencontre", ex: "Départ du Relais des Merveilles, montée jusqu'au refuge de Nice pour accueillir la team expédition et redescendre avec elle. La montagne à plusieurs.", soon: false },
     ],
     sunday: {
-      title: "Testing Näak · Lac Autier",
-      ex: "Le dimanche, on monte au lac Autier : sortie tranquille et testing produits Näak en conditions réelles. Zéro chrono, juste le partage.",
+      title: "Testing Näak · La Boucle Autier",
+      ex: "Le dimanche, on monte au lac Autier : boucle tranquille et testing produits Näak en conditions réelles. Zéro chrono, juste le partage.",
+      stats: ["≈ 7 km", "≈ 600 D+", "Lac à 2 275 m"],
+      gpx: "gpx/boucle-lac-autier.gpx",
+      img: "img/lake.jpg",
     },
   },
   // Tarifs — billetterie SumUp (formules tout inclus, seule la nuit change)
