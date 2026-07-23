@@ -147,6 +147,10 @@ const MercFormats = () => {
             </div>
           ))}
         </div>
+        <p className="t2t-finetext" style={{ marginTop: 16, maxWidth: "80ch", lineHeight: 1.6 }}>
+          Les traces du Balcon du Gelas et de la Jonction sont les allers — le retour se fait par le même chemin.
+          Et ça se combine : enchaîne le Balcon du Gelas puis la Jonction au refuge de Nice, ou rejoins l'expé directement au niveau du balcon.
+        </p>
 
         <div className="t2t-authion">
           <div className="aday">Dimanche</div>
