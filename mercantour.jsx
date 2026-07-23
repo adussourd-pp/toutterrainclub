@@ -161,9 +161,8 @@ const MercFormats = () => {
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       {f.options.map((o, j) => (
                         <div key={j} className="cc-opt">
-                          <span className="on">{o.t}</span>
+                          <a className="cc-foot cc-live" href={o.gpx} download style={{ textDecoration: "none" }}>⤓ {o.t} · trace GPX</a>
                           <span className="od">{o.d}</span>
-                          <a className="cc-foot cc-live" href={o.gpx} download style={{ textDecoration: "none" }}>⤓ Trace GPX</a>
                         </div>
                       ))}
                     </div>

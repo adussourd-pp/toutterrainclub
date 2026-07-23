@@ -162,8 +162,8 @@ const MERCANTOUR = {
         { name: "La Jonction", km: "≈ 10 km A/R", dplus: "≈ 560 D+ · refuge de Nice (2 232 m)", tag: "Rejoindre l'expé au refuge de Nice",
           profile: "M0.0 76.0 L3.3 75.9 L6.7 75.4 L10.0 75.1 L13.3 74.7 L16.7 74.5 L20.0 74.1 L23.3 73.6 L26.7 73.3 L30.0 72.9 L33.3 72.2 L36.7 71.7 L40.0 71.1 L43.3 70.4 L46.7 70.1 L50.0 69.3 L53.3 68.4 L56.7 67.2 L60.0 66.2 L63.3 65.5 L66.7 64.8 L70.0 64.0 L73.3 63.5 L76.7 63.3 L80.0 62.7 L83.3 60.9 L86.7 59.2 L90.0 57.5 L93.3 56.4 L96.7 55.3 L100.0 53.7 L103.3 53.2 L106.7 52.3 L110.0 50.6 L113.3 48.6 L116.7 46.8 L120.0 44.7 L123.3 42.7 L126.7 40.9 L130.0 38.6 L133.3 37.0 L136.7 35.7 L140.0 35.5 L143.3 35.9 L146.7 35.8 L150.0 35.5 L153.3 34.3 L156.7 32.2 L160.0 29.9 L163.3 27.4 L166.7 25.3 L170.0 23.8 L173.3 22.2 L176.7 20.6 L180.0 20.2 L183.3 20.1 L186.7 20.6 L190.0 20.6 L193.3 20.2 L196.7 20.1 L200.0 20.4 L203.3 20.5 L206.7 20.4 L210.0 20.2 L213.3 20.0 L216.7 19.8 L220.0 19.1 L223.3 18.5 L226.7 16.8 L230.0 16.3 L233.3 15.4 L236.7 14.4 L240.0 13.1 L243.3 12.1 L246.7 11.3 L250.0 10.8 L253.3 10.9 L256.7 11.3 L260.0 11.6 L263.3 12.0 L266.7 12.6 L270.0 12.1 L273.3 12.0 L276.7 11.8 L280.0 11.8 L283.3 11.7 L286.7 11.3 L290.0 11.0 L293.3 10.9 L296.7 9.2 L300.0 8.0",
           options: [
-            { t: "Option directe", d: "Relais → refuge de Nice · ≈ 10 km A/R · ≈ 560 D+", gpx: "gpx/la-jonction.gpx" },
-            { t: "Option par le Balcon", d: "On rejoint l'expé au niveau du Balcon du Gelas, puis bascule sur le refuge — plus long, plus raide", gpx: "gpx/balcon-du-gelas.gpx" },
+            { t: "Option refuge de Nice", d: "≈ 10 km A/R · ≈ 560 D+ · l'aller direct depuis le Relais", gpx: "gpx/la-jonction.gpx" },
+            { t: "Option par le Balcon", d: "Plus long et plus raide — on rejoint l'expé au niveau du Balcon du Gelas", gpx: "gpx/balcon-du-gelas.gpx" },
           ] },
       ],
     },
