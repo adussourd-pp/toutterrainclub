@@ -222,6 +222,11 @@ const MERCANTOUR = {
     ],
     corkage: "Droit de bouchon : 7 €/bouteille",
     comprend: "Le prix de la formule comprend l'apéritif, le dîner-buffet (avec vin), l'accès aux traces et au testing Näak — et, pour les formules hébergement, la nuit au Relais et un petit-déj léger.",
+    partners: [
+      { name: "Näak", tag: "Nutrition officielle", url: "https://www.naak.com/fr", ex: "Barres, gels et purées d'effort à tester avant, pendant et après les traces. L'espace testing tourne tout le week-end." },
+      { name: "Wise", tag: "Wise Trail Running · équipement", url: "https://wiseultrarunning.com/collections/all", ex: "Du matos d'ultra-trail pensé pour les longues heures en montagne — à découvrir et tester sur le week-end." },
+      { name: "Go'Lum", tag: "Frontales · éclairage", url: "https://www.go-lum.fr/", ex: "Des frontales taillées pour la nuit en montagne. Parfait quand la journée se prolonge jusqu'au dancefloor." },
+    ],
     warning: "Les activités sportives (expé, traces, rando) sont libres et non encadrées. Le TTC et le Relais des Merveilles ne fournissent aucun encadrement sportif et ne sauraient être tenus responsables en cas d'accident ou de blessure. Chaque participant s'engage sous sa propre responsabilité : les assurances (responsabilité civile, individuelle accident) sont à la charge de chacun.",
   },
 };

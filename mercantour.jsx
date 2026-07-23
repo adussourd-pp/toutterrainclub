@@ -267,6 +267,36 @@ const MercProgram = () => (
   </section>
 );
 
+const MercPartnersSec = () => (
+  <section className="t2t-sec" id="partenaires">
+    <div className="wrap">
+      <div className="t2t-sec-head">
+        <div>
+          <div className="t2t-eyebrow">★ Les partenaires</div>
+          <h2 className="t2t-h2">Testing &amp;<br/><span className="uv">goodies</span>.</h2>
+        </div>
+        <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
+          Ils seront avec nous au Relais tout le week-end : produits à tester
+          en conditions réelles, et des goodies à gagner.
+        </p>
+      </div>
+      <div className="t2t-commu">
+        {M().pricing.partners.map((pa) => (
+          <a key={pa.name} href={pa.url} target="_blank" rel="noopener" className="t2t-commu-card" style={{ textDecoration: "none", color: "inherit" }}>
+            <div className="cc-top">
+              <span className="cc-name">{pa.name}</span>
+              <span className="cc-km">↗</span>
+            </div>
+            <span className="cc-tag">{pa.tag}</span>
+            <p className="cc-ex">{pa.ex}</p>
+            <span className="cc-foot cc-live">● Testing sur place · goodies à gagner</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 const MercPricing = () => {
   const p = M().pricing;
   return (
@@ -377,4 +407,4 @@ const MercCommu = () => {
   );
 };
 
-window.MERC = { MercHero, MercMetabar, MercExpo, MercFormats, MercCommu, MercLocation, MercNight, MercProgram, MercPricing, MercReserve };
+window.MERC = { MercHero, MercMetabar, MercExpo, MercFormats, MercCommu, MercLocation, MercNight, MercProgram, MercPartnersSec, MercPricing, MercReserve };
