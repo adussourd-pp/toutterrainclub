@@ -170,7 +170,7 @@ const MERCANTOUR = {
     {
       badge: "●○○", name: "Tranquille", sub: "Zéro chrono, zéro pression",
       items: [
-        { name: "La Rando", km: "Allure libre", dplus: "à la carte", tag: "Sans chrono · contemplatif", foot: "Ouvert à tous" },
+        { name: "La Rando", km: "Allure libre", dplus: "à la carte", tag: "Sans chrono · contemplatif", foot: "Ouvert à tous", img: "img/rando.jpeg" },
         { name: "Le Chill Max", km: "Refuge only", dplus: "0 D+", tag: "Zéro course · juste la vibe", foot: "C'est cadeau", img: "img/chillmax.jpg" },
       ],
     },
