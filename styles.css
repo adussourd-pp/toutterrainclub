@@ -2428,20 +2428,16 @@ section.join {
   margin: 4px 0 2px;
 }
 
-/* Options d'un format (ex. la Jonction : directe / par le balcon) */
-.cc-opt {
+/* Note explicative dans une carte format */
+.cc-note {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(244,239,255,0.65);
+  margin: 0;
   border-top: 1px solid rgba(244,239,255,0.14);
   padding-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  align-items: flex-start;
 }
-.cc-opt .on { font-family: var(--f-display); font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
-.cc-opt .od { font-size: 13px; line-height: 1.5; color: rgba(244,239,255,0.65); }
-.t2t-page.light .cc-opt { border-top-color: var(--rule); }
-.t2t-page.light .cc-opt .on { color: #181820; }
-.t2t-page.light .cc-opt .od { color: #55554e; }
+.t2t-page.light .cc-note { color: #55554e; border-top-color: var(--rule); }
 
 /* Encart Dimanche — boucle du lac Autier */
 .t2t-sunday {

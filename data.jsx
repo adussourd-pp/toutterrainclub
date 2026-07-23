@@ -158,13 +158,12 @@ const MERCANTOUR = {
       badge: "●●○", name: "Sportif", sub: "Ça grimpe, mais ça se partage",
       items: [
         { name: "Le Balcon du Gelas", km: "≈ 14 km A/R", dplus: "≈ 1 330 D+ · jusqu'à 2 933 m", tag: "Raide et panoramique", gpx: "gpx/balcon-du-gelas.gpx",
+          note: "La variante sportive de la Jonction : plus haut, plus raide, vue à couper le souffle. Du balcon, on peut basculer sur le refuge de Nice — ou simplement redescendre par le même chemin.",
           profile: "M0.0 76.0 L3.3 75.9 L6.7 75.6 L10.0 75.4 L13.3 75.2 L16.7 74.9 L20.0 74.7 L23.3 74.4 L26.7 73.9 L30.0 73.6 L33.3 73.2 L36.7 72.9 L40.0 72.3 L43.3 71.4 L46.7 71.0 L50.0 70.5 L53.3 70.0 L56.7 69.9 L60.0 69.4 L63.3 68.3 L66.7 67.2 L70.0 66.4 L73.3 65.4 L76.7 65.0 L80.0 64.4 L83.3 63.2 L86.7 61.9 L90.0 60.6 L93.3 59.5 L96.7 58.0 L100.0 57.0 L103.3 56.3 L106.7 56.6 L110.0 56.5 L113.3 56.0 L116.7 54.9 L120.0 53.4 L123.3 51.8 L126.7 50.7 L130.0 49.7 L133.3 49.0 L136.7 48.9 L140.0 49.1 L143.3 49.0 L146.7 48.9 L150.0 49.1 L153.3 49.1 L156.7 49.0 L160.0 48.9 L163.3 48.5 L166.7 48.1 L170.0 47.2 L173.3 46.8 L176.7 46.1 L180.0 45.4 L183.3 44.4 L186.7 43.8 L190.0 42.6 L193.3 41.7 L196.7 41.2 L200.0 40.6 L203.3 36.5 L206.7 35.3 L210.0 31.7 L213.3 31.7 L216.7 30.4 L220.0 29.2 L223.3 29.2 L226.7 28.0 L230.0 26.6 L233.3 25.2 L236.7 25.2 L240.0 25.2 L243.3 23.7 L246.7 23.7 L250.0 22.0 L253.3 20.4 L256.7 20.4 L260.0 18.5 L263.3 16.7 L266.7 15.0 L270.0 14.3 L273.3 13.6 L276.7 13.6 L280.0 13.6 L283.3 12.9 L286.7 12.3 L290.0 11.6 L293.3 10.8 L296.7 9.9 L300.0 8.0" },
-        { name: "La Jonction", km: "≈ 10 km A/R", dplus: "≈ 560 D+ · refuge de Nice (2 232 m)", tag: "Rejoindre l'expé au refuge de Nice",
+        { name: "La Jonction", km: "≈ 10 km A/R", dplus: "≈ 560 D+ · refuge de Nice (2 232 m)", tag: "La montée au refuge de Nice", gpx: "gpx/la-jonction.gpx",
+          note: "L'idée : monter accueillir la team expé à son arrivée au refuge. Mais ça marche aussi sans elle, selon son heure d'arrivée — c'est une belle sortie en soi, lacs et cirque glaciaire au programme.",
           profile: "M0.0 76.0 L3.3 75.9 L6.7 75.4 L10.0 75.1 L13.3 74.7 L16.7 74.5 L20.0 74.1 L23.3 73.6 L26.7 73.3 L30.0 72.9 L33.3 72.2 L36.7 71.7 L40.0 71.1 L43.3 70.4 L46.7 70.1 L50.0 69.3 L53.3 68.4 L56.7 67.2 L60.0 66.2 L63.3 65.5 L66.7 64.8 L70.0 64.0 L73.3 63.5 L76.7 63.3 L80.0 62.7 L83.3 60.9 L86.7 59.2 L90.0 57.5 L93.3 56.4 L96.7 55.3 L100.0 53.7 L103.3 53.2 L106.7 52.3 L110.0 50.6 L113.3 48.6 L116.7 46.8 L120.0 44.7 L123.3 42.7 L126.7 40.9 L130.0 38.6 L133.3 37.0 L136.7 35.7 L140.0 35.5 L143.3 35.9 L146.7 35.8 L150.0 35.5 L153.3 34.3 L156.7 32.2 L160.0 29.9 L163.3 27.4 L166.7 25.3 L170.0 23.8 L173.3 22.2 L176.7 20.6 L180.0 20.2 L183.3 20.1 L186.7 20.6 L190.0 20.6 L193.3 20.2 L196.7 20.1 L200.0 20.4 L203.3 20.5 L206.7 20.4 L210.0 20.2 L213.3 20.0 L216.7 19.8 L220.0 19.1 L223.3 18.5 L226.7 16.8 L230.0 16.3 L233.3 15.4 L236.7 14.4 L240.0 13.1 L243.3 12.1 L246.7 11.3 L250.0 10.8 L253.3 10.9 L256.7 11.3 L260.0 11.6 L263.3 12.0 L266.7 12.6 L270.0 12.1 L273.3 12.0 L276.7 11.8 L280.0 11.8 L283.3 11.7 L286.7 11.3 L290.0 11.0 L293.3 10.9 L296.7 9.2 L300.0 8.0",
-          options: [
-            { t: "Option refuge de Nice", d: "≈ 10 km A/R · ≈ 560 D+ · l'aller direct depuis le Relais", gpx: "gpx/la-jonction.gpx" },
-            { t: "Option par le Balcon", d: "Plus long et plus raide — on rejoint l'expé au niveau du Balcon du Gelas", gpx: "gpx/balcon-du-gelas.gpx" },
-          ] },
+          },
       ],
     },
     {

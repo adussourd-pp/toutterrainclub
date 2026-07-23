@@ -157,17 +157,8 @@ const MercFormats = () => {
                   })()}
                   {f.img && <img className="cc-photo" src={f.img} alt={f.name} loading="lazy" />}
                   <p className="cc-ex" style={f.profile ? { flex: "none", margin: 0 } : undefined}>{f.dplus}</p>
-                  {f.options && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                      {f.options.map((o, j) => (
-                        <div key={j} className="cc-opt">
-                          <a className="cc-foot cc-live" href={o.gpx} download style={{ textDecoration: "none" }}>⤓ {o.t} · trace GPX</a>
-                          <span className="od">{o.d}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {!f.options && (f.gpx
+                  {f.note && <p className="cc-note">{f.note}</p>}
+                  {(f.gpx
                     ? <a className="cc-foot cc-live" href={f.gpx} download style={{ textDecoration: "none", marginTop: "auto" }}>⤓ Trace GPX · télécharger</a>
                     : <span className={`cc-foot ${f.soon ? "cc-soon" : "cc-live"}`} style={{ marginTop: "auto" }}>
                         {f.soon ? "◷ Trace bientôt" : `● ${f.foot || "Ouvert"}`}
