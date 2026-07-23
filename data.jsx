@@ -131,7 +131,7 @@ const MERCANTOUR = {
   partners: ["tout terrain club", "Relais des Merveilles", "Näak"],
   // stats réelles issues des GPX de la traversée (J1 + J2)
   expo: {
-    title: "La Jonction",
+    title: "L'expédition",
     tagline: "De la mer au sommet.",
     from: "Nice · niveau de la mer",
     to: "Cime du Gelas · 3 143 m",
@@ -143,12 +143,15 @@ const MERCANTOUR = {
     splitX: 833.7,
     maxE: 3008,
   },
+  // stats issues des traces GPX réelles (dossier /gpx)
   formats: [
     { name: "L'expédition", km: "97 km", dplus: "6 500 D+", tag: "2 jours · mer → sommet", foot: "Sur sélection", hero: true },
-    { name: "La Jonction", km: "Relais → refuge", dplus: "≈ 1 200 D+", tag: "Rejoindre l'expé au refuge", foot: "On t'attend là-haut" },
-    { name: "Le Tour de la Vallée des Merveilles", km: "20 km", dplus: "2 400 D+", tag: "Plus sportif · confirmé", soon: true },
-    { name: "Le 10K", km: "≈ 10 km", dplus: "600 D+", tag: "Boucle découverte · tous niveaux", soon: true },
-    { name: "La Rando", km: "Allure libre", dplus: "à la carte", tag: "Sans chrono · contemplatif", soon: true },
+    { name: "Le Tour de la Vallée des Merveilles", km: "19 km", dplus: "≈ 1 550 D+ · pointe à 2 699 m", tag: "Plus sportif · confirmé", gpx: "gpx/tour-vallee-des-merveilles.gpx" },
+    { name: "Le Clapier", km: "16,5 km", dplus: "≈ 1 550 D+ · sommet à 3 039 m", tag: "Boucle sommet · engagé", gpx: "gpx/le-clapier.gpx" },
+    { name: "Le Balcon du Gelas", km: "7 km · aller", dplus: "≈ 1 330 D+ · jusqu'à 2 933 m", tag: "Raide et panoramique", gpx: "gpx/balcon-du-gelas.gpx" },
+    { name: "La Jonction", km: "5 km · aller", dplus: "≈ 560 D+ · refuge de Nice (2 232 m)", tag: "Rejoindre l'expé au refuge de Nice", gpx: "gpx/la-jonction.gpx" },
+    { name: "La Boucle Autier", km: "≈ 7 km", dplus: "≈ 600 D+ · lac Autier", tag: "Boucle découverte · tous niveaux", gpx: "gpx/boucle-lac-autier.gpx" },
+    { name: "La Rando", km: "Allure libre", dplus: "à la carte", tag: "Sans chrono · contemplatif", foot: "Ouvert à tous" },
     { name: "Le Chill Max", km: "Refuge only", dplus: "0 D+", tag: "Zéro course · juste la vibe", foot: "C'est cadeau" },
   ],
   program: [
@@ -156,7 +159,7 @@ const MERCANTOUR = {
       day: "Jeudi soir", date: "6 août · Nice", phase: "day",
       items: [
         { t: "19:00", h: "Soirée de départ · Nice", s: "On envoie la team expé, les pieds dans la mer", kind: "night" },
-        { t: "20:00", h: "Départ de l'expédition", s: "Cap sur les 3 143 m — La Jonction commence", kind: "trail" },
+        { t: "20:00", h: "Départ de l'expédition", s: "Cap sur les 3 143 m — la grande traversée commence", kind: "trail" },
       ],
     },
     {
@@ -169,8 +172,8 @@ const MERCANTOUR = {
     {
       day: "Samedi", date: "8 août · Relais des Merveilles", phase: "peak",
       items: [
-        { t: "09:00", h: "Boucles commu au départ du Relais", s: "10K · 20K · rando — chacun choisit son format", kind: "trail" },
-        { t: "15:00", h: "Arrivée de la team expé au Relais", s: "On les accueille à la fin de La Jonction", kind: "trail" },
+        { t: "09:00", h: "Boucles commu au départ du Relais", s: "Autier · Merveilles · Clapier · rando — chacun son format", kind: "trail" },
+        { t: "15:00", h: "Arrivée de la team expé au Relais", s: "On monte les accueillir au refuge de Nice par la Jonction", kind: "trail" },
         { t: "19:30", h: "Repas de refuge", s: "Relais des Merveilles · produits du coin", kind: "night" },
         { t: "22:00", h: "DJ set", s: "La piste s'ouvre sous les étoiles", kind: "night" },
       ],

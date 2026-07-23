@@ -127,7 +127,7 @@ const MercFormats = () => {
           </div>
           <p style={{ maxWidth: "32ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
             De l'expédition mer → sommet au refuge sans chrono. Même vallée, même soirée,
-            même bande. Traces GPX dévoilées bientôt.
+            même bande. Les traces GPX sont à télécharger sur chaque format.
           </p>
         </div>
         <div className="t2t-commu">
@@ -139,9 +139,11 @@ const MercFormats = () => {
               </div>
               <span className="cc-tag">{f.tag}</span>
               <p className="cc-ex">{f.dplus}</p>
-              <span className={`cc-foot ${f.soon ? "cc-soon" : "cc-live"}`}>
-                {f.soon ? "◷ Trace bientôt" : `● ${f.foot || "Ouvert"}`}
-              </span>
+              {f.gpx
+                ? <a className="cc-foot cc-live" href={f.gpx} download style={{ textDecoration: "none" }}>⤓ Trace GPX · télécharger</a>
+                : <span className={`cc-foot ${f.soon ? "cc-soon" : "cc-live"}`}>
+                    {f.soon ? "◷ Trace bientôt" : `● ${f.foot || "Ouvert"}`}
+                  </span>}
             </div>
           ))}
         </div>
