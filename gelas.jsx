@@ -261,6 +261,88 @@ GEL.Formats = () => {
   );
 };
 
+GEL.Gear = () => {
+  const lists = [
+    {
+      name: "Matos J1", tag: "Obligatoire · sur soi de Nice à la Madone", km: "obligatoire",
+      items: [
+        "Frontale + batterie / piles de rechange",
+        "Réserve d'eau 1,5 L minimum",
+        "Réserve alimentaire entre les ravitos",
+        "Veste imperméable",
+        "Couverture de survie + sifflet",
+        "Téléphone chargé + batterie externe",
+        "Gobelet (zéro déchet aux ravitos)",
+        "Buff, gants, couche chaude selon météo",
+      ],
+    },
+    {
+      name: "Drop bag Madone", tag: "Dans la voiture d'assistance · pour la nuit", km: "vendredi soir",
+      items: [
+        "Change complet + chaussettes",
+        "Doudoune pour la soirée en altitude",
+        "Drap de sac (sac à viande) pour le refuge",
+        "Nécessaire de toilette + boules Quies",
+        "Chargeurs : téléphone, montre, frontale",
+        "Tenue propre pour le J2",
+        "Claquettes / sandales de récup",
+      ],
+    },
+    {
+      name: "Fourni par les Guides 06", tag: "Remis à la Madone pour la montée au Gelas", km: "J2 · fourni",
+      items: [
+        "Casque",
+        "Baudrier + longe",
+        "Crampons (selon conditions)",
+        "Piolet (selon conditions)",
+        "Corde et encadrement technique de la montée",
+      ],
+    },
+    {
+      name: "Drop bag Relais", tag: "À prévoir · vous le retrouvez samedi à l'arrivée", km: "samedi",
+      items: [
+        "Tenue de soirée (la vraie fête commence à 22h)",
+        "Affaires de nuit selon ta formule couchage",
+        "Affaires de douche + serviette",
+        "Tenue du dimanche : Boucle Autier & testing Näak",
+        "Chargeurs",
+      ],
+    },
+  ];
+  return (
+    <section className="t2t-sec" id="matos">
+      <div className="wrap">
+        <div className="t2t-sec-head">
+          <div>
+            <div className="t2t-eyebrow">★ Matos</div>
+            <h2 className="t2t-h2">Quoi mettre <span className="uv">où</span>.</h2>
+          </div>
+          <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
+            Un sac sur le dos, deux drop bags dans la voiture d'assistance.
+            Le matériel technique du sommet est fourni par les Guides 06.
+          </p>
+        </div>
+        <div className="t2t-commu">
+          {lists.map((l) => (
+            <div key={l.name} className="t2t-commu-card">
+              <div className="cc-top">
+                <span className="cc-name" style={{ fontSize: 24 }}>{l.name}</span>
+              </div>
+              <span className="cc-tag">{l.tag}</span>
+              <ul className="gel-check">
+                {l.items.map((it, i) => <li key={i}>{it}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p className="t2t-finetext" style={{ marginTop: 14 }}>
+          Listes à ajuster selon la météo — briefing final sur le WhatsApp de l'expé.
+        </p>
+      </div>
+    </section>
+  );
+};
+
 GEL.Logistics = () => (
   <section className="t2t-sec" id="logistique">
     <div className="wrap">

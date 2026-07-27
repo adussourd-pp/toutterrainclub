@@ -2505,6 +2505,25 @@ section.join {
   font-weight: 600;
 }
 
+.gel-check {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.gel-check li {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: rgba(244,239,255,0.8);
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 8px;
+}
+.gel-check li::before { content: "✓"; color: var(--uv); font-weight: 700; }
+.t2t-page.light .gel-check li { color: #33332e; }
+
 .gel-table-wrap { overflow-x: auto; }
 .gel-table {
   width: 100%;
