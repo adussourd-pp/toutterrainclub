@@ -292,9 +292,7 @@ GEL.Gear = () => {
       name: "Fourni par les Guides 06", tag: "Remis à la Madone pour la montée au Gelas", km: "J2 · fourni",
       items: [
         "Casque",
-        "Baudrier + longe",
-        "Crampons (selon conditions)",
-        "Piolet (selon conditions)",
+        "Baudrier",
         "Corde et encadrement technique de la montée",
       ],
     },
