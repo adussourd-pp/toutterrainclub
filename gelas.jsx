@@ -273,6 +273,7 @@ GEL.Gear = () => {
         "Couverture de survie + sifflet",
         "Téléphone chargé + batterie externe",
         "Gobelet (zéro déchet aux ravitos)",
+        "T-shirt manches longues en sous-couche (baselayer)",
         "Buff, gants, couche chaude selon météo",
       ],
     },
