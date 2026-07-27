@@ -2466,6 +2466,88 @@ section.join {
 .t2t-page.light .t2t-sunday .sun-h { color: #181820; }
 .t2t-page.light .t2t-sunday .sun-x { color: #55554e; }
 
+/* ===== Page expédition Gelas — roadbook & tableaux ===== */
+.gel-dayh {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(22px, 3vw, 30px);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.gel-dayh .uv { color: var(--uv); }
+
+.gel-profwrap { position: relative; }
+.gel-mark {
+  position: absolute;
+  transform: translate(-50%, -135%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--uv);
+  color: #fff;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 3px rgba(var(--glow), 0.22);
+}
+.gel-num {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--uv);
+  color: #fff;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.gel-table-wrap { overflow-x: auto; }
+.gel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 560px;
+}
+.gel-table th, .gel-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(244,239,255,0.12);
+  text-align: center;
+  white-space: nowrap;
+}
+.gel-table td:last-child { white-space: normal; }
+.gel-table th {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(244,239,255,0.6);
+}
+.gel-table th .thsub { text-transform: none; letter-spacing: 0.04em; color: rgba(244,239,255,0.45); }
+.gel-table td:first-child, .gel-table th:first-child { text-align: left; }
+.gel-table td:first-child { font-weight: 700; }
+.gel-table--left th, .gel-table--left td { text-align: left; }
+.gel-table--left td:first-child { font-weight: 400; }
+.gel-table .mono { font-family: var(--f-mono); font-size: 13px; }
+.gel-table .ok { color: var(--uv); font-weight: 700; font-size: 16px; }
+.gel-table .no { color: rgba(244,239,255,0.22); }
+.gel-table .tbc { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(244,239,255,0.5); }
+.gel-table tfoot td {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--uv);
+  border-bottom: none;
+  font-weight: 600;
+}
+.t2t-page.light .gel-table th { color: var(--muted); }
+.t2t-page.light .gel-table th .thsub { color: #9a9a92; }
+.t2t-page.light .gel-table th, .t2t-page.light .gel-table td { border-bottom-color: var(--rule); }
+.t2t-page.light .gel-table .no { color: rgba(24,24,32,0.18); }
+.t2t-page.light .gel-table .tbc { color: #9a9a92; }
+
 /* Avertissement (activités non encadrées) */
 .t2t-warning {
   margin-top: 22px;
