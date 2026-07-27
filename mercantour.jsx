@@ -78,7 +78,8 @@ const MercExpo = () => {
               <div className="t2t-expo-stat"><div className="n">{e.team}</div><div className="l">Team expédition</div></div>
             </div>
             <div style={{ display: "flex", gap: 10, marginTop: 28, flexWrap: "wrap" }}>
-              <a href="https://wa.me/33668681188" target="_blank" rel="noopener" className="btn btn-uv">Candidater à l'expédition →</a>
+              <a href="expedition-gelas.html" className="btn btn-uv">Le plan complet de l'expé →</a>
+              <a href="https://wa.me/33668681188" target="_blank" rel="noopener" className="btn btn-line-light">Candidater</a>
               <a href="#formats" className="btn btn-line-light">Autres formats</a>
             </div>
           </div>

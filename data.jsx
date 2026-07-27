@@ -178,8 +178,8 @@ const MERCANTOUR = {
     {
       day: "Jeudi soir", date: "6 août · Nice", phase: "day",
       items: [
-        { t: "19:00", h: "Soirée de départ · Nice", s: "On envoie la team expé, les pieds dans la mer", kind: "night" },
-        { t: "20:00", h: "Départ de l'expédition", s: "Cap sur les 3 143 m — la grande traversée commence", kind: "trail" },
+        { t: "18:00", h: "Soirée de départ · Nice", s: "On envoie la team expé, les pieds dans la mer", kind: "night" },
+        { t: "19:00", h: "Départ de l'expédition", s: "Cap sur les 3 143 m — la grande traversée commence", kind: "trail" },
       ],
     },
     {
