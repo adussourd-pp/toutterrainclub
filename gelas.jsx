@@ -1,33 +1,41 @@
-// Trail to Techno — Édition Mercantour · sous-page Expédition Gelas
+// Trail to Techno — Édition Mercantour · sous-page Expédition Gelas (roadbook)
 
 const GEL = {};
 
 const GEL_DATA = {
+  // Groupes issus du tableau d'inscription (absents omis)
   formats: [
-    { name: "Full Expé", km: "96 km", dplus: "7 000 D+", tag: "Nice → Cime du Gelas · J1 + J2", note: "L'intégrale : départ des galets de Nice le jeudi soir, sommet du Gelas le samedi matin, arrivée au Relais des Merveilles.", hero: true },
-    { name: "Nice → Madone", km: "80 km", dplus: "5 800 D+", tag: "Le J1 seulement", note: "Toute la traversée de nuit et de jour jusqu'à la Madone de Fenestre. On dort là-haut, et libre à toi de redescendre tranquille le samedi." },
-    { name: "Summit only", km: "14 km", dplus: "1 200 D+", tag: "Le J2 seulement", note: "Rendez-vous à la Madone de Fenestre le vendredi soir : nuit sur place, départ 5h avec la team pour le sommet, puis bascule vers le Relais." },
+    { name: "Full Expé", km: "96 km", dplus: "7 000 D+", tag: "Nice → Gelas · J1 + J2 · 8 au départ",
+      team: ["Alexandre", "Adrien", "Nico", "Damien", "FF", "Fabien", "Fanny", "Gaby"], hero: true },
+    { name: "Nice → Madone", km: "80 km", dplus: "5 800 D+", tag: "Le J1 · 12 au départ",
+      team: ["Alexandre", "Adrien", "Nico", "Damien", "FF", "Fabien", "Fanny", "Gaby", "Manon", "Quentin", "Hugo", "Maxime T"] },
+    { name: "Summit only", km: "14 km", dplus: "1 200 D+", tag: "Le J2 · 9 au départ de la Madone",
+      team: ["Alexandre", "Adrien", "Nico", "Damien", "FF", "Fabien", "Fanny", "Gaby", "Manon"],
+      confirm: ["Lorna", "Pierre"] },
   ],
-  program: [
+  roadbook: [
     {
-      day: "Jeudi 6", date: "Nice · le départ", items: [
-        { t: "19:00", h: "Départ de Nice", s: "Les pieds dans la mer, cap sur la Madone de Fenestre — la nuit de course commence", kind: "trail" },
-        { t: "Nuit", h: "On avale la nuit", s: "Aspremont, Levens, Utelle… les ravitos s'enchaînent, la voiture d'assistance suit", kind: "night" },
+      title: "J1", route: "Nice → Madone de Fenestre", date: "Jeudi 19:00 → vendredi ≈ 14:30",
+      stats: "80,8 km · 5 850 D+ · Plan A", gpx: "gpx/expe-j1.gpx", gpxLabel: "Trace GPX J1 + ravitos",
+      rows: [
+        { t: "19:00", h: "Nice · Promenade des Anglais", s: "km 0 · départ", kind: "trail" },
+        { t: "≈ 20:15", h: "Aire St-Michel", s: "km 6,6 · 314 m · 1er point assistance", kind: "trail" },
+        { t: "≈ 21:45", h: "Aspremont", s: "km 13,1 · 497 m · ravito selon conditions", kind: "trail", soft: true },
+        { t: "≈ 23:45", h: "Levens", s: "km 21,9 · 543 m · ravito ✓", kind: "night" },
+        { t: "≈ 03:15", h: "Utelle", s: "km 36,5 · 813 m · ravito ✓", kind: "night" },
+        { t: "≈ 07:00", h: "Granges de la Brasque", s: "km 50,4 · 1 683 m · ravito ✓", kind: "trail" },
+        { t: "≈ 10:15", h: "Saint-Martin-Vésubie", s: "km 66,9 · 984 m · ravito ✓", kind: "trail" },
+        { t: "≈ 14:30", h: "Madone de Fenestre · 1 904 m", s: "km 80,8 · arrivée J1 — repas & nuit sur place", kind: "trail" },
       ],
     },
     {
-      day: "Vendredi 7", date: "Madone de Fenestre", items: [
-        { t: "Journée", h: "La montée continue", s: "Granges de la Brasque, Saint-Martin-Vésubie — dernières bosses vers la Madone", kind: "trail" },
-        { t: "≈ 14–15h", h: "Arrivée à la Madone de Fenestre", s: "80 km et 5 800 D+ avalés en 19–20 h de course", kind: "trail" },
-        { t: "Soir", h: "Repas & nuit à la Madone", s: "On recharge : la team Summit only nous rejoint sur place", kind: "night" },
-      ],
-    },
-    {
-      day: "Samedi 8", date: "Le sommet · le Relais", items: [
-        { t: "05:00", h: "Lever & départ pour le sommet", s: "Frontales et premières lueurs — 14 km et 1 200 D+ vers le toit du week-end", kind: "trail" },
-        { t: "≈ 08:30", h: "Cime du Gelas · 3 143 m", s: "Le gardien du Mercantour — photo, frissons, et on bascule (horaire estimé)", kind: "trail" },
-        { t: "≈ 10:30", h: "Passage au refuge de Nice", s: "Ravito — c'est ici que la Jonction vient à notre rencontre (horaire estimé)", kind: "trail" },
-        { t: "≈ 15:00", h: "Arrivée au Relais des Merveilles", s: "La meute accueille l'expé — l'aventure est bouclée, place à la soirée", kind: "night" },
+      title: "J2", route: "Madone → Gelas → Relais", date: "Samedi · départ 05:00",
+      stats: "16 km · 1 200 D+ puis la descente", gpx: "gpx/expe-j2.gpx", gpxLabel: "Trace GPX J2",
+      rows: [
+        { t: "05:00", h: "Départ de la Madone", s: "frontales — la team Summit only embarque ici", kind: "night" },
+        { t: "≈ 08:30", h: "Cime du Gelas · 3 143 m", s: "km ≈ 5,5 · le toit du week-end", kind: "trail" },
+        { t: "≈ 10:30", h: "Refuge de Nice", s: "ravito — la Jonction vient à notre rencontre", kind: "trail" },
+        { t: "≈ 15:00", h: "Relais des Merveilles", s: "km 16 · arrivée — la meute accueille", kind: "trail" },
       ],
     },
   ],
@@ -42,11 +50,11 @@ const GEL_DATA = {
 };
 
 GEL.Hero = () => (
-  <section className="t2t-hero-photo" style={{ minHeight: "80vh" }}>
+  <section className="t2t-hero-photo" style={{ minHeight: "72vh" }}>
     <div className="bg" style={{ backgroundImage: "url('img/gelas-summit.jpg')" }}></div>
     <div className="wrap">
       <div className="t2t-hero-meta">
-        <span>Trail to Techno · Édition Mercantour · l'expédition</span>
+        <span>Édition Mercantour · l'expédition · roadbook</span>
         <span>Jeudi 6 → samedi 8 août 2026</span>
       </div>
       <h1 className="t2t-hero-title" style={{ fontSize: "clamp(52px, 10vw, 160px)" }}>
@@ -55,9 +63,8 @@ GEL.Hero = () => (
       </h1>
       <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 30 }}>
         <p className="t2t-hero-lede" style={{ fontSize: 17 }}>
-          96 km, 7 000 m de dénivelé, deux jours et une nuit de course pour relier
-          la Méditerranée à la Cime du Gelas. Voici le plan complet : horaires,
-          formats, ravitos, assistance.
+          96 km · 7 000 D+ · 2 jours. Tout le plan est ici : horaires,
+          temps de passage, ravitos, traces GPX, assistance.
         </p>
         <div className="t2t-hero-cta" style={{ flexDirection: "row", justifyContent: "flex-end", flexWrap: "wrap" }}>
           <a href="https://wa.me/33668681188" target="_blank" rel="noopener" className="btn btn-uv">Candidater à l'expé →</a>
@@ -79,6 +86,50 @@ GEL.Metabar = () => (
   </div>
 );
 
+GEL.Roadbook = () => (
+  <section className="t2t-sec" id="roadbook">
+    <div className="wrap">
+      <div className="t2t-sec-head">
+        <div>
+          <div className="t2t-eyebrow">★ Le roadbook · temps de passage</div>
+          <h2 className="t2t-h2">J1 / <span className="uv">J2</span>.</h2>
+        </div>
+        <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
+          La feuille de route commune coureurs + assistance : chacun sait où être
+          et quand. Km et altitudes issus de la trace Plan A, horaires estimés
+          sur 19–20 h de course. La voiture suit chaque point du J1, drop bags à bord.
+        </p>
+      </div>
+      <div className="t2t-program" style={{ gridTemplateColumns: "1fr 1fr" }}>
+        {GEL_DATA.roadbook.map((day) => (
+          <div key={day.title} className={`t2t-day ${day.title === "J2" ? "peak" : ""}`}>
+            <div className="t2t-day-head">
+              <span className="d">{day.title} · {day.route}</span>
+              <span className="dt">{day.date}</span>
+            </div>
+            <div className="t2t-slot" style={{ gridTemplateColumns: "1fr auto", alignItems: "center" }}>
+              <span className="h" style={{ fontFamily: "var(--f-mono)", fontSize: 12, fontWeight: 500 }}>{day.stats}</span>
+              <a className="cc-foot cc-live" href={day.gpx} download style={{ textDecoration: "none" }}>⤓ {day.gpxLabel}</a>
+            </div>
+            {day.rows.map((it, i) => (
+              <div key={i} className={`t2t-slot ${it.kind}`} style={{ gridTemplateColumns: "68px 1fr", opacity: it.soft ? 0.6 : 1 }}>
+                <span className="time">{it.t}</span>
+                <span>
+                  <span className="h">{it.h}</span>
+                  <span className="s">{it.s}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <p className="t2t-finetext" style={{ marginTop: 14 }}>
+        ✓ = ravito confirmé · « selon conditions » = Aspremont et Cros d'Utelle restent à confirmer · horaires ≈ estimés
+      </p>
+    </div>
+  </section>
+);
+
 GEL.Profile = () => {
   const e = window.MERCANTOUR.expo;
   const area = e.profile + " L1000 260 L0 260 Z";
@@ -87,13 +138,9 @@ GEL.Profile = () => {
       <div className="wrap">
         <div className="t2t-sec-head">
           <div>
-            <div className="t2t-eyebrow">★ La ligne · J1 + J2</div>
-            <h2 className="t2t-h2">Une ligne qui ne<br/>redescend <span className="uv">jamais</span>.</h2>
+            <div className="t2t-eyebrow">★ Le profil complet</div>
+            <h2 className="t2t-h2">96 km · <span className="uv">7 000 D+</span></h2>
           </div>
-          <p style={{ maxWidth: "32ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
-            J1 : Nice → Madone de Fenestre (80 km · 5 800 D+).
-            J2 : Madone → Gelas → Relais des Merveilles (14 km · 1 200 D+, puis la descente).
-          </p>
         </div>
         <div className="t2t-profile-card">
           <div className="t2t-profile-head">
@@ -117,66 +164,26 @@ GEL.Profile = () => {
           </div>
           <div className="t2t-profile-axis">
             <span className="t2t-daychip">◆ J1 · Nice → Madone</span>
-            <span style={{ alignSelf: "center" }}>96 km · 7 000 D+ au total</span>
+            <span style={{ alignSelf: "center" }}>la ligne ne redescend jamais vraiment</span>
             <span className="t2t-daychip">J2 · Madone → Gelas → Relais ▲</span>
           </div>
-        </div>
-        <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap", marginTop: 18 }}>
-          <a className="cc-foot cc-live" href="gpx/expe-j1.gpx" download style={{ textDecoration: "none" }}>⤓ Trace GPX J1 · Nice → Madone</a>
-          <a className="cc-foot cc-live" href="gpx/expe-j2.gpx" download style={{ textDecoration: "none" }}>⤓ Trace GPX J2 · Madone → Gelas → Relais</a>
         </div>
       </div>
     </section>
   );
 };
 
-GEL.Program = () => (
-  <section className="t2t-sec" id="deroule">
-    <div className="wrap">
-      <div className="t2t-sec-head">
-        <div>
-          <div className="t2t-eyebrow">★ Le déroulé heure par heure</div>
-          <h2 className="t2t-h2">Du jeudi 19h<br/>au samedi <span className="uv">15h</span>.</h2>
-        </div>
-        <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
-          19 à 20 heures de course jusqu'à la Madone, une nuit là-haut,
-          et un réveil à l'aube pour le sommet. Les horaires du samedi sont estimés.
-        </p>
-      </div>
-      <div className="t2t-program">
-        {GEL_DATA.program.map((day) => (
-          <div key={day.day} className={`t2t-day ${day.day === "Samedi 8" ? "peak" : ""}`}>
-            <div className="t2t-day-head">
-              <span className="d">{day.day}</span>
-              <span className="dt">{day.date}</span>
-            </div>
-            {day.items.map((it, i) => (
-              <div key={i} className={`t2t-slot ${it.kind}`}>
-                <span className="time">{it.t}</span>
-                <span>
-                  <span className="h">{it.h}</span>
-                  <span className="s">{it.s}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
-
 GEL.Formats = () => (
-  <section className="t2t-sec" id="formats-expe">
+  <section className="t2t-sec" id="groupes">
     <div className="wrap">
       <div className="t2t-sec-head">
         <div>
-          <div className="t2t-eyebrow">★ Trois façons de la vivre</div>
-          <h2 className="t2t-h2">Pas obligé de<br/>tout <span className="uv">faire</span>.</h2>
+          <div className="t2t-eyebrow">★ Les groupes</div>
+          <h2 className="t2t-h2">Qui fait <span className="uv">quoi</span>.</h2>
         </div>
         <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
-          L'expé se découpe : l'intégrale, le J1 jusqu'à la Madone, ou
-          le sommet seul au départ de la Madone. Même team, même sommet, même fête.
+          Trois façons de vivre l'expé : l'intégrale, le J1 jusqu'à la Madone,
+          ou le sommet seul au départ de la Madone.
         </p>
       </div>
       <div className="t2t-commu">
@@ -187,14 +194,15 @@ GEL.Formats = () => (
               <span className="cc-km">{f.km}</span>
             </div>
             <span className="cc-tag">{f.tag}</span>
-            <p className="cc-ex">{f.dplus}</p>
-            <p className="cc-note">{f.note}</p>
+            <p className="cc-ex" style={{ flex: "none", margin: 0 }}>{f.dplus}</p>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 2 }}>
+              {f.team.map((n) => <span key={n} className="t2t-daychip">{n}</span>)}
+              {(f.confirm || []).map((n) => <span key={n} className="t2t-daychip" style={{ opacity: 0.55 }}>◷ {n}</span>)}
+            </div>
           </div>
         ))}
       </div>
-      <p className="t2t-finetext" style={{ marginTop: 16 }}>
-        Les nuits (Madone de Fenestre le vendredi, Relais des Merveilles le samedi) se réservent selon ton format.
-      </p>
+      <p className="t2t-finetext" style={{ marginTop: 14 }}>◷ = à confirmer</p>
     </div>
   </section>
 );
@@ -204,7 +212,7 @@ GEL.Logistics = () => (
     <div className="wrap">
       <div className="t2t-sec-head">
         <div>
-          <div className="t2t-eyebrow">★ Ravitos & assistance</div>
+          <div className="t2t-eyebrow">★ Assistance & drop bag</div>
           <h2 className="t2t-h2">On ne vous<br/>lâche <span className="uv">pas</span>.</h2>
         </div>
       </div>
@@ -213,10 +221,7 @@ GEL.Logistics = () => (
           <div className="t2t-loc-list">
             <div className="t2t-loc-row">
               <span className="k">Ravitos ✅</span>
-              <span className="v">
-                <b>Levens · Utelle · Granges de la Brasque · Saint-Martin-Vésubie.</b> De
-                quoi remplir les flasques et le moral tout au long du J1.
-              </span>
+              <span className="v"><b>Levens · Utelle · Granges de la Brasque · Saint-Martin-Vésubie.</b> Temps de passage estimés dans le roadbook ci-dessus.</span>
             </div>
             <div className="t2t-loc-row">
               <span className="k">À confirmer</span>
@@ -231,7 +236,7 @@ GEL.Logistics = () => (
             </div>
             <div className="t2t-loc-row">
               <span className="k">Assistance</span>
-              <span className="v">Une voiture d'assistance accompagne la team sur tout le J1 — matériel, ravito perso, sécurité.</span>
+              <span className="v">Voiture d'assistance sur tout le J1 — <b>Gautier</b> au volant (Fanny G à confirmer). Matériel, ravito perso, sécurité.</span>
             </div>
           </div>
         </div>
@@ -244,7 +249,8 @@ GEL.Logistics = () => (
             ))}
           </div>
           <div className="t2t-photo" style={{ minHeight: 260 }}>
-            <img src="img/runner-climb.jpg" alt="En montée vers la Madone" loading="lazy" style={{ objectPosition: "center 40%" }} />
+            <img src="img/runner-climb.jpg" alt="En montée vers la Madone" loading="lazy"
+                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
           </div>
         </div>
       </div>
