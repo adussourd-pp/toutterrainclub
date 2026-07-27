@@ -121,10 +121,9 @@ GEL.Profile = () => {
             <span className="t2t-daychip">J2 · Madone → Gelas → Relais ▲</span>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 18 }}>
-          <span className="cc-foot cc-soon">◷ Trace GPX J1 · bientôt</span>
-          <span className="cc-foot cc-soon">◷ Trace GPX J2 · bientôt</span>
-          <span className="t2t-finetext">Les traces détaillées J1 / J2 arrivent ici très vite.</span>
+        <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap", marginTop: 18 }}>
+          <a className="cc-foot cc-live" href="gpx/expe-j1.gpx" download style={{ textDecoration: "none" }}>⤓ Trace GPX J1 · Nice → Madone</a>
+          <a className="cc-foot cc-live" href="gpx/expe-j2.gpx" download style={{ textDecoration: "none" }}>⤓ Trace GPX J2 · Madone → Gelas → Relais</a>
         </div>
       </div>
     </section>
