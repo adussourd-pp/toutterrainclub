@@ -11,7 +11,7 @@ const GEL_DATA = {
     { n: "Damien", full: 1, madone: 1, summit: 1 },
     { n: "FF", full: 1, madone: 1, summit: 1 },
     { n: "Fabien", full: 1, madone: 1, summit: 1 },
-    { n: "Fanny", full: 1, madone: 1, summit: 1 },
+    { n: "Fanny B", full: 1, madone: 1, summit: 1 },
     { n: "Gaby", full: 1, madone: 1, summit: 1 },
     { n: "Manon", madone: 1, summit: 1 },
     { n: "Quentin", madone: 1 },
@@ -33,14 +33,14 @@ const GEL_DATA = {
         { n: 7, x: 828.9, y: 137.4 }, { n: 8, x: 1000, y: 38 },
       ],
       rows: [
-        { n: 1, t: "19:00", h: "Nice · Promenade des Anglais", km: "0", alt: "0 m", info: "Départ" },
-        { n: 2, t: "≈ 20:15", h: "Aire St-Michel", km: "6,6", alt: "314 m", info: "Point assistance" },
+        { n: 1, t: "19:00", h: "Port de Nice", km: "0", alt: "0 m", info: "Départ · event avec la commu" },
+        { n: 2, t: "≈ 20:15", h: "Aire St-Michel", km: "6,6", alt: "314 m", info: "Eau · fontaine sur place" },
         { n: 3, t: "≈ 21:45", h: "Aspremont", km: "13,1", alt: "497 m", info: "Ravito selon conditions", soft: true },
-        { n: 4, t: "≈ 23:45", h: "Levens", km: "21,9", alt: "543 m", info: "Ravito ✓" },
+        { n: 4, t: "≈ 23:45", h: "Levens", km: "21,9", alt: "543 m", info: "1er ravito assistance ✓" },
         { n: 5, t: "≈ 03:15", h: "Utelle", km: "36,5", alt: "813 m", info: "Ravito ✓" },
         { n: 6, t: "≈ 07:00", h: "Granges de la Brasque", km: "50,4", alt: "1 683 m", info: "Ravito ✓" },
         { n: 7, t: "≈ 10:15", h: "Saint-Martin-Vésubie", km: "66,9", alt: "984 m", info: "Ravito ✓" },
-        { n: 8, t: "≈ 14:30", h: "Madone de Fenestre", km: "80,8", alt: "1 904 m", info: "Arrivée J1 — repas & nuit" },
+        { n: 8, t: "≈ 14:30", h: "Madone de Fenestre", km: "80,8", alt: "1 904 m", info: "Arrivée J1 · repas & nuit" },
       ],
     },
     {
@@ -51,10 +51,10 @@ const GEL_DATA = {
         { n: 1, x: 0, y: 189.2 }, { n: 2, x: 332.4, y: 16 }, { n: 4, x: 1000, y: 244 },
       ],
       rows: [
-        { n: 1, t: "05:00", h: "Départ de la Madone", km: "0", alt: "1 904 m", info: "Frontales — la team Summit only embarque" },
-        { n: 2, t: "≈ 08:30", h: "Cime du Gelas", km: "5,5", alt: "3 143 m", info: "Le toit du week-end" },
-        { n: 3, t: "≈ 10:30", h: "Secteur refuge de Nice", km: "—", alt: "2 232 m", info: "Ravito — la Jonction nous rejoint" },
-        { n: 4, t: "≈ 15:00", h: "Relais des Merveilles", km: "16", alt: "1 580 m", info: "Arrivée — la meute accueille" },
+        { n: 1, t: "05:00", h: "Départ de la Madone", km: "0", alt: "1 904 m", info: "Départ · frontales" },
+        { n: 2, t: "≈ 08:30", h: "Cime du Gelas", km: "5,5", alt: "3 143 m", info: "Sommet" },
+        { n: 3, t: "≈ 10:30", h: "Secteur refuge de Nice", km: "—", alt: "2 232 m", info: "Ravito · rendez-vous Jonction" },
+        { n: 4, t: "≈ 15:00", h: "Relais des Merveilles", km: "16", alt: "1 580 m", info: "Arrivée" },
       ],
     },
   ],
@@ -97,7 +97,7 @@ GEL.Hero = () => (
 GEL.Metabar = () => (
   <div className="wrap">
     <div className="t2t-metabar">
-      <div className="m"><div className="mk">Départ</div><div className="mv">Jeudi 6 août · 19:00 · Nice</div></div>
+      <div className="m"><div className="mk">Départ</div><div className="mv">Jeudi 6 août · 19:00 · Port de Nice</div></div>
       <div className="m"><div className="mk">Sommet</div><div className="mv">Cime du Gelas · 3 143 m</div></div>
       <div className="m"><div className="mk">Arrivée</div><div className="mv">Relais des Merveilles · sam. ≈ 15h</div></div>
       <div className="m"><div className="mk">Team</div><div className="mv">Sur sélection · assistance suivie</div></div>
@@ -114,9 +114,8 @@ GEL.Roadbook = () => (
           <h2 className="t2t-h2">J1 / <span className="uv">J2</span>.</h2>
         </div>
         <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
-          La feuille de route commune coureurs + assistance : chacun sait où être
-          et quand. Km et altitudes issus de la trace Plan A, horaires estimés
-          sur 19–20 h de course. La voiture suit chaque point du J1, drop bags à bord.
+          Km et altitudes issus de la trace Plan A ; horaires estimés sur une base
+          de 19–20 h de course. La voiture d'assistance passe à chaque point du J1.
         </p>
       </div>
       {GEL_DATA.roadbook.map((day) => (
@@ -201,9 +200,9 @@ GEL.Profile = () => {
             </svg>
           </div>
           <div className="t2t-profile-axis">
-            <span className="t2t-daychip">◆ J1 · Nice → Madone</span>
-            <span style={{ alignSelf: "center" }}>la ligne ne redescend jamais vraiment</span>
-            <span className="t2t-daychip">J2 · Madone → Gelas → Relais ▲</span>
+            <span className="t2t-daychip">◆ J1 · Nice → Madone · 80,8 km</span>
+            <span style={{ alignSelf: "center" }}>96 km · 7 000 D+ au total</span>
+            <span className="t2t-daychip">J2 · Madone → Gelas → Relais · 16 km ▲</span>
           </div>
         </div>
       </div>
@@ -278,7 +277,7 @@ GEL.Gear = () => {
       ],
     },
     {
-      name: "Drop bag Madone", tag: "Dans la voiture d'assistance · pour la nuit", km: "vendredi soir",
+      name: "Drop bag Madone", tag: "Confié à la team assistance · remis vendredi soir à la Madone", km: "vendredi soir",
       items: [
         "Change complet + chaussettes",
         "Doudoune pour la soirée en altitude",
@@ -298,9 +297,9 @@ GEL.Gear = () => {
       ],
     },
     {
-      name: "Drop bag Relais", tag: "À prévoir · vous le retrouvez samedi à l'arrivée", km: "samedi",
+      name: "Drop bag Relais", tag: "Confié à la team assistance · retrouvé samedi au Relais", km: "samedi",
       items: [
-        "Tenue de soirée (la vraie fête commence à 22h)",
+        "Tenue de soirée",
         "Affaires de nuit selon ta formule couchage",
         "Affaires de douche + serviette",
         "Tenue du dimanche : Boucle Autier & testing Näak",
@@ -361,12 +360,12 @@ GEL.Logistics = () => (
           <span className="v">Aspremont · Cros d'Utelle</span>
         </div>
         <div className="t2t-loc-row">
-          <span className="k">Drop bag</span>
-          <span className="v">Un sac par coureur dans la voiture d'assistance. Elle suit tout le J1 jusqu'à la Madone ; on la retrouve samedi au Relais des Merveilles.</span>
+          <span className="k">Drop bags</span>
+          <span className="v">Deux sacs par coureur, confiés à la <b>team assistance</b> : le drop bag Madone (remis vendredi soir à la Madone) et le drop bag Relais (retrouvé samedi au Relais des Merveilles).</span>
         </div>
         <div className="t2t-loc-row">
           <span className="k">Assistance</span>
-          <span className="v"><b>Gautier</b> au volant · Fanny G à confirmer.</span>
+          <span className="v">Responsable : <b>Gautier</b>.</span>
         </div>
       </div>
       <div className="t2t-warning" style={{ marginTop: 28 }}>
@@ -374,20 +373,6 @@ GEL.Logistics = () => (
         sélectionnés. Le TTC ne fournit aucun encadrement sportif et ne saurait être tenu
         responsable en cas d'accident ou de blessure. Assurances (responsabilité civile,
         individuelle accident) à la charge de chacun.
-      </div>
-    </div>
-  </section>
-);
-
-GEL.Final = () => (
-  <section className="t2t-final">
-    <div className="glow"></div>
-    <div className="wrap">
-      <div className="sub">L'expédition · jeudi 6 → samedi 8 août 2026 · sur sélection</div>
-      <h2>La mer, la nuit,<br/><span className="uv">le sommet</span>.</h2>
-      <div className="t2t-final-cta">
-        <a href="https://wa.me/33668681188" target="_blank" rel="noopener" className="btn btn-uv">Candidater à l'expé →</a>
-        <a href="edition-mercantour.html#tarifs" className="btn btn-line-light">Le week-end & les tarifs</a>
       </div>
     </div>
   </section>
