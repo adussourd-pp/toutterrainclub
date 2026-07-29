@@ -2467,6 +2467,20 @@ section.join {
 .t2t-page.light .t2t-sunday .sun-x { color: #55554e; }
 
 /* ===== Page expédition Gelas — roadbook & tableaux ===== */
+/* Lockup Prom' Gelas : sous-titres calés sous chaque mot + tampon */
+.gel-lockup { display: flex; align-items: flex-start; column-gap: 0.14em; row-gap: 8px; flex-wrap: wrap; }
+.gel-lockup .gw { display: inline-flex; flex-direction: column; }
+.gel-lockup .gel-sub {
+  font-size: clamp(12px, 1.5vw, 24px);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  margin-top: 10px;
+  color: #f4efff;
+}
+.gel-lockup .gel-sub.uvc { color: var(--uv); }
+.gel-lockup .techno { color: var(--uv); text-shadow: 0 0 24px rgba(var(--glow), 0.28); }
+.gel-stamp { width: clamp(96px, 12vw, 150px); flex-shrink: 0; }
+.gel-stamp svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 4px 18px rgba(0,0,0,0.35)); }
 .gel-dayh {
   font-family: var(--f-display);
   font-weight: 800;
