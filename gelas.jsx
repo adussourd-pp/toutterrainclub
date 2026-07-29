@@ -77,8 +77,8 @@ GEL.Hero = () => (
         <span>Jeudi 6 → samedi 8 août 2026</span>
       </div>
       <h1 className="t2t-hero-title" style={{ fontSize: "clamp(52px, 10vw, 160px)" }}>
-        <span className="l1">De la mer</span>
-        <span className="l2"><span className="techno">au Gelas.</span></span>
+        <span className="l1">Prom'</span>
+        <span className="l2"><span className="techno">Gelas.</span></span>
       </h1>
       <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 30 }}>
         <p className="t2t-hero-lede" style={{ fontSize: 17 }}>

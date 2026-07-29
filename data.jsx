@@ -132,7 +132,7 @@ const MERCANTOUR = {
   // stats réelles issues des GPX de la traversée (J1 + J2)
   expo: {
     title: "L'expédition",
-    tagline: "De la mer au sommet.",
+    tagline: "Prom' Gelas.",
     from: "Nice · niveau de la mer",
     to: "Cime du Gelas · 3 143 m",
     days: "2 jours",

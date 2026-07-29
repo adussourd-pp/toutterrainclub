@@ -114,7 +114,7 @@ const T2TEditions = () => (
           <div className="eb">
             <span className="est"><b className="ed-pill">Ouvert</b> · 8–9 août 2026</span>
             <span className="eh">Édition Mercantour</span>
-            <span className="ee">De la mer au sommet. Nice → Cime du Gelas, 3 143 m. Refuge : le Relais des Merveilles.</span>
+            <span className="ee">Prom' Gelas : Nice → Cime du Gelas, 3 143 m. Refuge : le Relais des Merveilles.</span>
             <span className="go">Découvrir le week-end →</span>
           </div>
         </a>
