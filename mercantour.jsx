@@ -21,8 +21,8 @@ const MercHero = () => (
         <span>{M().when} · {M().where}</span>
       </div>
       <h1 className="t2t-hero-title" style={{ fontSize: "clamp(56px, 11vw, 180px)" }}>
-        <span className="l1">Prom'</span>
-        <span className="l2"><span className="techno">Gelas</span><span style={{ color: "#fff" }}>.</span></span>
+        <span className="l1">De la mer</span>
+        <span className="l2"><span className="techno">au sommet</span><span style={{ color: "#fff" }}>.</span></span>
       </h1>
       <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 34 }}>
         <div>
@@ -46,7 +46,7 @@ const MercMetabar = () => (
       <div className="m"><div className="mk">Quand</div><div className="mv">{M().when}</div></div>
       <div className="m"><div className="mk">Où</div><div className="mv">Vallée de la Gordolasque</div></div>
       <div className="m"><div className="mk">Camp de base</div><div className="mv">{M().base}</div></div>
-      <div className="m"><div className="mk">Format phare</div><div className="mv">Prom' Gelas · l'expédition</div></div>
+      <div className="m"><div className="mk">Format phare</div><div className="mv">L'expédition · mer → sommet</div></div>
     </div>
   </div>
 );
@@ -74,7 +74,7 @@ const MercExpo = () => {
             <div className="t2t-expo-stats">
               <div className="t2t-expo-stat"><div className="n">{e.km}<span className="u"> km</span></div><div className="l">Distance · 2 jours</div></div>
               <div className="t2t-expo-stat"><div className="n">{e.dplus}<span className="u"> m</span></div><div className="l">Dénivelé positif</div></div>
-              <div className="t2t-expo-stat"><div className="n">0 → 3 143<span className="u"> m</span></div><div className="l">Prom' → Gelas</div></div>
+              <div className="t2t-expo-stat"><div className="n">0 → 3 143<span className="u"> m</span></div><div className="l">De la mer au sommet</div></div>
               <div className="t2t-expo-stat"><div className="n">{e.team}</div><div className="l">Team expédition</div></div>
             </div>
             <div style={{ display: "flex", gap: 10, marginTop: 28, flexWrap: "wrap" }}>
@@ -127,7 +127,7 @@ const MercFormats = () => {
             <h2 className="t2t-h2">Choisis ta<br/><span className="uv">distance</span>.</h2>
           </div>
           <p style={{ maxWidth: "32ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
-            De la Prom' Gelas au refuge sans chrono. Même vallée, même soirée,
+            De l'expédition mer → sommet au refuge sans chrono. Même vallée, même soirée,
             même bande. Les traces GPX sont à télécharger sur chaque format.
           </p>
         </div>
