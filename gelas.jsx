@@ -76,19 +76,16 @@ GEL.Hero = () => (
         <span>Édition Mercantour · l'expédition · roadbook</span>
         <span>Jeudi 6 → samedi 8 août 2026</span>
       </div>
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
-        <h1 className="t2t-hero-title gel-lockup" style={{ fontSize: "clamp(48px, 9.5vw, 150px)" }}>
-          <span className="gw">
-            <span>Prom'</span>
-            <span className="gel-sub">De la mer</span>
-          </span>
-          <span className="gw">
-            <span className="techno">Gelas</span>
-            <span className="gel-sub uvc">au sommet.</span>
-          </span>
-        </h1>
-        {window.Tampons && <div className="gel-stamp"><window.Tampons.TamponMercantour /></div>}
-      </div>
+      <h1 className="t2t-hero-title gel-lockup" style={{ fontSize: "clamp(48px, 9.5vw, 150px)" }}>
+        <span className="gw">
+          <span>Prom'</span>
+          <span className="gel-sub">De la mer</span>
+        </span>
+        <span className="gw">
+          <span className="techno">Gelas</span>
+          <span className="gel-sub uvc">au sommet.</span>
+        </span>
+      </h1>
       <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 30 }}>
         <p className="t2t-hero-lede" style={{ fontSize: 17 }}>
           96 km · 7 000 D+ · 2 jours. Tout le plan est ici : horaires,
