@@ -24,7 +24,7 @@ const GEL_DATA = {
   ],
   roadbook: [
     {
-      title: "J1", route: "Nice → Madone de Fenestre", date: "Jeudi 19:00 → vendredi ≈ 14:30",
+      title: "J1", route: "Nice → Madone de Fenestre", date: "Jeudi 18:27 → vendredi ≈ 14:00",
       stats: "80,8 km · 5 850 D+ · Plan A", gpx: "gpx/expe-j1.gpx", gpxLabel: "Trace GPX J1 + ravitos",
       profile: "M0.0 244.0 L8.3 243.7 L16.7 242.7 L25.0 241.2 L33.3 240.2 L41.7 239.4 L50.0 237.6 L58.3 229.3 L66.7 223.4 L75.0 216.5 L83.3 208.5 L91.7 202.2 L100.0 193.6 L108.3 190.1 L116.7 183.4 L125.0 176.4 L133.3 171.9 L141.7 173.5 L150.0 184.3 L158.3 191.4 L166.7 185.5 L175.0 174.2 L183.3 170.3 L191.7 168.1 L200.0 165.3 L208.3 171.1 L216.7 179.6 L225.0 184.8 L233.3 186.5 L241.7 188.5 L250.0 189.1 L258.3 188.0 L266.7 183.3 L275.0 185.2 L283.3 186.7 L291.7 189.9 L300.0 187.3 L308.3 187.8 L316.7 191.3 L325.0 199.9 L333.3 211.9 L341.7 222.0 L350.0 219.8 L358.3 207.8 L366.7 197.9 L375.0 182.5 L383.3 180.1 L391.7 177.5 L400.0 171.6 L408.3 166.9 L416.7 165.1 L425.0 162.3 L433.3 159.2 L441.7 160.1 L450.0 154.9 L458.3 140.1 L466.7 128.6 L475.0 117.6 L483.3 110.9 L491.7 103.7 L500.0 97.2 L508.3 90.4 L516.7 82.3 L525.0 91.0 L533.3 92.4 L541.7 92.3 L550.0 92.0 L558.3 92.5 L566.7 94.9 L575.0 92.2 L583.3 81.9 L591.7 66.4 L600.0 64.2 L608.3 64.2 L616.7 62.8 L625.0 61.4 L633.3 53.5 L641.7 39.8 L650.0 31.3 L658.3 31.6 L666.7 33.4 L675.0 36.2 L683.3 33.9 L691.7 27.3 L700.0 30.7 L708.3 37.4 L716.7 37.8 L725.0 49.0 L733.3 56.8 L741.7 63.8 L750.0 74.1 L758.3 80.9 L766.7 81.8 L775.0 85.5 L783.3 92.9 L791.7 101.8 L800.0 114.7 L808.3 131.4 L816.7 135.2 L825.0 136.6 L833.3 134.6 L841.7 107.2 L850.0 90.4 L858.3 73.1 L866.7 57.9 L875.0 36.4 L883.3 21.1 L891.7 16.6 L900.0 23.9 L908.3 30.2 L916.7 34.4 L925.0 36.0 L933.3 39.0 L941.7 42.2 L950.0 47.8 L958.3 60.6 L966.7 52.2 L975.0 46.0 L983.3 47.5 L991.7 43.0 L1000.0 38.0",
       markers: [
@@ -33,14 +33,14 @@ const GEL_DATA = {
         { n: 7, x: 828.9, y: 137.4 }, { n: 8, x: 1000, y: 38 },
       ],
       rows: [
-        { n: 1, t: "19:00", h: "Port de Nice", km: "0", alt: "0 m", info: "Départ · event avec la commu" },
-        { n: 2, t: "≈ 20:15", h: "Aire St-Michel", km: "6,6", alt: "314 m", info: "Eau · fontaine sur place" },
-        { n: 3, t: "≈ 21:45", h: "Aspremont", km: "13,1", alt: "497 m", info: "Ravito selon conditions", soft: true },
-        { n: 4, t: "≈ 23:45", h: "Levens", km: "21,9", alt: "543 m", info: "1er ravito assistance ✓" },
-        { n: 5, t: "≈ 03:15", h: "Utelle", km: "36,5", alt: "813 m", info: "Ravito ✓" },
-        { n: 6, t: "≈ 07:00", h: "Granges de la Brasque", km: "50,4", alt: "1 683 m", info: "Ravito ✓" },
-        { n: 7, t: "≈ 10:15", h: "Saint-Martin-Vésubie", km: "66,9", alt: "984 m", info: "Ravito ✓" },
-        { n: 8, t: "≈ 14:30", h: "Madone de Fenestre", km: "80,8", alt: "1 904 m", info: "Arrivée J1 · repas & nuit" },
+        { n: 1, t: "18:27", h: "Port de Nice", km: "0", alt: "0 m", info: "Départ · event avec la commu" },
+        { n: 2, t: "≈ 19:45", h: "Aire St-Michel", km: "6,6", alt: "314 m", info: "Eau · fontaine sur place" },
+        { n: 3, t: "≈ 21:15", h: "Aspremont", km: "13,1", alt: "497 m", info: "Ravito selon conditions", soft: true },
+        { n: 4, t: "≈ 23:15", h: "Levens", km: "21,9", alt: "543 m", info: "1er ravito assistance ✓" },
+        { n: 5, t: "≈ 02:45", h: "Utelle", km: "36,5", alt: "813 m", info: "Ravito ✓" },
+        { n: 6, t: "≈ 06:30", h: "Granges de la Brasque", km: "50,4", alt: "1 683 m", info: "Ravito ✓" },
+        { n: 7, t: "≈ 09:45", h: "Saint-Martin-Vésubie", km: "66,9", alt: "984 m", info: "Ravito ✓" },
+        { n: 8, t: "≈ 14:00", h: "Madone de Fenestre", km: "80,8", alt: "1 904 m", info: "Arrivée J1 · repas & nuit" },
       ],
     },
     {
@@ -106,7 +106,7 @@ GEL.Hero = () => (
 GEL.Metabar = () => (
   <div className="wrap">
     <div className="t2t-metabar">
-      <div className="m"><div className="mk">Départ</div><div className="mv">Jeudi 6 août · 19:00 · Port de Nice</div></div>
+      <div className="m"><div className="mk">Départ</div><div className="mv">Jeudi 6 août · 18:27 · Port de Nice</div></div>
       <div className="m"><div className="mk">Sommet</div><div className="mv">Cime du Gelas · 3 143 m</div></div>
       <div className="m"><div className="mk">Arrivée</div><div className="mv">Relais des Merveilles · sam. ≈ 15h</div></div>
       <div className="m"><div className="mk">Team</div><div className="mv">Sur sélection · assistance suivie</div></div>
