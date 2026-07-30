@@ -369,40 +369,44 @@ const ADHESION = {
   // Lien du feedback Tally — on co-construit l'adhésion avec la meute
   feedbackUrl: "https://tally.so/r/Pdpbv5",
   // 3 formules — tarifs volontairement non figés (à venir).
-  // La formule avec licence FFA reste à confirmer selon les retours du sondage.
+  // Le Don est à montant libre. La formule avec licence FFA est encore
+  // en réflexion : elle dépend des retours du sondage.
   formules: [
     {
-      key: "soutien",
-      name: "Soutien",
-      tag: "L'essentiel",
-      lede: "Tu rejoins officiellement la meute et tu soutiens le projet.",
+      key: "don",
+      name: "Don",
+      tag: "Un coup de pouce",
+      price: "Montant libre",
+      lede: "Tu soutiens le projet, à ton rythme, sans forcément adhérer.",
       features: [
-        "Welcome pack aux couleurs du TTC (t-shirt + goodies)",
-        "Espace adhérent avec ses outils trail (plans, suivi, traces GPX)",
-        "Codes & réductions chez nos partenaires",
+        "Montant libre, ponctuel ou régulier",
+        "Tu finances directement les events et le matos du club",
+        "Un grand merci de toute la meute 🙏",
       ],
     },
     {
-      key: "adhesion",
-      name: "Adhésion",
+      key: "adherent",
+      name: "Adhérent",
       tag: "Le plus complet",
       featured: true,
       lede: "Tout l'esprit TTC, avec les avantages en plus sur nos events.",
       features: [
-        "Tout ce que comprend Soutien",
+        "Welcome pack aux couleurs du TTC (t-shirt + goodies)",
+        "Espace adhérent avec ses outils trail (plans, suivi, traces GPX)",
         "Priorité d'inscription aux weekends & events",
         "Tarifs avantageux sur les events signatures & le merch",
+        "Codes & réductions chez nos partenaires",
         "Accès aux soirées réservées à la meute",
       ],
     },
     {
       key: "licence",
-      name: "Adhésion + Licence",
-      tag: "Sous réserve · selon vos retours",
+      name: "Adhérent + Licence FFA",
+      tag: "En réflexion · selon vos retours",
       tentative: true,
       lede: "L'adhésion complète, plus une licence FFA prise via le club.",
       features: [
-        "Tout ce que comprend Adhésion",
+        "Tout ce que comprend Adhérent",
         "Licence FFA Running (loisir + assurance) ou Compétition",
         "Pour courir les courses officielles sous les couleurs TTC",
       ],

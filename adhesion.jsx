@@ -158,7 +158,7 @@ const AdhFormules = () => (
         </div>
         <p style={{ maxWidth: "34ch", color: "var(--muted)", fontSize: 15, lineHeight: 1.55 }}>
           On pose les grandes lignes. Les <strong>tarifs ne sont pas encore figés</strong> et la formule
-          avec <strong>licence FFA</strong> reste à confirmer — on la construit avec vos retours.
+          avec <strong>licence FFA</strong> est encore <strong>en réflexion</strong> — on la construit avec vos retours.
         </p>
       </div>
 
@@ -167,7 +167,7 @@ const AdhFormules = () => (
           <div key={f.key} className={`adh-formule ${f.featured ? "featured" : ""} ${f.tentative ? "tentative" : ""}`}>
             <div className="ft-tag">{f.tag}</div>
             <div className="ft-name">{f.name}</div>
-            <div className="ft-price">Tarif à venir</div>
+            <div className="ft-price">{f.price || "Tarif à venir"}</div>
             <div className="ft-lede">{f.lede}</div>
             <ul>
               {f.features.map((x, i) => (
