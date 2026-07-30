@@ -334,7 +334,7 @@ const ADHESION = {
     { n: "02", k: "Promos partenaires", v: "Des réductions réservées aux membres chez nos partenaires." },
     { n: "03", k: "Réducs sur les events", v: "Tarif membre sur les éditions Trail to Techno et les stages." },
     { n: "04", k: "Soirées exclusives", v: "Accès aux soirées réservées à la meute : DJ sets, refuges privatisés, afters." },
-    { n: "05", k: "Espace membre", v: "Ton accès à l'espace membre : crée et gère tes team courses, suis tes inscriptions et tes stats.", wide: true },
+    { n: "05", k: "Espace membre & outils trail", v: "Ton espace adhérent avec des outils trail : plans et ressources d'entraînement, suivi de tes courses et de tes stats, traces GPX du club, gestion de tes team courses et de tes inscriptions.", wide: true },
   ],
   community: [
     { free: true, k: "Les runs officiels · gratuits", v: "Les sorties hebdo du club restent ouvertes à tout le monde, sans adhésion." },
@@ -378,7 +378,7 @@ const ADHESION = {
       lede: "Tu rejoins officiellement la meute et tu soutiens le projet.",
       features: [
         "Welcome pack aux couleurs du TTC (t-shirt + goodies)",
-        "Accès à l'espace adhérent",
+        "Espace adhérent avec ses outils trail (plans, suivi, traces GPX)",
         "Codes & réductions chez nos partenaires",
       ],
     },
