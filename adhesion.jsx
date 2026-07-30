@@ -66,39 +66,48 @@ const AdhBenefits = () => (
   </section>
 );
 
-const AdhDiscord = () => (
+// showLevels : la gamification (niveaux) ne s'affiche que si la commu passe
+// sur une plateforme qui le permet (Discord). Piloté par le flag data +
+// override live via le panneau Tweaks.
+const AdhDiscord = ({ showLevels = A().showLevels }) => (
   <section className="adh-sec" id="communaute">
     <div className="wrap">
       <div className="adh-sec-head">
         <div>
           <div className="eyebrow" style={{ marginBottom: 14 }}>★ Bien plus qu'un social run</div>
-          <h2 className="adh-h2">Une communauté<br/>qui a des <span className="g">niveaux</span>.</h2>
+          {showLevels
+            ? <h2 className="adh-h2">Une communauté<br/>qui a des <span className="g">niveaux</span>.</h2>
+            : <h2 className="adh-h2">Une communauté<br/>qui a du <span className="g">niveau</span>.</h2>}
         </div>
         <p style={{ maxWidth: "34ch", color: "var(--muted)", fontSize: 15, lineHeight: 1.55 }}>
-          TTC c'est une meute avant tout. Les <strong>runs officiels</strong> et la <strong>commu WhatsApp</strong> restent gratuits — on ne ferme la porte à personne. L'adhésion, elle, ajoute des extras et une progression ludique, du Poussin à l'Aigle Royal.
+          TTC c'est une meute avant tout. Les <strong>runs officiels</strong> et la <strong>commu</strong> restent gratuits — on ne ferme la porte à personne. L'adhésion, elle, ajoute des extras{showLevels ? " et une progression ludique, du Poussin à l'Aigle Royal" : ""}.
         </p>
       </div>
 
-      <div style={{ marginBottom: 12, fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--green-3)" }}>
-        ★ L'aventure de la meute · plus tu cours, plus tu montes
-      </div>
-      <LevelScale items={A().levels} />
+      {showLevels && (
+        <React.Fragment>
+          <div style={{ marginBottom: 12, fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--green-3)" }}>
+            ★ L'aventure de la meute · plus tu cours, plus tu montes
+          </div>
+          <LevelScale items={A().levels} />
 
-      <div style={{ margin: "26px 0 12px", fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--green-3)" }}>
-        ★ Choisis ton style Trail to Techno · côté soirée
-      </div>
-      <LevelScale items={A().stylesLevels} />
+          <div style={{ margin: "26px 0 12px", fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--green-3)" }}>
+            ★ Choisis ton style Trail to Techno · côté soirée
+          </div>
+          <LevelScale items={A().stylesLevels} />
 
-      <p className="adh-levels-note">
-        …et une dizaine de paliers entre les deux. Toute l'échelle se débloque au fil de tes sorties.
-      </p>
+          <p className="adh-levels-note">
+            …et une dizaine de paliers entre les deux. Toute l'échelle se débloque au fil de tes sorties.
+          </p>
+        </React.Fragment>
+      )}
 
-      <div className="adh-discord" style={{ marginTop: 32 }}>
+      <div className="adh-discord" style={{ marginTop: showLevels ? 32 : 0 }}>
         <span className="adh-dc-badge">La base reste gratuite</span>
         <span className="dc-eyebrow">✦ Gratuit pour tous · extras pour les membres</span>
         <h3>Les runs restent<br/>gratuits. Toujours.</h3>
         <p className="dc-lede">
-          Les sorties officielles et la communauté WhatsApp ne coûteront jamais rien. <strong>Adhérer, c'est en plus</strong> : des ressources pour progresser et des events trail réservés aux membres.
+          Les sorties officielles et la communauté ne coûteront jamais rien. <strong>Adhérer, c'est en plus</strong> : des ressources pour progresser et des events trail réservés aux membres.
         </p>
         <div className="adh-discord-grid">
           {A().community.map((d, i) => (
@@ -132,7 +141,7 @@ const AdhCard = () => (
           <div className="tier">Liste d'attente</div>
           <div className="price" style={{ fontSize: "clamp(28px, 3.2vw, 44px)", letterSpacing: "-0.01em" }}>À&nbsp;venir<span className="per"> · rentrée 2026</span></div>
           <p style={{ color: "var(--muted)", fontSize: 14, lineHeight: 1.55, margin: "2px 0 20px" }}>
-            Laisse-nous ton mail : tu seras <strong>prévenu·e en priorité</strong> à l'ouverture des adhésions, avant tout le monde. En attendant, la <strong>commu WhatsApp et les runs officiels restent gratuits</strong>.
+            Laisse-nous ton mail : tu seras <strong>prévenu·e en priorité</strong> à l'ouverture des adhésions, avant tout le monde. En attendant, la <strong>commu et les runs officiels restent gratuits</strong>.
           </p>
           <ul>
             <li><span className="ck">✓</span><span>Prévenu·e en avant-première à l'ouverture</span></li>

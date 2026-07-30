@@ -26,7 +26,8 @@
 
 <script type="text/babel">
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "density": "aere"
+  "density": "aere",
+  "niveaux": "off"
 }/*EDITMODE-END*/;
 
 function App() {
@@ -41,13 +42,13 @@ function App() {
       <HeaderPublic active="Le club" />
       <ADH.AdhHero />
       <ADH.AdhBenefits />
-      <ADH.AdhDiscord />
+      <ADH.AdhDiscord showLevels={tweaks.niveaux === "on"} />
       <ADH.AdhFormules />
       <ADH.AdhCard />
       <FooterPublic />
 
       <window.TweaksPanel title="Tweaks · Adhésion">
-        <window.TweakSection title="Densité">
+        <window.TweakSection label="Densité">
           <window.TweakRadio
             label="Espacements"
             value={tweaks.density}
@@ -56,6 +57,17 @@ function App() {
               { value: "aere", label: "Aéré" },
             ]}
             onChange={(v) => setTweak("density", v)}
+          />
+        </window.TweakSection>
+        <window.TweakSection label="Niveaux (gamification)">
+          <window.TweakRadio
+            label="Échelle de niveaux — à activer seulement si commu Discord"
+            value={tweaks.niveaux}
+            options={[
+              { value: "off", label: "Masqué" },
+              { value: "on", label: "Affiché" },
+            ]}
+            onChange={(v) => setTweak("niveaux", v)}
           />
         </window.TweakSection>
       </window.TweaksPanel>

@@ -338,7 +338,7 @@ const ADHESION = {
   ],
   community: [
     { free: true, k: "Les runs officiels · gratuits", v: "Les sorties hebdo du club restent ouvertes à tout le monde, sans adhésion." },
-    { free: true, k: "La commu WhatsApp · gratuite", v: "On y cale les sorties, on partage les traces et on annonce les events." },
+    { free: true, k: "La commu en ligne · gratuite", v: "On y cale les sorties, on partage les traces et on annonce les events." },
     { free: false, k: "Des ressources pour progresser", v: "Plans, conseils d'entraînement et retours d'expé réservés aux membres." },
     { free: false, k: "Des events liés au trail", v: "Stages, sorties longues et rendez-vous trail exclusifs aux adhérents." },
   ],
@@ -364,6 +364,10 @@ const ADHESION = {
     { niv: "85", an: "Chaman des Platines", em: "🧙" },
     { niv: "100", an: "Dieu de la Rave", em: "👑" },
   ],
+  // Niveaux / gamification : ne s'affiche que si la commu passe sur une
+  // plateforme qui le permet (Discord). Sur WhatsApp ça n'a pas de sens,
+  // donc masqué par défaut tant que ce n'est pas tranché.
+  showLevels: false,
   // Niveaux mis en avant sur la page (on ne montre pas les 9, trop lourd)
   levelsPreview: ["1", "25", "100"],
   // Lien du feedback Tally — on co-construit l'adhésion avec la meute
