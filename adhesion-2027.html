@@ -27,7 +27,7 @@
 <script type="text/babel">
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "density": "aere",
-  "niveaux": "off"
+  "niveaux": "on"
 }/*EDITMODE-END*/;
 
 function App() {
@@ -59,13 +59,13 @@ function App() {
             onChange={(v) => setTweak("density", v)}
           />
         </window.TweakSection>
-        <window.TweakSection label="Niveaux (gamification)">
+        <window.TweakSection label="Groupes de niveaux">
           <window.TweakRadio
-            label="Échelle de niveaux — à activer seulement si commu Discord"
+            label="Afficher les niveaux (débutant → ultra)"
             value={tweaks.niveaux}
             options={[
-              { value: "off", label: "Masqué" },
               { value: "on", label: "Affiché" },
+              { value: "off", label: "Masqué" },
             ]}
             onChange={(v) => setTweak("niveaux", v)}
           />

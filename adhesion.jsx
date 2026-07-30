@@ -2,26 +2,18 @@
 
 const A = () => window.ADHESION;
 
-// On ne montre qu'un aperçu des niveaux (1 · 25 · 100) — les 9 existent bien,
-// mais tout afficher alourdit la page. Le "…" rappelle qu'il y a toute une échelle.
-const LevelScale = ({ items }) => {
-  const preview = A().levelsPreview || ["1", "100"];
-  const shown = items.filter((l) => preview.includes(l.niv));
-  return (
-    <div className="adh-levels adh-levels-preview">
-      {shown.map((l, i) => (
-        <React.Fragment key={l.niv}>
-          {i > 0 && <div className="adh-level-more" aria-hidden="true">…</div>}
-          <div className={`adh-level ${i === shown.length - 1 ? "top" : ""}`}>
-            <div className="em">{l.em}</div>
-            <div className="lv">NIV {l.niv}</div>
-            <div className="an">{l.an}</div>
-          </div>
-        </React.Fragment>
-      ))}
-    </div>
-  );
-};
+// 4 groupes de niveau (débutant → ultra), affichés côte à côte.
+const LevelScale = ({ items }) => (
+  <div className="adh-levels adh-levels-tiers">
+    {items.map((l, i) => (
+      <div key={i} className={`adh-level ${i === items.length - 1 ? "top" : ""}`}>
+        <div className="em">{l.em}</div>
+        <div className="an">{l.name}</div>
+        <div className="lvl-desc">{l.desc}</div>
+      </div>
+    ))}
+  </div>
+);
 
 const AdhHero = () => (
   <section className="adh-hero">
@@ -80,25 +72,21 @@ const AdhDiscord = ({ showLevels = A().showLevels }) => (
             : <h2 className="adh-h2">Une communauté<br/>qui a du <span className="g">niveau</span>.</h2>}
         </div>
         <p style={{ maxWidth: "34ch", color: "var(--muted)", fontSize: 15, lineHeight: 1.55 }}>
-          TTC c'est une meute avant tout. Les <strong>runs officiels</strong> et la <strong>commu</strong> restent gratuits — on ne ferme la porte à personne. L'adhésion, elle, ajoute des extras{showLevels ? " et une progression ludique, du Poussin à l'Aigle Royal" : ""}.
+          TTC c'est une meute avant tout. Les <strong>runs officiels</strong> et la <strong>commu</strong> restent gratuits — on ne ferme la porte à personne.{showLevels ? " Et il y en a pour tous les niveaux, du premier trail à l'ultra." : ""}
         </p>
       </div>
 
       {showLevels && (
         <React.Fragment>
           <div style={{ marginBottom: 12, fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--green-3)" }}>
-            ★ L'aventure de la meute · plus tu cours, plus tu montes
+            ★ Ton niveau en trail · de la découverte à l'ultra
           </div>
           <LevelScale items={A().levels} />
 
           <div style={{ margin: "26px 0 12px", fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--green-3)" }}>
-            ★ Choisis ton style Trail to Techno · côté soirée
+            ★ Ton style Trail to Techno · côté soirée
           </div>
           <LevelScale items={A().stylesLevels} />
-
-          <p className="adh-levels-note">
-            …et une dizaine de paliers entre les deux. Toute l'échelle se débloque au fil de tes sorties.
-          </p>
         </React.Fragment>
       )}
 

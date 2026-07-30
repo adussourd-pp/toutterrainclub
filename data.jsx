@@ -342,34 +342,23 @@ const ADHESION = {
     { free: false, k: "Des ressources pour progresser", v: "Plans, conseils d'entraînement et retours d'expé réservés aux membres." },
     { free: false, k: "Des events liés au trail", v: "Stages, sorties longues et rendez-vous trail exclusifs aux adhérents." },
   ],
+  // Niveaux réels (pas des XP) : des groupes de niveau, du premier trail à
+  // l'ultra. Indépendant de la plateforme commu — pas besoin de bot Discord.
   levels: [
-    { niv: "1", an: "Poussin", em: "🐣" },
-    { niv: "5", an: "Lapin", em: "🐇" },
-    { niv: "10", an: "Renard", em: "🦊" },
-    { niv: "15", an: "Loup", em: "🐺" },
-    { niv: "25", an: "Sanglier", em: "🐗" },
-    { niv: "40", an: "Grand Cerf", em: "🦌" },
-    { niv: "70", an: "Chamois", em: "🐐" },
-    { niv: "85", an: "Grizzly", em: "🐻" },
-    { niv: "100", an: "Aigle Royal", em: "🦅" },
+    { em: "🌱", name: "Débutant", desc: "Découverte, premières sorties." },
+    { em: "🏃", name: "Intermédiaire", desc: "Quelques sorties et courses au compteur." },
+    { em: "🔥", name: "Confirmé", desc: "Trails réguliers, ça pousse fort." },
+    { em: "🏔️", name: "Ultra", desc: "Longues distances, terrain engagé." },
   ],
   stylesLevels: [
-    { niv: "1", an: "Petit Tapeur de Pied", em: "🦶" },
-    { niv: "5", an: "Danseur de Buffet", em: "🍽️" },
-    { niv: "10", an: "Amateur de BPM", em: "🎧" },
-    { niv: "15", an: "Chasseur de Caissons", em: "🔊" },
-    { niv: "25", an: "Maxi Teufeur", em: "🔥" },
-    { niv: "40", an: "Briseur de Semelles", em: "👟" },
-    { niv: "70", an: "Machine à Techno", em: "⚡" },
-    { niv: "85", an: "Chaman des Platines", em: "🧙" },
-    { niv: "100", an: "Dieu de la Rave", em: "👑" },
+    { em: "🎧", name: "Curieux", desc: "Là pour la vibe et l'ambiance." },
+    { em: "🔊", name: "Amateur", desc: "Le dancefloor commence à t'appeler." },
+    { em: "🕺", name: "Teufeur", desc: "Dernier carré, toujours partant." },
+    { em: "👑", name: "Résident", desc: "Tu fermes la piste au lever du soleil." },
   ],
-  // Niveaux / gamification : ne s'affiche que si la commu passe sur une
-  // plateforme qui le permet (Discord). Sur WhatsApp ça n'a pas de sens,
-  // donc masqué par défaut tant que ce n'est pas tranché.
-  showLevels: false,
-  // Niveaux mis en avant sur la page (on ne montre pas les 9, trop lourd)
-  levelsPreview: ["1", "25", "100"],
+  // Niveaux affichés : ce sont des groupes de niveau (débutant → ultra),
+  // plus une mécanique de gamification. Donc toujours visibles.
+  showLevels: true,
   // Lien du feedback Tally — on co-construit l'adhésion avec la meute
   feedbackUrl: "https://tally.so/r/Pdpbv5",
   // 3 formules — tarifs volontairement non figés (à venir).
