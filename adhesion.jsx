@@ -2,6 +2,27 @@
 
 const A = () => window.ADHESION;
 
+// On ne montre qu'un aperçu des niveaux (1 · 25 · 100) — les 9 existent bien,
+// mais tout afficher alourdit la page. Le "…" rappelle qu'il y a toute une échelle.
+const LevelScale = ({ items }) => {
+  const preview = A().levelsPreview || ["1", "100"];
+  const shown = items.filter((l) => preview.includes(l.niv));
+  return (
+    <div className="adh-levels adh-levels-preview">
+      {shown.map((l, i) => (
+        <React.Fragment key={l.niv}>
+          {i > 0 && <div className="adh-level-more" aria-hidden="true">…</div>}
+          <div className={`adh-level ${i === shown.length - 1 ? "top" : ""}`}>
+            <div className="em">{l.em}</div>
+            <div className="lv">NIV {l.niv}</div>
+            <div className="an">{l.an}</div>
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
+
 const AdhHero = () => (
   <section className="adh-hero">
     <HeroWaves />
@@ -61,28 +82,16 @@ const AdhDiscord = () => (
       <div style={{ marginBottom: 12, fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--green-3)" }}>
         ★ L'aventure de la meute · plus tu cours, plus tu montes
       </div>
-      <div className="adh-levels">
-        {A().levels.map((l, i) => (
-          <div key={i} className={`adh-level ${i === A().levels.length - 1 ? "top" : ""}`}>
-            <div className="em">{l.em}</div>
-            <div className="lv">NIV {l.niv}</div>
-            <div className="an">{l.an}</div>
-          </div>
-        ))}
-      </div>
+      <LevelScale items={A().levels} />
 
       <div style={{ margin: "26px 0 12px", fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--green-3)" }}>
         ★ Choisis ton style Trail to Techno · côté soirée
       </div>
-      <div className="adh-levels">
-        {A().stylesLevels.map((l, i) => (
-          <div key={i} className={`adh-level ${i === A().stylesLevels.length - 1 ? "top" : ""}`}>
-            <div className="em">{l.em}</div>
-            <div className="lv">NIV {l.niv}</div>
-            <div className="an">{l.an}</div>
-          </div>
-        ))}
-      </div>
+      <LevelScale items={A().stylesLevels} />
+
+      <p className="adh-levels-note">
+        …et une dizaine de paliers entre les deux. Toute l'échelle se débloque au fil de tes sorties.
+      </p>
 
       <div className="adh-discord" style={{ marginTop: 32 }}>
         <span className="adh-dc-badge">La base reste gratuite</span>
@@ -137,4 +146,53 @@ const AdhCard = () => (
   </section>
 );
 
-window.ADH = { AdhHero, AdhBenefits, AdhDiscord, AdhCard };
+// 3 formules — encore en construction : pas de prix affiché, et la formule
+// avec licence FFA reste "sous réserve" (elle dépend des retours du sondage).
+const AdhFormules = () => (
+  <section className="adh-sec" id="formules">
+    <div className="wrap">
+      <div className="adh-sec-head">
+        <div>
+          <div className="eyebrow" style={{ marginBottom: 14 }}>★ Les formules</div>
+          <h2 className="adh-h2">Trois façons<br/>de <span className="g">s'engager</span>.</h2>
+        </div>
+        <p style={{ maxWidth: "34ch", color: "var(--muted)", fontSize: 15, lineHeight: 1.55 }}>
+          On pose les grandes lignes. Les <strong>tarifs ne sont pas encore figés</strong> et la formule
+          avec <strong>licence FFA</strong> reste à confirmer — on la construit avec vos retours.
+        </p>
+      </div>
+
+      <div className="adh-formules">
+        {A().formules.map((f) => (
+          <div key={f.key} className={`adh-formule ${f.featured ? "featured" : ""} ${f.tentative ? "tentative" : ""}`}>
+            <div className="ft-tag">{f.tag}</div>
+            <div className="ft-name">{f.name}</div>
+            <div className="ft-price">Tarif à venir</div>
+            <div className="ft-lede">{f.lede}</div>
+            <ul>
+              {f.features.map((x, i) => (
+                <li key={i}><span className="ck">✓</span><span>{x}</span></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div className="adh-coco">
+        <div>
+          <div className="cc-eyebrow">✦ On co-construit avec la meute</div>
+          <h3>Rien n'est figé.<br/>Ton avis compte.</h3>
+          <p>
+            TTC passe en association à la rentrée. Avant de figer les formules, les tarifs et la licence,
+            on veut ton retour. Ça prend 5 minutes et ça sert directement à construire la saison.
+          </p>
+        </div>
+        <a href={A().feedbackUrl} target="_blank" rel="noopener" className="btn btn-primary">
+          Donner mon avis (5 min) →
+        </a>
+      </div>
+    </div>
+  </section>
+);
+
+window.ADH = { AdhHero, AdhBenefits, AdhDiscord, AdhFormules, AdhCard };
