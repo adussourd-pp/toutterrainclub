@@ -364,5 +364,49 @@ const ADHESION = {
     { niv: "85", an: "Chaman des Platines", em: "🧙" },
     { niv: "100", an: "Dieu de la Rave", em: "👑" },
   ],
+  // Niveaux mis en avant sur la page (on ne montre pas les 9, trop lourd)
+  levelsPreview: ["1", "25", "100"],
+  // Lien du feedback Tally — on co-construit l'adhésion avec la meute
+  feedbackUrl: "https://tally.so/r/Pdpbv5",
+  // 3 formules — tarifs volontairement non figés (à venir).
+  // La formule avec licence FFA reste à confirmer selon les retours du sondage.
+  formules: [
+    {
+      key: "soutien",
+      name: "Soutien",
+      tag: "L'essentiel",
+      lede: "Tu rejoins officiellement la meute et tu soutiens le projet.",
+      features: [
+        "Welcome pack aux couleurs du TTC (t-shirt + goodies)",
+        "Accès à l'espace adhérent",
+        "Codes & réductions chez nos partenaires",
+      ],
+    },
+    {
+      key: "adhesion",
+      name: "Adhésion",
+      tag: "Le plus complet",
+      featured: true,
+      lede: "Tout l'esprit TTC, avec les avantages en plus sur nos events.",
+      features: [
+        "Tout ce que comprend Soutien",
+        "Priorité d'inscription aux weekends & events",
+        "Tarifs avantageux sur les events signatures & le merch",
+        "Accès aux soirées réservées à la meute",
+      ],
+    },
+    {
+      key: "licence",
+      name: "Adhésion + Licence",
+      tag: "Sous réserve · selon vos retours",
+      tentative: true,
+      lede: "L'adhésion complète, plus une licence FFA prise via le club.",
+      features: [
+        "Tout ce que comprend Adhésion",
+        "Licence FFA Running (loisir + assurance) ou Compétition",
+        "Pour courir les courses officielles sous les couleurs TTC",
+      ],
+    },
+  ],
 };
 window.ADHESION = ADHESION;
