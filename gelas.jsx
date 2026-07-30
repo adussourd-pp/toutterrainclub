@@ -17,10 +17,9 @@ const GEL_DATA = {
     { n: "Quentin", madone: 1 },
     { n: "Hugo", madone: 1 },
     { n: "Maxime T", madone: 1 },
-    { n: "Lorna", summit: 2 },
-    { n: "Pierre", summit: 2 },
-    { n: "Gautier", assist: 1 },
-    { n: "Fanny G", assist: 2 },
+    { n: "Lorna", summit: 1 },
+    { n: "Pierre", summit: 1 },
+    { n: "Gautier", summit: 1, assist: 1 },
   ],
   roadbook: [
     {
