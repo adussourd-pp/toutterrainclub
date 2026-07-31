@@ -1,0 +1,30 @@
+{
+  "name": "ttc-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tout Terrain Club — design system (composants React + tokens)",
+  "type": "module",
+  "module": "./dist/index.mjs",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    },
+    "./styles.css": "./styles.css"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "esbuild": "^0.28.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.31"
+  }
+}

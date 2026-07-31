@@ -1,0 +1,23 @@
+{
+  "pkg": "ttc-design-system",
+  "globalName": "TTC",
+  "shape": "package",
+  "buildCmd": "npm run build",
+  "cssEntry": "styles.css",
+  "extraFonts": "fonts.css",
+  "dtsPropsFor": {
+    "TtcLogo": "/** Taille du picto en px (carré). */\n  size?: number;",
+    "Brand": "/** Cible du lien (accueil par défaut). */\n  to?: string;",
+    "HeaderPublic": "/** Libellé de l'onglet actif. */\n  active?: string;",
+    "ElevSparkline": "/** Couleur du tracé. */\n  stroke?: string;\n  /** Couleur de remplissage de l'aire. */\n  fill?: string;"
+  },
+  "overrides": {
+    "HeaderPublic": { "cardMode": "column" },
+    "PromoStrip": { "cardMode": "column" },
+    "PartnersBand": { "cardMode": "column" },
+    "FooterPublic": { "cardMode": "column" },
+    "HeroWaves": { "cardMode": "single", "viewport": "1000x260", "primaryStory": "SurNuit" },
+    "HandArrow": { "cardMode": "single", "viewport": "1000x180", "primaryStory": "Defaut" }
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}

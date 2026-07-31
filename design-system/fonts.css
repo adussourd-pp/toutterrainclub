@@ -1,0 +1,6 @@
+/* TTC brand fonts — shipped with the design system so every design renders on-brand. */
+@font-face{font-family:'Inter Tight';font-weight:400;font-style:normal;font-display:swap;src:url('./fonts/inter-tight-400.woff2') format('woff2');}
+@font-face{font-family:'Inter Tight';font-weight:600;font-style:normal;font-display:swap;src:url('./fonts/inter-tight-600.woff2') format('woff2');}
+@font-face{font-family:'Inter Tight';font-weight:800;font-style:normal;font-display:swap;src:url('./fonts/inter-tight-800.woff2') format('woff2');}
+@font-face{font-family:'JetBrains Mono';font-weight:500;font-style:normal;font-display:swap;src:url('./fonts/jetbrains-mono-500.woff2') format('woff2');}
+@font-face{font-family:'Caveat';font-weight:600;font-style:normal;font-display:swap;src:url('./fonts/caveat-600.woff2') format('woff2');}
