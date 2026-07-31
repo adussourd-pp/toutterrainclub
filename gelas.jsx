@@ -346,6 +346,80 @@ GEL.Gear = () => {
   );
 };
 
+GEL.Ravito = () => {
+  const lists = [
+    {
+      name: "Chargement voiture", tag: "À caler avant le départ de Nice · rien ne se rachète en route", km: "avant départ",
+      items: [
+        "Tous les drop bags Madone — 1 par coureur, étiquetés au nom",
+        "Tous les drop bags Relais — 1 par coureur, étiquetés au nom",
+        "Stock nutrition Näak : gels, barres, boisson + réserve",
+        "Réserve d'eau : bidons de 5 L pour recharger les coureurs",
+        "Glacière : ravito salé, fruits, boissons fraîches",
+        "Roadbook imprimé + horaires de passage par point",
+        "Liste des coureurs + numéros de téléphone",
+      ],
+    },
+    {
+      name: "Matériel ravito", tag: "Sort à chaque point · Levens → Utelle → Granges → St-Martin", km: "à chaque point",
+      items: [
+        "Table pliante + réchaud / bouilloire (soupe & café de nuit)",
+        "Gobelets et gourdes de recharge (zéro déchet)",
+        "Sacs poubelle — on remballe tout, rien au sol",
+        "Frontales + piles / batteries de rechange",
+        "Trousse de premiers secours + couvertures de survie",
+        "Couche chaude de rechange (nuit à 1 683 m aux Granges)",
+        "Batterie externe + chargeurs montre / téléphone coureurs",
+      ],
+    },
+    {
+      name: "Voiture & sécurité", tag: "La logistique qui fait tenir le suivi de Nice à la Madone", km: "en continu",
+      items: [
+        "Plein d'essence fait + carte bancaire / espèces",
+        "Points de ravito et parkings d'accès enregistrés au GPS",
+        "Téléphone chargé + partage de position live avec l'expé",
+        "Contacts d'urgence : Guides 06, refuge de Nice, secours 112",
+        "Roue de secours + trousse à outils vérifiées",
+        "Drop bags Madone déposés vendredi soir avant la nuit",
+      ],
+    },
+  ];
+  return (
+    <section className="t2t-sec" id="voiture-ravito">
+      <div className="wrap">
+        <div className="t2t-sec-head">
+          <div>
+            <div className="t2t-eyebrow">★ Voiture ravito</div>
+            <h2 className="t2t-h2">La <span className="uv">team assistance</span>.</h2>
+          </div>
+          <p style={{ maxWidth: "34ch", color: "rgba(244,239,255,0.7)", fontSize: 15, lineHeight: 1.55 }}>
+            La voiture passe à chaque ravito du J1 et transporte les drop bags.
+            Responsable : <b>Gautier</b>. Tout ce qui n'est pas dans la voiture
+            n'existe pas sur le parcours.
+          </p>
+        </div>
+        <div className="t2t-commu">
+          {lists.map((l) => (
+            <div key={l.name} className="t2t-commu-card">
+              <div className="cc-top">
+                <span className="cc-name" style={{ fontSize: 24 }}>{l.name}</span>
+              </div>
+              <span className="cc-tag">{l.tag}</span>
+              <ul className="gel-check">
+                {l.items.map((it, i) => <li key={i}>{it}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p className="t2t-finetext" style={{ marginTop: 14 }}>
+          Ravitos confirmés : Levens · Utelle · Granges de la Brasque · Saint-Martin-Vésubie —
+          Aspremont & Cros d'Utelle selon conditions.
+        </p>
+      </div>
+    </section>
+  );
+};
+
 GEL.Logistics = () => (
   <section className="t2t-sec" id="logistique">
     <div className="wrap">
