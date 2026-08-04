@@ -1,0 +1,572 @@
+<title>TTC · Analyse sondage 2026 — le plan × la meute</title>
+<style>
+  :root{
+    --paper:#f4f2ea; --paper-2:#eceadf; --card:#fbfaf5; --line:#ded9c9;
+    --ink:#141310; --ink-2:#3a382f; --muted:#75726551; --muted-t:#6f6c60;
+    --green:#7ddf64; --green-3:#3f8f2c; --green-tint:#e7f7df;
+    --amber:#c9821b; --amber-tint:#f8ecd6; --amber-line:#e8c98e;
+    --slate:#3f6f8f; --slate-tint:#e0edf3; --slate-line:#bcd6e2;
+    --shadow:0 1px 0 #fff8, 0 18px 40px -28px #3a352060;
+    --f-disp:"Archivo Narrow","Helvetica Neue",Arial,sans-serif;
+    --f-body:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --f-mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0a140d; --paper-2:#0d1a11; --card:#10231688; --line:#1e3a25;
+      --ink:#eaf3ea; --ink-2:#b6ceb9; --muted:#5a8c6a33; --muted-t:#7fa389;
+      --green:#6dff8a; --green-3:#6dff8a; --green-tint:#123a1f;
+      --amber:#f0b25a; --amber-tint:#33280f; --amber-line:#5a4620;
+      --slate:#7fb6d4; --slate-tint:#122833; --slate-line:#274a5c;
+      --shadow:0 20px 44px -30px #000a;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0a140d; --paper-2:#0d1a11; --card:#10231688; --line:#1e3a25;
+    --ink:#eaf3ea; --ink-2:#b6ceb9; --muted:#5a8c6a33; --muted-t:#7fa389;
+    --green:#6dff8a; --green-3:#6dff8a; --green-tint:#123a1f;
+    --amber:#f0b25a; --amber-tint:#33280f; --amber-line:#5a4620;
+    --slate:#7fb6d4; --slate-tint:#122833; --slate-line:#274a5c;
+    --shadow:0 20px 44px -30px #000a;
+  }
+  :root[data-theme="light"]{
+    --paper:#f4f2ea; --paper-2:#eceadf; --card:#fbfaf5; --line:#ded9c9;
+    --ink:#141310; --ink-2:#3a382f; --muted-t:#6f6c60;
+    --green:#7ddf64; --green-3:#3f8f2c; --green-tint:#e7f7df;
+    --amber:#c9821b; --amber-tint:#f8ecd6; --amber-line:#e8c98e;
+    --slate:#3f6f8f; --slate-tint:#e0edf3; --slate-line:#bcd6e2;
+    --shadow:0 1px 0 #fff8, 0 18px 40px -28px #3a352060;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);
+    line-height:1.55;-webkit-font-smoothing:antialiased;font-size:16px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{font-family:var(--f-disp);font-weight:700;letter-spacing:-.01em;text-wrap:balance;margin:0}
+  .mono{font-family:var(--f-mono)}
+  .eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green-3)}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  /* HERO */
+  header.hero{border-bottom:1px solid var(--line);background:
+    radial-gradient(120% 90% at 88% -10%, color-mix(in srgb,var(--green) 22%,transparent), transparent 60%),
+    var(--paper-2);padding:54px 0 40px;position:relative;overflow:hidden}
+  .kicker{display:inline-flex;gap:9px;align-items:center;font-family:var(--f-mono);font-size:11.5px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
+    border:1px solid var(--line);border-radius:100px;padding:6px 13px;background:var(--card)}
+  .kicker b{color:var(--green-3)}
+  header.hero h1{font-size:clamp(34px,6.2vw,64px);line-height:.98;margin:20px 0 0;text-transform:uppercase}
+  header.hero h1 .x{color:var(--green-3);font-family:var(--f-body);font-weight:400;font-size:.62em;
+    vertical-align:.06em;padding:0 .12em;letter-spacing:0}
+  header.hero .lede{max-width:60ch;color:var(--ink-2);font-size:17px;margin:20px 0 0}
+  .hero-stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+  .hstat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;
+    box-shadow:var(--shadow);min-width:130px;flex:1 1 130px}
+  .hstat .n{font-family:var(--f-disp);font-weight:700;font-size:30px;line-height:1;letter-spacing:-.02em}
+  .hstat .n small{font-size:.5em;color:var(--muted-t);font-weight:400;letter-spacing:0}
+  .hstat .l{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted-t);margin-top:6px}
+  .caveat{margin-top:22px;border-left:3px solid var(--amber);background:var(--amber-tint);
+    border-radius:0 10px 10px 0;padding:12px 16px;font-size:14px;color:var(--ink-2);max-width:74ch}
+  .caveat b{color:var(--ink)}
+
+  section{padding:46px 0}
+  .sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+  .sec-head h2{font-size:clamp(23px,3.4vw,32px);text-transform:uppercase}
+  .sec-head p{color:var(--muted-t);font-size:14.5px;margin:0;max-width:48ch}
+
+  /* VERDICT TRIPTYCH */
+  .verdict{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .vcard{border-radius:16px;padding:20px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow)}
+  .vcard .tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:11px;
+    letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:5px 10px;border-radius:100px}
+  .vcard.ok{border-color:var(--green-3)} .vcard.ok .tag{background:var(--green-tint);color:var(--green-3)}
+  .vcard.warn{border-color:var(--amber-line)} .vcard.warn .tag{background:var(--amber-tint);color:var(--amber)}
+  .vcard.gap{border-color:var(--slate-line)} .vcard.gap .tag{background:var(--slate-tint);color:var(--slate)}
+  .vcard h3{font-size:19px;margin:14px 0 8px}
+  .vcard ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:9px}
+  .vcard li{font-size:14px;color:var(--ink-2);padding-left:20px;position:relative}
+  .vcard li::before{content:"";position:absolute;left:2px;top:7px;width:8px;height:8px;border-radius:2px}
+  .vcard.ok li::before{background:var(--green)} .vcard.warn li::before{background:var(--amber)}
+  .vcard.gap li::before{background:var(--slate)}
+  .vcard li b{color:var(--ink)}
+
+  /* CONFRONT ROWS */
+  .conf{display:flex;flex-direction:column;gap:14px}
+  .row{border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden;box-shadow:var(--shadow)}
+  .row-top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
+    padding:15px 18px;border-bottom:1px solid var(--line)}
+  .row-top .topic{font-family:var(--f-disp);font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:-.01em}
+  .badge{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+    font-weight:600;padding:5px 11px;border-radius:100px;white-space:nowrap}
+  .badge.ok{background:var(--green-tint);color:var(--green-3)}
+  .badge.warn{background:var(--amber-tint);color:var(--amber)}
+  .badge.gap{background:var(--slate-tint);color:var(--slate)}
+  .row-body{display:grid;grid-template-columns:1fr 1.25fr;gap:0}
+  .cell{padding:16px 18px}
+  .cell.plan{background:color-mix(in srgb,var(--paper-2) 60%,transparent);border-right:1px solid var(--line)}
+  .cell .clabel{font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--muted-t);margin-bottom:9px}
+  .cell.plan .clabel{color:var(--ink-2)}
+  .cell p{margin:0;font-size:14px;color:var(--ink-2)}
+  .cell p+p{margin-top:8px}
+  .takeaway{padding:12px 18px;border-top:1px dashed var(--line);font-size:13.5px;color:var(--ink);
+    background:color-mix(in srgb,var(--green-tint) 30%,transparent)}
+  .takeaway b{color:var(--green-3);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;margin-right:8px}
+  .row.warn .takeaway{background:color-mix(in srgb,var(--amber-tint) 45%,transparent)}
+  .row.warn .takeaway b{color:var(--amber)}
+  .row.gap .takeaway{background:color-mix(in srgb,var(--slate-tint) 45%,transparent)}
+  .row.gap .takeaway b{color:var(--slate)}
+
+  /* BARS */
+  .bars{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+  .bar{display:grid;grid-template-columns:minmax(0,1fr);gap:3px}
+  .bar .bl{display:flex;justify-content:space-between;gap:10px;font-size:13px}
+  .bar .bl .bn{font-family:var(--f-mono);font-weight:600;font-size:12.5px}
+  .bar .track{height:9px;border-radius:100px;background:var(--paper-2);overflow:hidden;position:relative}
+  .bar .fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--green-3),var(--green))}
+  .bar.amber .fill{background:linear-gradient(90deg,var(--amber),color-mix(in srgb,var(--amber) 55%,#fff))}
+  .bar.slate .fill{background:linear-gradient(90deg,var(--slate),color-mix(in srgb,var(--slate) 55%,#fff))}
+  .bar.dim .fill{opacity:.4;background:var(--muted-t)}
+
+  /* split stacked bar */
+  .split{display:flex;height:34px;border-radius:10px;overflow:hidden;border:1px solid var(--line);font-family:var(--f-mono)}
+  .split span{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#08140b;
+    white-space:nowrap;overflow:hidden}
+  .split .s-ok{background:var(--green)} .split .s-mid{background:var(--amber);color:#1a1204}
+  .split .s-no{background:var(--slate);color:#04141d}
+  .split-key{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12.5px;color:var(--muted-t);font-family:var(--f-mono)}
+  .split-key i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .panel{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:20px;box-shadow:var(--shadow)}
+  .panel h3{font-size:17px;text-transform:uppercase;margin-bottom:4px}
+  .panel .sub{font-size:12.5px;color:var(--muted-t);font-family:var(--f-mono);margin-bottom:16px}
+
+  /* word cloud */
+  .cloud{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:baseline}
+  .cloud span{font-family:var(--f-disp);font-weight:700;line-height:1;color:var(--ink-2);text-transform:lowercase}
+  .cloud .w1{font-size:52px;color:var(--green-3)} .cloud .w2{font-size:38px}
+  .cloud .w3{font-size:29px} .cloud .w4{font-size:22px;color:var(--muted-t)}
+  .cloud .w5{font-size:17px;color:var(--muted-t)}
+
+  /* verbatims */
+  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .quote{border:1px solid var(--line);border-left:3px solid var(--green-3);border-radius:0 12px 12px 0;
+    padding:15px 17px;background:var(--card);font-size:14.5px;color:var(--ink-2)}
+  .quote.warn{border-left-color:var(--amber)} .quote.slate{border-left-color:var(--slate)}
+  .quote p{margin:0 0 8px} .quote cite{font-family:var(--f-mono);font-size:11px;color:var(--muted-t);font-style:normal;letter-spacing:.04em}
+
+  /* reco */
+  .reco{display:flex;flex-direction:column;gap:12px;counter-reset:r}
+  .step{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
+    border:1px solid var(--line);border-radius:14px;background:var(--card);padding:16px 18px;box-shadow:var(--shadow)}
+  .step::before{counter-increment:r;content:counter(r,decimal-leading-zero);font-family:var(--f-disp);
+    font-weight:700;font-size:26px;color:var(--green-3);min-width:42px}
+  .step .st-t{font-family:var(--f-disp);font-weight:700;font-size:17px;text-transform:uppercase}
+  .step .st-d{font-size:13.5px;color:var(--muted-t);margin-top:3px}
+  .step .pri{font-family:var(--f-mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+    padding:5px 10px;border-radius:100px;background:var(--green-tint);color:var(--green-3);white-space:nowrap}
+  .step .pri.now{background:var(--amber-tint);color:var(--amber)}
+
+  footer{border-top:1px solid var(--line);padding:28px 0 46px;color:var(--muted-t);font-size:12.5px;font-family:var(--f-mono)}
+
+  @media (max-width:760px){
+    .verdict{grid-template-columns:1fr}
+    .row-body{grid-template-columns:1fr}
+    .cell.plan{border-right:none;border-bottom:1px solid var(--line)}
+    .grid2,.quotes{grid-template-columns:1fr}
+    .step{grid-template-columns:auto 1fr;gap:12px}
+    .step .pri{grid-column:2}
+  }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">Tout Terrain Club · <b>Feedback 2026 → saison 2027</b></span>
+    <h1>Le plan <span class="x">×</span> la meute</h1>
+    <p class="lede">Ce que le passage en asso prévoit, confronté ligne à ligne à ce que <b>35 membres</b> viennent de répondre. Là où ça colle, là où ça frotte, et ce qu'on n'avait pas vu venir.</p>
+
+    <div class="hero-stats">
+      <div class="hstat"><div class="n tnum">35</div><div class="l">réponses complètes</div></div>
+      <div class="hstat"><div class="n tnum">~50<small>%</small></div><div class="l">des 70 vues du form</div></div>
+      <div class="hstat"><div class="n tnum">~11<small>%</small></div><div class="l">de la commu (300+)</div></div>
+      <div class="hstat"><div class="n tnum">97<small>%</small></div><div class="l">favorables à l'asso</div></div>
+      <div class="hstat"><div class="n tnum">82<small>%</small></div><div class="l">prêts à adhérer</div></div>
+    </div>
+
+    <div class="caveat">
+      <b>À lire avec ça en tête.</b> 35 retours = un premier signal fort, pas un référendum. L'échantillon penche vers les <b>plus engagés</b> : 65&nbsp;% viennent au moins 2–3×/mois, 74&nbsp;% se classent « Performance » ou « Ultra ». Les membres occasionnels et débutants sont sous-représentés — donc les freins <b>prix</b> et <b>« deux catégories »</b> sont probablement <b>sous-estimés</b> ici, pas surestimés.
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Le verdict en 10 secondes</h2>
+      <p>Trois piles : ce qui est validé, ce qui frotte, ce qu'on avait laissé de côté.</p>
+    </div>
+    <div class="verdict">
+      <div class="vcard ok">
+        <span class="tag">✓ Feu vert</span>
+        <h3>Le cap est le bon</h3>
+        <ul>
+          <li><b>97 %</b> favorables au passage en asso</li>
+          <li><b>82 %</b> adhèrent (dont 51 % sans hésiter)</li>
+          <li><b>60 %</b> veulent une licence FFA — la formule « en réflexion » est en fait attendue</li>
+          <li>Un <b>vivier de 31 %</b> prêts à s'impliquer activement</li>
+        </ul>
+      </div>
+      <div class="vcard warn">
+        <span class="tag">▲ Ça frotte</span>
+        <h3>Trois points à border</h3>
+        <ul>
+          <li><b>Prix 60&nbsp;€</b> (valeur dans le code) : 43 % le jugeraient déjà trop cher</li>
+          <li><b>Discord</b> : 46 % disent non, 54 % trouvent WhatsApp « parfait »</li>
+          <li>Le <b>« deux catégories de membres »</b> = 1ᵉʳ frein hors prix (17 %)</li>
+        </ul>
+      </div>
+      <div class="vcard gap">
+        <span class="tag">＋ Angles morts</span>
+        <h3>Demandé, pas encore au plan</h3>
+        <ul>
+          <li>Un <b>QG / lieu de retrouvailles</b> avec tarifs partenaires</li>
+          <li>Des <b>stages multi-jours</b> dans d'autres massifs</li>
+          <li><b>Structurer l'info</b> : 46 % se perdent dans le fil</li>
+          <li>Une <b>envie d'expansion géo</b> (arrière-pays, Vence…)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>La confrontation, point par point</h2>
+      <p>Colonne gauche : ce que la page adhésion / le code prévoient. Droite : ce que disent les 35.</p>
+    </div>
+
+    <div class="conf">
+
+      <!-- ASSO -->
+      <div class="row">
+        <div class="row-top"><span class="topic">Passer en association</span><span class="badge ok">Validé</span></div>
+        <div class="row-body">
+          <div class="cell plan"><div class="clabel">Ce qu'on veut</div>
+            <p>Transformer le collectif en asso structurée pour la rentrée 2026, saison 2027.</p></div>
+          <div class="cell"><div class="clabel">Ce que dit la meute</div>
+            <div class="bars">
+              <div class="bar"><div class="bl"><span>Très positif</span><span class="bn tnum">71 %</span></div><div class="track"><div class="fill" style="width:71%"></div></div></div>
+              <div class="bar"><div class="bl"><span>Plutôt positif</span><span class="bn tnum">26 %</span></div><div class="track"><div class="fill" style="width:26%"></div></div></div>
+              <div class="bar dim"><div class="bl"><span>Neutre</span><span class="bn tnum">3 %</span></div><div class="track"><div class="fill" style="width:3%"></div></div></div>
+            </div></div>
+        </div>
+        <div class="takeaway"><b>À retenir</b> Aucune opposition. Le mandat est là — on peut avancer sans tester le terrain plus longtemps.</div>
+      </div>
+
+      <!-- ADHESION -->
+      <div class="row">
+        <div class="row-top"><span class="topic">Une adhésion payante</span><span class="badge ok">Validé</span></div>
+        <div class="row-body">
+          <div class="cell plan"><div class="clabel">Ce qu'on veut</div>
+            <p>Une adhésion annuelle, welcome pack aux couleurs TTC, tout en gardant les runs gratuits.</p></div>
+          <div class="cell"><div class="clabel">« Si l'adhésion existait, tu… »</div>
+            <div class="bars">
+              <div class="bar"><div class="bl"><span>J'adhère sans hésiter</span><span class="bn tnum">51 %</span></div><div class="track"><div class="fill" style="width:51%"></div></div></div>
+              <div class="bar"><div class="bl"><span>J'adhère probablement</span><span class="bn tnum">31 %</span></div><div class="track"><div class="fill" style="width:31%"></div></div></div>
+              <div class="bar amber"><div class="bl"><span>J'attends de voir le contenu</span><span class="bn tnum">14 %</span></div><div class="track"><div class="fill" style="width:14%"></div></div></div>
+              <div class="bar dim"><div class="bl"><span>Probablement pas</span><span class="bn tnum">3 %</span></div><div class="track"><div class="fill" style="width:3%"></div></div></div>
+            </div></div>
+        </div>
+        <div class="takeaway"><b>À retenir</b> 82 % de oui. Les 14 % « j'attends de voir » se convertissent avec des avantages <b>concrets et lisibles</b> — c'est un enjeu de présentation, pas d'appétence.</div>
+      </div>
+
+      <!-- PRIX -->
+      <div class="row warn">
+        <div class="row-top"><span class="topic">Le tarif à 60 €</span><span class="badge warn">Friction</span></div>
+        <div class="row-body">
+          <div class="cell plan"><div class="clabel">Ce qu'on veut</div>
+            <p>La page affiche « tarif à venir », mais le code porte une valeur de travail à <b>60 € / an</b>.</p>
+            <p>Question posée : « à partir de quel montant l'adhésion te paraîtrait <b>clairement trop chère</b> ? »</p></div>
+          <div class="cell"><div class="clabel">Seuil de « trop cher »</div>
+            <div class="split">
+              <span class="s-no" style="flex:6.0">30&nbsp;€ · 17%</span>
+              <span class="s-mid" style="flex:9.0">50&nbsp;€ · 26%</span>
+              <span class="s-ok" style="flex:8.0">70&nbsp;€ · 23%</span>
+              <span class="s-ok" style="flex:5.0">90&nbsp;€ · 14%</span>
+              <span class="s-ok" style="flex:7.0">peu importe · 20%</span>
+            </div>
+            <div class="split-key">
+              <span><i style="background:var(--slate)"></i>60 € = trop cher</span>
+              <span><i style="background:var(--green)"></i>60 € = ok</span>
+            </div>
+            <p style="margin-top:12px;font-size:13.5px;color:var(--ink-2)">À <b>60 €</b>, <b>43 %</b> décrochent. À <b>~40–50 €</b>, seuls 17 % décrochent.</p>
+          </div>
+        </div>
+        <div class="takeaway"><b>Reco</b> Viser <b>40–50 €</b> pour le socle « Adhérent », et faire porter la valeur perçue par le welcome pack + les réducs events. Réserver 60 €+ à la formule Licence FFA (où le prix « n'est pas le sujet » pour les compétiteurs).</div>
+      </div>
+
+      <!-- FFA -->
+      <div class="row">
+        <div class="row-top"><span class="topic">La formule Licence FFA</span><span class="badge ok">Validé — à confirmer</span></div>
+        <div class="row-body">
+          <div class="cell plan"><div class="clabel">Ce qu'on veut</div>
+            <p>Formule « Adhérent + Licence FFA » marquée <b>« en réflexion, selon vos retours »</b> — la plus incertaine des trois.</p></div>
+          <div class="cell"><div class="clabel">Intérêt pour une licence via le club</div>
+            <div class="bars">
+              <div class="bar"><div class="bl"><span>Oui · Compétition</span><span class="bn tnum">57 %</span></div><div class="track"><div class="fill" style="width:57%"></div></div></div>
+              <div class="bar amber"><div class="bl"><span>Je veux en savoir plus</span><span class="bn tnum">20 %</span></div><div class="track"><div class="fill" style="width:20%"></div></div></div>
+              <div class="bar slate"><div class="bl"><span>Non, pas besoin</span><span class="bn tnum">20 %</span></div><div class="track"><div class="fill" style="width:20%"></div></div></div>
+              <div class="bar dim"><div class="bl"><span>Oui · Running (loisir)</span><span class="bn tnum">3 %</span></div><div class="track"><div class="fill" style="width:3%"></div></div></div>
+            </div></div>
+        </div>
+        <div class="takeaway"><b>À retenir</b> 60 % d'intéressés + « une équipe TTC sur les courses » demandée par 54 %. Cette formule n'est pas un pari : on peut la <b>sortir du conditionnel</b>. Les 20 % « en savoir plus » veulent juste comprendre ce que la licence change concrètement.</div>
+      </div>
+
+      <!-- DISCORD -->
+      <div class="row warn">
+        <div class="row-top"><span class="topic">Migrer WhatsApp → Discord</span><span class="badge warn">Friction</span></div>
+        <div class="row-body">
+          <div class="cell plan"><div class="clabel">Ce qu'on veut</div>
+            <p>Le code lie l'affichage des niveaux gamifiés à un passage sur Discord (flag <span class="mono">showLevels</span> ↔ plateforme commu).</p></div>
+          <div class="cell"><div class="clabel">Vécu WhatsApp aujourd'hui</div>
+            <div class="bars">
+              <div class="bar slate"><div class="bl"><span>« C'est parfait comme ça »</span><span class="bn tnum">54 %</span></div><div class="track"><div class="fill" style="width:54%"></div></div></div>
+              <div class="bar amber"><div class="bl"><span>« Parfois je m'y perds »</span><span class="bn tnum">26 %</span></div><div class="track"><div class="fill" style="width:26%"></div></div></div>
+              <div class="bar amber"><div class="bl"><span>« Souvent le chaos »</span><span class="bn tnum">20 %</span></div><div class="track"><div class="fill" style="width:20%"></div></div></div>
+            </div>
+            <p style="margin-top:12px;font-size:13.5px;color:var(--ink-2)">Prêts à basculer sur Discord : <b>oui 51 % / non 46 %</b> — soit un quasi 50/50.</p>
+          </div>
+        </div>
+        <div class="takeaway"><b>Reco</b> 46 % de blocage + un canal principal jugé « parfait » par la majorité : une bascule sèche est risquée. Mais 46 % se perdent → le vrai besoin est de <b>structurer l'info</b> (canaux clairs, annonces séparées du bavardage). C'est faisable sans quitter WhatsApp, ou via un Discord <b>en plus</b> et non « à la place ». Et les niveaux réels (débutant→ultra) n'ont pas besoin de Discord pour exister.</div>
+      </div>
+
+      <!-- GAMIFICATION -->
+      <div class="row warn">
+        <div class="row-top"><span class="topic">Les niveaux « façon jeu »</span><span class="badge warn">Signal faible</span></div>
+        <div class="row-body">
+          <div class="cell plan"><div class="clabel">Ce qu'on veut</div>
+            <p>Deux échelles gamifiées sur la page : niveau trail (🌱→🏔️) <b>et</b> un « style Trail to Techno » (🎧 Curieux → 👑 Résident).</p></div>
+          <div class="cell"><div class="clabel">Demande réelle</div>
+            <p>Personne ne réclame de gamification. « Des groupes de niveaux sur les runs » n'est demandé que par <b>17 %</b> — et plusieurs verbatims défendent au contraire le <b>mix des niveaux</b> pour l'aspect social run.</p>
+            <p>Le « style techno » gamifié : <b>zéro mention</b> spontanée.</p></div>
+        </div>
+        <div class="takeaway"><b>Reco</b> Garder les 4 niveaux trail comme <b>repères utiles</b> (orienter débutants/confirmés), mais ne pas en faire un système de points. Ranger l'échelle « style techno » : jolie idée, mais aucun signal, et elle nourrit justement la peur du « deux catégories ».</div>
+      </div>
+
+      <!-- BENEFITS FIT -->
+      <div class="row">
+        <div class="row-top"><span class="topic">Espace membre &amp; events réservés</span><span class="badge ok">Validé</span></div>
+        <div class="row-body">
+          <div class="cell plan"><div class="clabel">Ce qu'on veut</div>
+            <p>Avantages adhérent : espace &amp; outils trail, priorité events, stages, soirées meute, réducs partenaires.</p></div>
+          <div class="cell"><div class="clabel">Top de ce qu'ils veulent « en plus »</div>
+            <div class="bars">
+              <div class="bar"><div class="bl"><span>Week-ends &amp; stages trail</span><span class="bn tnum">57 %</span></div><div class="track"><div class="fill" style="width:57%"></div></div></div>
+              <div class="bar"><div class="bl"><span>Équipe TTC sur les courses</span><span class="bn tnum">54 %</span></div><div class="track"><div class="fill" style="width:54%"></div></div></div>
+              <div class="bar"><div class="bl"><span>Événements sociaux (after-run…)</span><span class="bn tnum">51 %</span></div><div class="track"><div class="fill" style="width:51%"></div></div></div>
+              <div class="bar"><div class="bl"><span>Sorties montagne engagées</span><span class="bn tnum">51 %</span></div><div class="track"><div class="fill" style="width:51%"></div></div></div>
+            </div></div>
+        </div>
+        <div class="takeaway"><b>À retenir</b> Les 4 demandes phares sont exactement le cœur de la formule « Adhérent ». L'offre est <b>alignée</b> — reste à la rendre lisible dès la page.</div>
+      </div>
+
+      <!-- DEUX CATEGORIES -->
+      <div class="row gap">
+        <div class="row-top"><span class="topic">La peur du « deux catégories »</span><span class="badge gap">Vigilance</span></div>
+        <div class="row-body">
+          <div class="cell plan"><div class="clabel">Ce qu'on veut</div>
+            <p>Un modèle « base gratuite pour tous + extras payants » — déjà le discours central de la page adhésion.</p></div>
+          <div class="cell"><div class="clabel">Freins cités (hors « rien »)</div>
+            <div class="bars">
+              <div class="bar slate"><div class="bl"><span>Peur de 2 catégories de membres</span><span class="bn tnum">17 %</span></div><div class="track"><div class="fill" style="width:34%"></div></div></div>
+              <div class="bar amber"><div class="bl"><span>Le prix</span><span class="bn tnum">17 %</span></div><div class="track"><div class="fill" style="width:34%"></div></div></div>
+              <div class="bar"><div class="bl"><span>« Rien, je suis partant » (rappel)</span><span class="bn tnum">46 %</span></div><div class="track"><div class="fill" style="width:92%"></div></div></div>
+            </div>
+            <p style="margin-top:10px;font-size:12.5px;color:var(--muted-t)">Barres à l'échelle du frein max pour la lisibilité.</p></div>
+        </div>
+        <div class="takeaway"><b>Reco</b> Le maintien des <b>runs 100 % gratuits</b> et du <b>mix des niveaux</b> doit rester un engagement écrit, répété. C'est l'ADN cité (« convivial », « accessible à tous », « social run ») — l'adhésion doit être vécue comme un <b>soutien</b>, pas un péage.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><h2>Qui a parlé</h2><p>Le profil des 35 — pour lire les chiffres au bon niveau.</p></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Un noyau très actif</h3>
+        <div class="sub">Fréquence de participation</div>
+        <div class="bars">
+          <div class="bar"><div class="bl"><span>Toutes les semaines</span><span class="bn tnum">34 %</span></div><div class="track"><div class="fill" style="width:34%"></div></div></div>
+          <div class="bar"><div class="bl"><span>2 à 3× / mois</span><span class="bn tnum">31 %</span></div><div class="track"><div class="fill" style="width:31%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>1× / mois</span><span class="bn tnum">14 %</span></div><div class="track"><div class="fill" style="width:14%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Quelques fois / an</span><span class="bn tnum">14 %</span></div><div class="track"><div class="fill" style="width:14%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Jamais encore</span><span class="bn tnum">6 %</span></div><div class="track"><div class="fill" style="width:6%"></div></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Plutôt costauds</h3>
+        <div class="sub">Niveau trail auto-déclaré</div>
+        <div class="bars">
+          <div class="bar"><div class="bl"><span>Performance</span><span class="bn tnum">43 %</span></div><div class="track"><div class="fill" style="width:43%"></div></div></div>
+          <div class="bar"><div class="bl"><span>Ultra</span><span class="bn tnum">31 %</span></div><div class="track"><div class="fill" style="width:31%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Progression</span><span class="bn tnum">20 %</span></div><div class="track"><div class="fill" style="width:20%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Découverte</span><span class="bn tnum">6 %</span></div><div class="track"><div class="fill" style="width:6%"></div></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Le bouche-à-oreille domine</h3>
+        <div class="sub">Comment ils ont connu TTC</div>
+        <div class="bars">
+          <div class="bar"><div class="bl"><span>Par un(e) ami(e)</span><span class="bn tnum">49 %</span></div><div class="track"><div class="fill" style="width:49%"></div></div></div>
+          <div class="bar"><div class="bl"><span>Instagram</span><span class="bn tnum">29 %</span></div><div class="track"><div class="fill" style="width:29%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Strava</span><span class="bn tnum">17 %</span></div><div class="track"><div class="fill" style="width:17%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Autre</span><span class="bn tnum">6 %</span></div><div class="track"><div class="fill" style="width:6%"></div></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Une commu jeune</h3>
+        <div class="sub">Depuis combien de temps avec TTC</div>
+        <div class="bars">
+          <div class="bar"><div class="bl"><span>6 à 12 mois</span><span class="bn tnum">37 %</span></div><div class="track"><div class="fill" style="width:37%"></div></div></div>
+          <div class="bar"><div class="bl"><span>Plus d'un an</span><span class="bn tnum">26 %</span></div><div class="track"><div class="fill" style="width:26%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Moins de 6 mois</span><span class="bn tnum">20 %</span></div><div class="track"><div class="fill" style="width:20%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Depuis les débuts</span><span class="bn tnum">11 %</span></div><div class="track"><div class="fill" style="width:11%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head"><h2>L'ADN, en trois mots</h2><p>Les mots qui viennent spontanément (M/N/O agrégés). Taille = fréquence.</p></div>
+    <div class="cloud">
+      <span class="w1">convivial</span>
+      <span class="w2">partage</span>
+      <span class="w2">ambiance</span>
+      <span class="w3">amitié</span>
+      <span class="w3">motivation</span>
+      <span class="w3">fun</span>
+      <span class="w3">social</span>
+      <span class="w3">du kiff</span>
+      <span class="w4">bienveillance</span>
+      <span class="w4">rencontre</span>
+      <span class="w4">aventure</span>
+      <span class="w4">happy</span>
+      <span class="w4">sanglier</span>
+      <span class="w4">équipe</span>
+      <span class="w5">accueillant</span>
+      <span class="w5">solidarité</span>
+      <span class="w5">dépassement</span>
+      <span class="w5">good vibes</span>
+      <span class="w5">déconnexion</span>
+    </div>
+    <p style="margin-top:18px;color:var(--ink-2);font-size:14.5px;max-width:66ch">
+      Le message est limpide : ce qui fait TTC, c'est <b>le lien humain</b> (« lien social » + « ambiance/fun/convivialité » cités par ~80 % chacun), bien avant la performance. <b>Toute décision de structuration doit protéger ça en premier.</b>
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><h2>Ce qu'ils nous disent</h2><p>Verbatims représentatifs des trois tensions (prénoms seuls, contacts retirés).</p></div>
+    <div class="quotes">
+      <div class="quote">
+        <p>« Organisation et ambiance incroyable… surtout ne pas changer cette convivialité. »</p>
+        <cite>— sur ce qu'il faut préserver</cite>
+      </div>
+      <div class="quote warn">
+        <p>« Sur l'idée du Discord, je suis mitigé : c'est niche si on n'a pas la culture gaming. Je pense que c'est presque un frein au développement de communauté. »</p>
+        <cite>— Alain, sur la bascule Discord</cite>
+      </div>
+      <div class="quote warn">
+        <p>« Continuer de mixer les niveaux pour l'aspect “social run”. » · « Accessible à tous. »</p>
+        <cite>— plusieurs, sur la peur des catégories</cite>
+      </div>
+      <div class="quote slate">
+        <p>« Avoir un QG avec des prix préférentiels : after-run, after sorties longues, point de retrouvailles… »</p>
+        <cite>— angle mort : un lieu à soi</cite>
+      </div>
+      <div class="quote slate">
+        <p>« Si le TTC veut s'exporter dans le bassin Roquefort / La Colle / Vence, ce sera plus simple pour moi de participer. »</p>
+        <cite>— Mathieu, sur l'expansion géo</cite>
+      </div>
+      <div class="quote">
+        <p>« Je suis chaud d'aider sur à peu près tous les sujets, et aussi pour organiser une course. »</p>
+        <cite>— l'un des 11 volontaires actifs</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--paper-2);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head"><h2>Le vivier bénévole</h2><p>« T'impliquer davantage t'intéresse ? » — un capital humain à activer maintenant.</p></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>80 % ouverts à aider</h3>
+        <div class="sub">Envie de s'impliquer</div>
+        <div class="bars">
+          <div class="bar"><div class="bl"><span>Oui, activement</span><span class="bn tnum">31 %</span></div><div class="track"><div class="fill" style="width:31%"></div></div></div>
+          <div class="bar amber"><div class="bl"><span>Peut-être, selon mon temps</span><span class="bn tnum">49 %</span></div><div class="track"><div class="fill" style="width:49%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Non / pas maintenant</span><span class="bn tnum">20 %</span></div><div class="track"><div class="fill" style="width:20%"></div></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Sur quoi ils veulent aider</h3>
+        <div class="sub">Domaines (sur les 24 intéressés)</div>
+        <div class="bars">
+          <div class="bar"><div class="bl"><span>Organiser les sorties hebdo</span><span class="bn tnum">37 %</span></div><div class="track"><div class="fill" style="width:54%"></div></div></div>
+          <div class="bar"><div class="bl"><span>Développer les week-ends</span><span class="bn tnum">34 %</span></div><div class="track"><div class="fill" style="width:50%"></div></div></div>
+          <div class="bar"><div class="bl"><span>Créer une course officielle</span><span class="bn tnum">31 %</span></div><div class="track"><div class="fill" style="width:46%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Développer les Pauses</span><span class="bn tnum">26 %</span></div><div class="track"><div class="fill" style="width:38%"></div></div></div>
+          <div class="bar dim"><div class="bl"><span>Partenariats marques / shop</span><span class="bn tnum">20 %</span></div><div class="track"><div class="fill" style="width:29%"></div></div></div>
+        </div>
+        <p style="margin-top:10px;font-size:12.5px;color:var(--muted-t)">% sur les 35 · barres à l'échelle du domaine max.</p>
+      </div>
+    </div>
+    <p style="margin-top:16px;color:var(--ink-2);font-size:14.5px;max-width:70ch">
+      Un dev web propose même de <b>bâtir les outils</b> de la commu et offre des réductions ; d'autres proposent partenariats et création de contenu. <b>Bureau d'asso + commissions (events, courses, accueil, partenariats) : les candidats existent déjà.</b>
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><h2>Ce que je ferais maintenant</h2><p>Cinq décisions, tirées directement des 35 retours.</p></div>
+    <div class="reco">
+      <div class="step">
+        <div><div class="st-t">Lancer l'asso — sans hésiter</div><div class="st-d">97 % favorables, 82 % prêts à adhérer. Le mandat est acquis, on passe à l'exécution.</div></div>
+        <span class="pri">Cap confirmé</span>
+      </div>
+      <div class="step">
+        <div><div class="st-t">Caler le socle « Adhérent » à 40–50 €</div><div class="st-d">À 60 €, 43 % décrochent ; à 45 €, seuls 17 %. Faire porter la valeur par le welcome pack et les réducs events.</div></div>
+        <span class="pri now">À trancher</span>
+      </div>
+      <div class="step">
+        <div><div class="st-t">Sortir la Licence FFA du conditionnel</div><div class="st-d">60 % d'intéressés + équipe sur les courses (54 %). Ajouter un mini-explicatif « ce que la licence change ».</div></div>
+        <span class="pri now">À trancher</span>
+      </div>
+      <div class="step">
+        <div><div class="st-t">Ne pas imposer Discord — structurer l'info</div><div class="st-d">46 % contre, WhatsApp jugé « parfait » par 54 %. Le vrai besoin : séparer annonces et bavardage. Discord « en plus », jamais « à la place ».</div></div>
+        <span class="pri now">À arbitrer</span>
+      </div>
+      <div class="step">
+        <div><div class="st-t">Graver « runs gratuits + mix des niveaux »</div><div class="st-d">Désamorce le frein n°1 hors prix. Ranger la gamification « style techno » (zéro signal). Activer les 11 volontaires actifs dès la constitution du bureau.</div></div>
+        <span class="pri">Garde-fou</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    TTC · Feedback 2026 → saison 2027 · 35 réponses au 4 août 2026 · Analyse à visée interne — verbatims anonymisés, contacts non inclus. Chiffres arrondis ; questions à choix multiples, total &gt; 100 %.
+  </div>
+</footer>
