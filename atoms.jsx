@@ -32,7 +32,7 @@ const HeaderPublic = ({ active = "Accueil" }) => {
         </nav>
         <div className="header-right">
           <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
-          <a href="#" className="btn btn-sm">Espace membre</a>
+          <a href="espace-membre.html" className="btn btn-sm">Espace membre</a>
         </div>
       </div>
     </header>
