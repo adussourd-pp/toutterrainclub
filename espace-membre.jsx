@@ -58,6 +58,16 @@ const MemberGate = ({ children }) => {
   );
 };
 
+// ---- Sous-navigation de l'espace membre -----------------------------------
+const MemberSubnav = ({ active }) => (
+  <div className="wrap">
+    <nav className="ms-subnav">
+      <a href="espace-membre.html" className={active === "analyse" ? "active" : ""}>◆ Analyse du sondage</a>
+      <a href="strategie-buzz.html" className={active === "strategie" ? "active" : ""}>◆ Stratégie · buzz &amp; QG</a>
+    </nav>
+  </div>
+);
+
 // ---- Briques d'affichage --------------------------------------------------
 const Bar = ({ label, pct, val, tone = "green", scale }) => (
   <div className={`ms-bar ${tone}`}>
@@ -469,6 +479,7 @@ const MemberReco = () => (
 
 const MemberAnalysis = () => (
   <React.Fragment>
+    <MemberSubnav active="analyse" />
     <MemberHero />
     <MemberVerdict />
     <MemberConfront />
@@ -480,4 +491,4 @@ const MemberAnalysis = () => (
   </React.Fragment>
 );
 
-window.MEMBER = { MemberGate, MemberAnalysis };
+window.MEMBER = { MemberGate, MemberAnalysis, MemberSubnav, Bar, Row };

@@ -4,19 +4,18 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="robots" content="noindex,nofollow" />
-<title>Tout Terrain Club — Espace membre</title>
+<title>Tout Terrain Club — Espace membre · Stratégie</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="styles.css" />
-
 <link rel="stylesheet" href="member-space.css" />
 </head>
 <body>
 
-<div id="root" data-screen-label="Espace membre"></div>
+<div id="root" data-screen-label="Stratégie"></div>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -25,6 +24,7 @@
 <script type="text/babel" src="data.jsx"></script>
 <script type="text/babel" src="atoms.jsx"></script>
 <script type="text/babel" src="espace-membre.jsx"></script>
+<script type="text/babel" src="strategie-buzz.jsx"></script>
 
 <script type="text/babel">
 function App() {
@@ -32,7 +32,7 @@ function App() {
     <div className="page">
       <HeaderPublic active="Espace membre" />
       <window.MEMBER.MemberGate>
-        <window.MEMBER.MemberAnalysis />
+        <window.STRATEGIE.StrategiePage />
       </window.MEMBER.MemberGate>
       <FooterPublic />
     </div>
