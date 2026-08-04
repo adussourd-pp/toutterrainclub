@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Tout Terrain Club — Espace membre</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+
+<style>
+  /* ============================================================
+     ESPACE MEMBRE — styles spécifiques (langage visuel du site :
+     tokens styles.css, vert signature + fire, thème clair club)
+     ============================================================ */
+
+  /* — Porte d'accès — */
+  .ms-lock { min-height: 82vh; display: flex; align-items: center; }
+  .ms-lock-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; margin-top: 40px; }
+  .ms-lock-card {
+    border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper);
+    padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 12px;
+    box-shadow: 0 20px 44px -30px rgba(20,18,10,.4);
+  }
+  .ms-lock-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--green-3); }
+  .ms-lock-input {
+    font-family: var(--f-mono); font-size: 18px; letter-spacing: .28em; padding: 14px 16px;
+    border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink);
+    outline: none; transition: border-color .15s ease;
+  }
+  .ms-lock-input:focus { border-color: var(--green-3); }
+  .ms-lock-input.err { border-color: var(--fire); }
+  .ms-lock-err { font-size: 13px; color: var(--fire); font-family: var(--f-mono); }
+  .ms-lock-card .btn { justify-content: center; margin-top: 4px; }
+  .ms-lock-hint { font-size: 12.5px; color: var(--muted); }
+
+  /* — Hero stats — */
+  .ms-x { font-family: var(--f-display); font-weight: 400; color: var(--green-3); }
+  .ms-stats { grid-template-columns: repeat(5, 1fr); margin-top: 34px; }
+  .ms-stat {
+    border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper);
+    padding: 16px 18px;
+  }
+  .ms-stat .num { font-size: 30px; }
+  .ms-caveat {
+    margin-top: 28px; border-left: 3px solid var(--fire); background: var(--green-tint);
+    border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 18px; font-size: 14px;
+    line-height: 1.55; color: var(--muted); max-width: 78ch;
+  }
+  .ms-caveat b { color: var(--ink); }
+
+  .ms-sec-alt { background: var(--paper-2); }
+  .ms-sec-lede { font-family: var(--f-body, inherit); color: var(--muted); font-size: 14.5px; max-width: 40ch; margin: 0; }
+
+  /* — Verdict triptyque — */
+  .ms-verdict { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .ms-vcard { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 22px; }
+  .ms-vcard.ok { border-color: var(--green-3); }
+  .ms-vcard.warn { border-color: var(--fire); }
+  .ms-vtag {
+    display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-mono);
+    font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+    padding: 5px 11px; border-radius: 999px; background: var(--green-tint); color: var(--green-3);
+  }
+  .ms-vcard.warn .ms-vtag { background: color-mix(in srgb, var(--fire) 15%, transparent); color: var(--fire); }
+  .ms-vcard.gap .ms-vtag { background: var(--paper-2); color: var(--ink); }
+  .ms-vcard h3 { font-family: var(--f-display); font-weight: 700; font-size: 20px; letter-spacing: -.02em; margin: 14px 0 10px; }
+  .ms-vcard ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .ms-vcard li { font-size: 14px; color: var(--muted); padding-left: 20px; position: relative; line-height: 1.5; }
+  .ms-vcard li::before { content: ""; position: absolute; left: 2px; top: 7px; width: 8px; height: 8px; border-radius: 2px; background: var(--green); }
+  .ms-vcard.warn li::before { background: var(--fire); }
+  .ms-vcard.gap li::before { background: var(--muted); }
+  .ms-vcard li b { color: var(--ink); }
+
+  /* — Confrontation — */
+  .ms-conf { display: flex; flex-direction: column; gap: 16px; }
+  .ms-row { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); overflow: hidden; }
+  .ms-row-top { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--rule); }
+  .ms-topic { font-family: var(--f-display); font-weight: 700; font-size: 21px; letter-spacing: -.02em; }
+  .ms-badge { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; font-weight: 600; padding: 5px 11px; border-radius: 999px; white-space: nowrap; }
+  .ms-badge.ok { background: var(--green-tint); color: var(--green-3); }
+  .ms-badge.warn { background: color-mix(in srgb, var(--fire) 15%, transparent); color: var(--fire); }
+  .ms-badge.gap { background: var(--paper-2); color: var(--ink); }
+  .ms-row-body { display: grid; grid-template-columns: 1fr 1.25fr; }
+  .ms-cell { padding: 18px 20px; }
+  .ms-cell.plan { background: var(--paper-2); border-right: 1px solid var(--rule); }
+  .ms-clabel { font-family: var(--f-mono); font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .ms-cell.plan .ms-clabel { color: var(--green-3); }
+  .ms-cell p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.55; }
+  .ms-cell.plan p { color: var(--ink); }
+  .ms-cell p + p { margin-top: 8px; }
+  .ms-real-p { color: var(--muted); }
+  .ms-real-p b, .ms-cell p b { color: var(--ink); }
+  .ms-code { font-family: var(--f-mono); font-size: .9em; background: var(--green-tint); padding: 1px 6px; border-radius: 4px; color: var(--green-3); }
+  .ms-take { padding: 13px 20px; border-top: 1px dashed var(--rule); font-size: 13.5px; color: var(--ink); line-height: 1.55; background: color-mix(in srgb, var(--green-tint) 45%, transparent); }
+  .ms-take b { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--green-3); margin-right: 10px; }
+  .ms-row.warn .ms-take { background: color-mix(in srgb, var(--fire) 8%, transparent); }
+  .ms-row.warn .ms-take b { color: var(--fire); }
+  .ms-row.gap .ms-take { background: var(--paper-2); }
+  .ms-row.gap .ms-take b { color: var(--ink); }
+
+  /* — Barres — */
+  .ms-bars { display: flex; flex-direction: column; gap: 10px; }
+  .ms-bar-l { display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px; color: var(--ink); margin-bottom: 4px; }
+  .ms-bar-n { font-family: var(--f-mono); font-weight: 600; font-size: 12.5px; }
+  .ms-bar-track { height: 9px; border-radius: 999px; background: var(--paper-3, #e8e7df); overflow: hidden; }
+  .ms-sec-alt .ms-bar-track, .ms-panel .ms-bar-track { background: var(--paper); }
+  .ms-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--green-3), var(--green)); }
+  .ms-bar.warn .ms-bar-fill { background: linear-gradient(90deg, var(--fire), color-mix(in srgb, var(--fire) 55%, #fff)); }
+  .ms-bar.gap .ms-bar-fill { background: linear-gradient(90deg, var(--muted), var(--muted-2, #9b9a90)); }
+  .ms-bar.dim .ms-bar-fill { opacity: .4; background: var(--muted); }
+
+  /* — Split bar (prix) — */
+  .ms-split { display: flex; height: 36px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--rule); font-family: var(--f-mono); }
+  .ms-split span { display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; color: #0f0f0f; }
+  .ms-split .s-ok { background: var(--green); }
+  .ms-split .s-mid { background: var(--fire); color: #fff; }
+  .ms-split .s-no { background: var(--muted); color: #fff; }
+  .ms-split-key { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; font-size: 12.5px; color: var(--muted); font-family: var(--f-mono); }
+  .ms-split-key i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .ms-split-key .k-no { background: var(--muted); }
+  .ms-split-key .k-ok { background: var(--green); }
+  .ms-note-strong { margin: 12px 0 0; font-size: 13.5px; color: var(--ink); }
+  .ms-note-strong b { color: var(--green-3); }
+  .ms-note-muted { margin: 10px 0 0; font-size: 12.5px; color: var(--muted); }
+
+  /* — Panels profil / bénévoles — */
+  .ms-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .ms-panel { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 24px; }
+  .ms-panel h3 { font-family: var(--f-display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; margin: 0; }
+  .ms-panel-sub { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin: 4px 0 18px; }
+
+  /* — Nuage de mots — */
+  .ms-cloud { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: baseline; }
+  .ms-cloud span { font-family: var(--f-display); font-weight: 800; line-height: 1; color: var(--ink); text-transform: lowercase; letter-spacing: -.02em; }
+  .ms-cloud .w1 { font-size: 56px; color: var(--green-3); }
+  .ms-cloud .w2 { font-size: 40px; }
+  .ms-cloud .w3 { font-size: 30px; }
+  .ms-cloud .w4 { font-size: 23px; color: var(--muted); }
+  .ms-cloud .w5 { font-size: 17px; color: var(--muted); }
+  .ms-dna-note { margin: 26px 0 0; color: var(--muted); font-size: 14.5px; line-height: 1.6; max-width: 68ch; }
+  .ms-dna-note b { color: var(--ink); }
+
+  /* — Verbatims — */
+  .ms-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .ms-quote { border: 1px solid var(--rule); border-left: 3px solid var(--green-3); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 18px 20px; background: var(--paper); }
+  .ms-quote.warn { border-left-color: var(--fire); }
+  .ms-quote.gap { border-left-color: var(--muted); }
+  .ms-quote p { margin: 0 0 10px; font-size: 15px; color: var(--ink); line-height: 1.55; }
+  .ms-quote cite { font-family: var(--f-mono); font-size: 11px; color: var(--muted); font-style: normal; letter-spacing: .04em; }
+
+  /* — Reco — */
+  .ms-reco { display: flex; flex-direction: column; gap: 12px; }
+  .ms-step { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 18px 20px; }
+  .ms-step-n { font-family: var(--f-display); font-weight: 800; font-size: 28px; letter-spacing: -.04em; color: var(--green-3); min-width: 42px; }
+  .ms-step-t { font-family: var(--f-display); font-weight: 700; font-size: 18px; letter-spacing: -.02em; }
+  .ms-step-d { font-size: 13.5px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .ms-pri { font-family: var(--f-mono); font-size: 10px; letter-spacing: .09em; text-transform: uppercase; padding: 6px 11px; border-radius: 999px; background: var(--green-tint); color: var(--green-3); white-space: nowrap; }
+  .ms-pri.now { background: color-mix(in srgb, var(--fire) 14%, transparent); color: var(--fire); }
+  .ms-foot-note { margin: 28px 0 0; font-family: var(--f-mono); font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  @media (max-width: 860px) {
+    .ms-stats { grid-template-columns: repeat(2, 1fr); }
+    .ms-verdict { grid-template-columns: 1fr; }
+    .ms-lock-grid { grid-template-columns: 1fr; gap: 28px; }
+    .ms-row-body { grid-template-columns: 1fr; }
+    .ms-cell.plan { border-right: none; border-bottom: 1px solid var(--rule); }
+    .ms-grid2, .ms-quotes { grid-template-columns: 1fr; }
+    .ms-step { grid-template-columns: auto 1fr; }
+    .ms-pri { grid-column: 2; justify-self: start; }
+  }
+</style>
+</head>
+<body>
+
+<div id="root" data-screen-label="Espace membre"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="atoms.jsx"></script>
+<script type="text/babel" src="espace-membre.jsx"></script>
+
+<script type="text/babel">
+function App() {
+  return (
+    <div className="page">
+      <HeaderPublic active="Espace membre" />
+      <window.MEMBER.MemberGate>
+        <window.MEMBER.MemberAnalysis />
+      </window.MEMBER.MemberGate>
+      <FooterPublic />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+
+</body>
+</html>
