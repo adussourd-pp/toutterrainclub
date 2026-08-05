@@ -16,19 +16,14 @@ const Brand = ({ to = "/" }) => (
 );
 
 const HeaderPublic = ({ active = "Accueil" }) => {
-  // Quand le membre est connecté (porte déverrouillée), le menu bascule sur
-  // l'espace membre : ses pages apparaissent directement dans le bandeau.
-  const [member, setMember] = React.useState(false);
-  React.useEffect(() => {
-    try {
-      // Connecté = compte présent (localStorage) OU session déverrouillée.
-      const logged = (window.ttcAuth && window.ttcAuth.get()) || sessionStorage.getItem("ttc_member_ok") === "1";
-      setMember(!!logged);
-    } catch (e) {}
-  }, []);
+  // Le menu « espace membre » n'apparaît QUE sur les pages de l'espace membre
+  // (celles qui chargent member-shell → window.MS). Le site public garde
+  // toujours son menu public, connecté ou pas.
+  const member = !!(typeof window !== "undefined" && window.MS);
   const publicItems = [
     { label: "Accueil", href: "index.html" },
     { label: "Trail to Techno", href: "trail-to-techno.html" },
+    { label: "Saison 2027", href: "adhesion-2027.html" },
     { label: "Contact", href: "mailto:toutterrainclub@gmail.com" },
   ];
   const memberItems = [

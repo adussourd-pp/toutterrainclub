@@ -161,10 +161,24 @@ const GpxCard = ({ g }) => {
   );
 };
 
+const DIST_BANDS = [["", "Toutes distances"], ["<10", "Moins de 10 km"], ["10-25", "10 – 25 km"], ["25-45", "25 – 45 km"], ["45+", "45 km et +"]];
+const DIFFS = ["Facile", "Modéré", "Soutenu", "Difficile", "Extrême"];
+function inBand(km, band) {
+  km = Number(km) || 0;
+  if (band === "<10") return km < 10;
+  if (band === "10-25") return km >= 10 && km < 25;
+  if (band === "25-45") return km >= 25 && km < 45;
+  if (band === "45+") return km >= 45;
+  return true;
+}
+
 const GpxPage = () => {
   const { items, setItems, state, reload, saveLocal } = window.MS.useCollection("/api/gpx", "ttc_gpx_demo");
   const [adding, setAdding] = React.useState(false);
   const [q, setQ] = React.useState("");
+  const [dist, setDist] = React.useState("");
+  const [diff, setDiff] = React.useState("");
+  const [region, setRegion] = React.useState("");
   const live = window.ttcConfigured();
 
   const add = async (g) => {
@@ -172,7 +186,17 @@ const GpxPage = () => {
     else { const next = [{ ...g, id: "loc" + Date.now(), created_at: new Date().toISOString() }, ...items]; setItems(next); saveLocal(next); }
     setAdding(false);
   };
-  const filtered = items.filter((g) => !q || (g.name || "").toLowerCase().includes(q.toLowerCase()) || (g.region || "").toLowerCase().includes(q.toLowerCase()));
+
+  const regions = [...new Set(items.map((g) => (g.region || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr"));
+  const filtered = items.filter((g) => {
+    const okQ = !q || (g.name || "").toLowerCase().includes(q.toLowerCase()) || (g.region || "").toLowerCase().includes(q.toLowerCase());
+    const okDist = inBand(g.distance_km, dist);
+    const okDiff = !diff || T().difficulty(g.distance_km, g.denivele_m).label === diff;
+    const okReg = !region || (g.region || "").trim() === region;
+    return okQ && okDist && okDiff && okReg;
+  });
+  const anyFilter = q || dist || diff || region;
+  const clearFilters = () => { setQ(""); setDist(""); setDiff(""); setRegion(""); };
 
   return (
     <React.Fragment>
@@ -194,9 +218,22 @@ const GpxPage = () => {
           {!live && <window.MS.MSDemo what="Le partage de GPX" />}
           {adding && <GpxForm onAdd={add} onClose={() => setAdding(false)} />}
           <div className="ms-gpx-toolbar">
-            <input className="pf-input" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher une trace…" />
+            <input className="pf-input ms-gpx-search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher une trace…" />
+            <select className="pf-input" value={dist} onChange={(e) => setDist(e.target.value)}>
+              {DIST_BANDS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            </select>
+            <select className="pf-input" value={diff} onChange={(e) => setDiff(e.target.value)}>
+              <option value="">Toutes difficultés</option>
+              {DIFFS.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+            <select className="pf-input" value={region} onChange={(e) => setRegion(e.target.value)}>
+              <option value="">Toutes régions</option>
+              {regions.map((r) => <option key={r} value={r}>{r}</option>)}
+            </select>
+            {anyFilter && <button type="button" className="btn btn-sm" onClick={clearFilters}>✕ Filtres</button>}
           </div>
-          {filtered.length === 0 && state !== "loading" && <div className="ms-empty">Aucune trace {q ? "trouvée" : "pour l'instant"}. <button className="btn btn-sm btn-primary" onClick={() => setAdding(true)}>Ajoute la première →</button></div>}
+          {(anyFilter || filtered.length > 0) && <div className="ms-gpx-count">{filtered.length} trace{filtered.length > 1 ? "s" : ""}{anyFilter ? " · filtré" : ""}</div>}
+          {filtered.length === 0 && state !== "loading" && <div className="ms-empty">Aucune trace {anyFilter ? "ne correspond aux filtres" : "pour l'instant"}. {anyFilter ? <button className="btn btn-sm" onClick={clearFilters}>Réinitialiser</button> : <button className="btn btn-sm btn-primary" onClick={() => setAdding(true)}>Ajoute la première →</button>}</div>}
           <div className="ms-gpx-grid">
             {filtered.map((g, i) => <GpxCard key={g.id || i} g={g} />)}
           </div>
