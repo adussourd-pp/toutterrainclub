@@ -30,10 +30,13 @@ window.TTC_TRAIL = (function () {
     const s = Math.sin(dp / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dl / 2) ** 2;
     return 2 * R * Math.asin(Math.sqrt(s));
   }
-  // Extrait les points d'un GPX (texte) → [{lat, lon, ele}]
+  // Extrait les points d'un GPX (texte) → [{lat, lon, ele}].
+  // On lit les points de trace (<trkpt>) ; à défaut, les points d'itinéraire
+  // (<rtept>, exports de planification) — même structure lat/lon/<ele>.
   function extractPts(text) {
     const doc = new DOMParser().parseFromString(text, "application/xml");
-    const nodes = doc.getElementsByTagName("trkpt");
+    let nodes = doc.getElementsByTagName("trkpt");
+    if (!nodes.length) nodes = doc.getElementsByTagName("rtept");
     const pts = [];
     for (let i = 0; i < nodes.length; i++) {
       const p = nodes[i];
