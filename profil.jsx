@@ -27,7 +27,7 @@ const TECHNO = [
 const ADHESION = ["Sympathisant", "Don de soutien", "Adhérent", "Adhérent + Licence FFA"];
 
 const EMPTY = {
-  prenom: "", pseudo: "", ville: "Nice", avatar: "🐗",
+  prenom: "", pseudo: "", ville: "Nice", avatar: "🐗", photo: "", role: "",
   niveau: "Progression", allure: "", distances: [], terrains: [],
   jours: [], moments: [], objectif: "", courses: "", bio: "",
   strava: "", insta: "", techno: "Amateur", adhesion: "Adhérent",
@@ -40,6 +40,33 @@ const loadProfile = () => {
     return { ...EMPTY, ...JSON.parse(raw) };
   } catch (e) { return { ...EMPTY }; }
 };
+
+// Identité stable du membre (pour que les MAJ écrasent la même fiche partout).
+function memberId() {
+  try {
+    let id = localStorage.getItem("ttc_member_id");
+    if (!id) { id = "m" + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("ttc_member_id", id); }
+    return id;
+  } catch (e) { return "m" + Date.now(); }
+}
+const isOrga = () => { try { return sessionStorage.getItem("ttc_orga_ok") === "1"; } catch (e) { return false; } };
+
+// Redimensionne une image (max 320px) → data URI léger pour la stocker.
+function resizeImage(file, cb) {
+  const rd = new FileReader();
+  rd.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const max = 320, s = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      try { cb(c.toDataURL("image/jpeg", 0.82)); } catch (e) { cb(""); }
+    };
+    img.src = rd.result;
+  };
+  rd.readAsDataURL(file);
+}
 
 // ---- Petits contrôles réutilisables --------------------------------------
 const Field = ({ label, hint, children }) => (
@@ -76,8 +103,11 @@ const RunnerCard = ({ p }) => {
   const techno = TECHNO.find((t) => t.v === p.techno);
   return (
     <div className="pf-card">
+      {p.role && <div className="pf-card-role">★ {p.role}</div>}
       <div className="pf-card-top">
-        <div className="pf-avatar">{p.avatar}</div>
+        {p.photo
+          ? <div className="pf-avatar pf-avatar-photo"><img src={p.photo} alt="" /><span className="pf-totem">{p.avatar}</span></div>
+          : <div className="pf-avatar">{p.avatar}</div>}
         <div className="pf-card-id">
           <div className="pf-card-name">{name} {handle && <span className="pf-card-handle">{handle}</span>}</div>
           <div className="pf-card-meta">
@@ -156,8 +186,22 @@ const ProfilPage = () => {
     return { ...s, [k]: next };
   });
 
-  const save = () => {
+  const save = async () => {
     try { localStorage.setItem(PF_KEY, JSON.stringify(p)); } catch (e) {}
+    // Publie / met à jour la fiche dans la meute (même id → écrase partout).
+    if (window.ttcConfigured && window.ttcConfigured()) {
+      try {
+        await window.ttcApi("/api/members", { method: "POST", body: {
+          id: memberId(),
+          prenom: p.prenom, pseudo: p.pseudo, ville: p.ville, avatar: p.avatar,
+          niveau: p.niveau, objectif: p.objectif, strava: p.strava, insta: p.insta,
+          techno: p.techno, adhesion: p.adhesion,
+          distances: p.distances,
+          // on emballe terrains + photo + rôle dans le champ terrains (JSON)
+          terrains: { t: p.terrains, photo: p.photo, role: p.role, allure: p.allure, courses: p.courses, bio: p.bio },
+        } });
+      } catch (e) { /* hors-ligne : reste en local, resync au prochain save */ }
+    }
     setSaved(true);
     window.setTimeout(() => setSaved(false), 2600);
   };
@@ -236,13 +280,31 @@ const ProfilPage = () => {
                     </select>
                   </Field>
                 </div>
-                <Field label="Ton avatar">
-                  <div className="pf-avatars">
-                    {AVATARS.map((a) => (
-                      <button type="button" key={a} className={`pf-av ${p.avatar === a ? "on" : ""}`} onClick={() => set("avatar", a)}>{a}</button>
-                    ))}
-                  </div>
-                </Field>
+                <div className="pf-row2">
+                  <Field label="Ta photo" hint="optionnel">
+                    <div className="pf-photo-row">
+                      <div className={`pf-photo-prev ${p.photo ? "has" : ""}`}>{p.photo ? <img src={p.photo} alt="" /> : <span>{p.avatar}</span>}</div>
+                      <div className="pf-photo-btns">
+                        <label className="btn btn-sm">Choisir…<input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) resizeImage(f, (d) => set("photo", d)); }} /></label>
+                        {p.photo && <button type="button" className="pf-reset" onClick={() => set("photo", "")}>Retirer</button>}
+                      </div>
+                    </div>
+                  </Field>
+                  <Field label="Ton totem" hint="ton symbole">
+                    <div className="pf-avatars">
+                      {AVATARS.map((a) => (
+                        <button type="button" key={a} className={`pf-av ${p.avatar === a ? "on" : ""}`} onClick={() => set("avatar", a)}>{a}</button>
+                      ))}
+                    </div>
+                  </Field>
+                </div>
+                {isOrga() ? (
+                  <Field label="Rôle dans l'orga" hint="réservé au bureau">
+                    <input className="pf-input" value={p.role} onChange={(e) => set("role", e.target.value)} placeholder="Fondateur & Président, Trésorier·ère, Orga…" />
+                  </Field>
+                ) : p.role ? (
+                  <Field label="Rôle dans l'orga"><div className="pf-role-ro">★ {p.role} <em>· modifiable en accès orga</em></div></Field>
+                ) : null}
               </div>
 
               <div className="pf-group">
@@ -315,9 +377,8 @@ const ProfilPage = () => {
                   <button type="button" className="pf-reset" onClick={reset}>Réinitialiser</button>
                 </div>
                 <p className="pf-note">
-                  Prototype : ta carte est stockée <b>uniquement sur cet appareil</b>. Le jour où
-                  l'espace membre aura un vrai compte, on la reliera à ton profil. En attendant,
-                  « Copier pour WhatsApp » la partage sur le groupe.
+                  En cliquant <b>Enregistrer</b>, ta carte apparaît dans <b>Les membres</b> et se met
+                  à jour <b>pour toute la meute</b>. Reviens la modifier quand tu veux : ça resynchronise.
                 </p>
               </div>
             </aside>

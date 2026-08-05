@@ -25,9 +25,34 @@ const PROMOS = [
   { name: "Strava", role: "Suivi & club TTC", code: "Sur demande", url: "https://www.strava.com/clubs/toutterrainclub" },
 ];
 
+function myProfile() {
+  try { const p = JSON.parse(localStorage.getItem("ttc_profile_v1") || "null"); return p && (p.prenom || p.pseudo) ? p : null; } catch (e) { return null; }
+}
+
+const MeBadge = () => {
+  const p = myProfile();
+  if (!p) return (
+    <div className="ms-mebadge empty">
+      <span>Tu n'as pas encore de carte de coureur.</span>
+      <a className="btn btn-sm btn-primary" href="profil.html">Créer ma carte →</a>
+    </div>
+  );
+  return (
+    <div className="ms-mebadge">
+      {p.photo ? <span className="ms-mebadge-av"><img src={p.photo} alt="" /></span> : <span className="ms-mebadge-av emoji">{p.avatar || "🐗"}</span>}
+      <div className="ms-mebadge-id">
+        <div className="ms-mebadge-name">Connecté·e : <b>{p.prenom || p.pseudo}</b>{p.role ? <span className="ms-mebadge-role"> · ★ {p.role}</span> : null}</div>
+        <div className="ms-mebadge-sub">{[p.ville, p.niveau].filter(Boolean).join(" · ")}</div>
+      </div>
+      <a className="btn btn-sm" href="profil.html">Ma carte</a>
+    </div>
+  );
+};
+
 const MemberHub = () => (
   <React.Fragment>
     <window.MS.MSSubnav active="hub" />
+    <div className="wrap"><MeBadge /></div>
 
     <section className="adh-hero">
       <HeroWaves />

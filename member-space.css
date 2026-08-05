@@ -641,3 +641,39 @@ select.pf-input { cursor: pointer; }
 
 .ms-hub-card.soon { opacity: .62; cursor: default; }
 .ms-hub-card.soon:hover { border-color: var(--rule); transform: none; }
+
+/* ============================================================
+   CARTE MEMBRE v2 — photo, totem, rôle, "c'est toi", greeting hub
+   ============================================================ */
+/* greeting hub */
+.ms-mebadge { display: flex; align-items: center; gap: 14px; border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 12px 16px; margin-top: 18px; }
+.ms-mebadge.empty { justify-content: space-between; color: var(--muted); font-size: 14px; }
+.ms-mebadge-av { width: 46px; height: 46px; border-radius: 50%; overflow: hidden; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; background: var(--green-tint); }
+.ms-mebadge-av img { width: 100%; height: 100%; object-fit: cover; }
+.ms-mebadge-av.emoji { font-size: 26px; }
+.ms-mebadge-id { flex: 1 1 auto; min-width: 0; }
+.ms-mebadge-name { font-size: 14.5px; color: var(--ink); }
+.ms-mebadge-role { color: var(--green-3); font-family: var(--f-mono); font-size: 12.5px; }
+.ms-mebadge-sub { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+
+/* carte "toi" dans la meute */
+.ms-mcard { position: relative; }
+.ms-mcard.me { border-color: var(--green-3); box-shadow: 0 0 0 1px var(--green-3) inset; }
+.ms-mcard-you { position: absolute; top: 12px; right: 12px; font-family: var(--f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: var(--green-3); background: var(--green-tint); padding: 3px 9px; border-radius: 999px; }
+.ms-mcard-role { font-family: var(--f-mono); font-size: 11px; letter-spacing: .04em; color: var(--green-3); margin-bottom: 8px; font-weight: 600; }
+.ms-mcard-photo { position: relative; overflow: visible; width: 42px; height: 42px; border-radius: 50%; }
+.ms-mcard-photo img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+.ms-mcard-photo i { position: absolute; right: -4px; bottom: -4px; font-size: 16px; font-style: normal; }
+
+/* carte aperçu (profil) : photo + totem + rôle */
+.pf-card-role { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; color: var(--green-3); margin-bottom: 8px; }
+.pf-avatar-photo { position: relative; overflow: visible; }
+.pf-avatar-photo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.pf-avatar-photo .pf-totem { position: absolute; right: -4px; bottom: -4px; font-size: 20px; }
+.pf-photo-row { display: flex; align-items: center; gap: 12px; }
+.pf-photo-prev { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; background: var(--green-tint); display: flex; align-items: center; justify-content: center; font-size: 26px; flex: 0 0 auto; }
+.pf-photo-prev img { width: 100%; height: 100%; object-fit: cover; }
+.pf-photo-btns { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.pf-photo-btns .btn { cursor: pointer; }
+.pf-role-ro { font-size: 14px; color: var(--green-3); font-weight: 600; }
+.pf-role-ro em { color: var(--muted); font-weight: 400; font-size: 12.5px; }
