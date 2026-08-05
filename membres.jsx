@@ -53,7 +53,7 @@ const MembresPage = () => {
         <HeroWaves />
         <div className="wrap">
           <span className="adh-hero-eyebrow">★ Espace membre · la meute</span>
-          <h1>Tous les <span className="marker">membres</span>.</h1>
+          <h1>La <span className="marker">meute</span>.</h1>
           <div className="adh-hero-grid">
             <p className="adh-hero-lede">Les cartes de coureur de la meute. Crée / modifie la tienne — elle se met à jour ici pour tout le monde.</p>
             <div className="adh-hero-cta">

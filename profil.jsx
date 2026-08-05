@@ -1,74 +1,76 @@
 // Espace membre — Ma carte de coureur.
-// Un profil que le membre remplit lui-même. Aperçu live à droite, sauvegardé
-// dans le navigateur (localStorage, prototype sans backend), exportable en un
-// clic pour le coller sur le groupe WhatsApp. Aucune donnée ne quitte le poste.
+// Grille de niveaux « L'aventure de la meute TTC » : progression trail (animaux)
+// + progression Trail to Techno (grades). Le TOTEM découle du niveau trail.
+// Aperçu de la carte collant à droite (suit au scroll). Sauvegarde compte + serveur.
 
 const PF_KEY = "ttc_profile_v1";
 
-const AVATARS = ["🐗", "🏔️", "🐺", "🦌", "🏃", "🎧", "⚡", "🔥", "🌲", "🌙", "🦅", "☀️"];
-
-const NIVEAUX = [
-  { v: "Découverte", d: "Je débute / je progresse tranquille" },
-  { v: "Progression", d: "À l'aise, je monte en distance" },
-  { v: "Performance", d: "Je vise des chronos, courses régulières" },
-  { v: "Ultra", d: "Longues distances, gros dénivelés" },
+// --- L'aventure de la meute : niveaux trail (animaux) ----------------------
+const TRAIL_RANKS = [
+  { lvl: 1, e: "🐣", v: "Poussin des sentiers", d: "Sortie d'œuf ! Tu découvres le grand air." },
+  { lvl: 5, e: "🐰", v: "Lapin de garenne", d: "L'agilité arrive, tu cavales sur les sentiers." },
+  { lvl: 10, e: "🦊", v: "Renard rusé", d: "Tu connais les bons coins et les meilleures traces GPX." },
+  { lvl: 15, e: "🐺", v: "Loup arpenteur", d: "Un pilier du clan, tu mènes la meute." },
+  { lvl: 25, e: "🐗", v: "Vrai Sanglier", d: "Détermination brute. Le totem du club !" },
+  { lvl: 40, e: "🦌", v: "Grand Cerf Majestueux", d: "La classe sauvage, puissant et rapide." },
+  { lvl: 70, e: "🐐", v: "Chamois bondissant", d: "Plus c'est raide, plus tu aimes ça." },
+  { lvl: 85, e: "🐻", v: "Grizzly des sommets", d: "Le patron, puissant et respecté." },
+  { lvl: 100, e: "🦅", v: "Aigle Royal", d: "L'élite. Une légende vivante qui survole les cimes." },
 ];
+// --- Niveaux Trail to Techno (grades) --------------------------------------
+const MUSIC_RANKS = [
+  { lvl: 1, e: "👟", v: "Petit tapeur de pied", d: "Tu bouges discrètement au fond." },
+  { lvl: 5, e: "🕺", v: "Danseur de buffet", d: "Là pour le lien social (et le ravito)." },
+  { lvl: 10, e: "🎧", v: "Amateur de BPM", d: "Toujours à la recherche du bon set." },
+  { lvl: 15, e: "🔊", v: "Chasseur de caissons", d: "On te trouve collé aux enceintes." },
+  { lvl: 25, e: "🔥", v: "Maxi Teufeur", d: "Le moteur de l'ambiance du club." },
+  { lvl: 40, e: "🔨", v: "Briseur de semelles", d: "Tes chaussures de trail sur le dancefloor." },
+  { lvl: 70, e: "🔋", v: "Machine à Techno", d: "Infatigable, du départ à l'aube." },
+  { lvl: 85, e: "🧙", v: "Chaman des platines", d: "Le gardien du bon son." },
+  { lvl: 95, e: "🌅", v: "Légende de l'After", d: "Le dernier debout, toujours avec le sourire." },
+  { lvl: 100, e: "👑", v: "Dieu de la Rave", d: "Le grade ultime des nuits T2T." },
+];
+const trailRank = (name) => TRAIL_RANKS.find((r) => r.v === name) || TRAIL_RANKS[0];
+const musicRank = (name) => MUSIC_RANKS.find((r) => r.v === name) || MUSIC_RANKS[0];
 
 const DISTANCES = ["5–10 km", "10–20 km", "Trail court (<25)", "Trail long (25–45)", "Ultra (45+)", "Route", "Piste / fractionné"];
 const TERRAINS = ["Sentier", "Montagne", "Technique", "Route", "Bord de mer", "Nuit / aube"];
 const JOURS = [["L","Lundi"],["M","Mardi"],["Me","Mercredi"],["J","Jeudi"],["V","Vendredi"],["S","Samedi"],["D","Dimanche"]];
 const MOMENTS = ["Tôt le matin", "Pause midi", "Après le taf", "Week-end"];
-const TECHNO = [
-  { v: "Curieux", e: "🎧" },
-  { v: "Amateur", e: "🔊" },
-  { v: "Habitué", e: "🪩" },
-  { v: "Résident", e: "👑" },
-];
 const ADHESION = ["Sympathisant", "Don de soutien", "Adhérent", "Adhérent + Licence FFA"];
 
 const EMPTY = {
-  prenom: "", pseudo: "", ville: "Nice", avatar: "🐗", photo: "", role: "", email: "",
-  niveau: "Progression", allure: "", distances: [], terrains: [],
+  prenom: "", pseudo: "", ville: "Nice", avatar: "🐣", photo: "", role: "", email: "",
+  niveau: "Poussin des sentiers", distances: [], terrains: [],
   jours: [], moments: [], objectif: "", courses: "", bio: "",
-  strava: "", insta: "", techno: "Amateur", adhesion: "Adhérent",
+  strava: "", insta: "", techno: "Petit tapeur de pied", adhesion: "Adhérent",
 };
+
+// Le totem découle toujours du niveau trail.
+function normalize(p) { p.avatar = trailRank(p.niveau).e; return p; }
 
 const loadProfile = () => {
   try {
     const raw = localStorage.getItem(PF_KEY);
     if (!raw) return { ...EMPTY };
-    return { ...EMPTY, ...JSON.parse(raw) };
+    return normalize({ ...EMPTY, ...JSON.parse(raw) });
   } catch (e) { return { ...EMPTY }; }
 };
 
-// Identité stable du membre (pour que les MAJ écrasent la même fiche partout).
-function memberId() {
-  try {
-    let id = localStorage.getItem("ttc_member_id");
-    if (!id) { id = "m" + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("ttc_member_id", id); }
-    return id;
-  } catch (e) { return "m" + Date.now(); }
-}
 const isOrga = () => { try { return sessionStorage.getItem("ttc_orga_ok") === "1"; } catch (e) { return false; } };
 
-// Identité stable : l'e-mail sert de clé (même e-mail = même carte, partout).
-function idFor(p) {
-  const e = (p.email || "").trim().toLowerCase();
-  if (e) { try { localStorage.setItem("ttc_member_id", "e-" + e); } catch (x) {} return "e-" + e; }
-  return memberId();
-}
 // Reconstruit une carte à partir d'un enregistrement serveur.
 function fromServer(m) {
   const t = (m.terrains && typeof m.terrains === "object" && !Array.isArray(m.terrains)) ? m.terrains : {};
-  return {
+  return normalize({
     ...EMPTY,
-    prenom: m.prenom || "", pseudo: m.pseudo || "", ville: m.ville || "", avatar: m.avatar || "🐗",
-    niveau: m.niveau || "Progression", objectif: m.objectif || "", strava: m.strava || "", insta: m.insta || "",
-    techno: m.techno || "Amateur", adhesion: m.adhesion || "Adhérent",
+    prenom: m.prenom || "", pseudo: m.pseudo || "", ville: m.ville || "",
+    niveau: m.niveau || "Poussin des sentiers", objectif: m.objectif || "", strava: m.strava || "", insta: m.insta || "",
+    techno: m.techno || "Petit tapeur de pied", adhesion: m.adhesion || "Adhérent",
     distances: Array.isArray(m.distances) ? m.distances : [],
     terrains: Array.isArray(t.t) ? t.t : [], photo: t.photo || "", role: t.role || "",
-    courses: t.courses || "", bio: t.bio || "", email: t.email || "",
-  };
+    courses: t.courses || "", bio: t.bio || "",
+  });
 }
 
 // Redimensionne une image (max 320px) → data URI léger pour la stocker.
@@ -102,13 +104,7 @@ const ChipToggle = ({ options, value, onToggle, getKey, getLabel }) => (
       const k = getKey ? getKey(o) : o;
       const on = value.includes(k);
       return (
-        <button
-          type="button"
-          key={k}
-          className={`pf-chip ${on ? "on" : ""}`}
-          aria-pressed={on}
-          onClick={() => onToggle(k)}
-        >
+        <button type="button" key={k} className={`pf-chip ${on ? "on" : ""}`} aria-pressed={on} onClick={() => onToggle(k)}>
           {getLabel ? getLabel(o) : o}
         </button>
       );
@@ -116,24 +112,37 @@ const ChipToggle = ({ options, value, onToggle, getKey, getLabel }) => (
   </div>
 );
 
+// Grille de niveaux (l'aventure de la meute).
+const RankGrid = ({ ranks, value, onPick }) => (
+  <div className="pf-ranks">
+    {ranks.map((r) => (
+      <button type="button" key={r.v} className={`pf-rank ${value === r.v ? "on" : ""}`} onClick={() => onPick(r)} title={r.d}>
+        <span className="pf-rank-e">{r.e}</span>
+        <span className="pf-rank-lvl">Niv {r.lvl}</span>
+        <span className="pf-rank-v">{r.v}</span>
+      </button>
+    ))}
+  </div>
+);
+
 // ---- Aperçu : la carte de coureur ----------------------------------------
 const RunnerCard = ({ p }) => {
   const name = p.prenom || p.pseudo || "Ton prénom";
   const handle = p.pseudo && p.prenom ? `« ${p.pseudo} »` : null;
-  const techno = TECHNO.find((t) => t.v === p.techno);
+  const tr = trailRank(p.niveau), mr = musicRank(p.techno);
   return (
     <div className="pf-card">
       {p.role && <div className="pf-card-role">★ {p.role}</div>}
       <div className="pf-card-top">
         {p.photo
-          ? <div className="pf-avatar pf-avatar-photo"><img src={p.photo} alt="" /><span className="pf-totem">{p.avatar}</span></div>
-          : <div className="pf-avatar">{p.avatar}</div>}
+          ? <div className="pf-avatar pf-avatar-photo"><img src={p.photo} alt="" /><span className="pf-totem">{tr.e}</span></div>
+          : <div className="pf-avatar">{tr.e}</div>}
         <div className="pf-card-id">
           <div className="pf-card-name">{name} {handle && <span className="pf-card-handle">{handle}</span>}</div>
           <div className="pf-card-meta">
             <span>📍 {p.ville || "—"}</span>
-            <span className="pf-badge-lvl">{p.niveau}</span>
           </div>
+          <div className="pf-card-rank">{tr.e} {tr.v} <b>· Niv {tr.lvl}</b></div>
         </div>
       </div>
 
@@ -142,7 +151,7 @@ const RunnerCard = ({ p }) => {
       <div className="pf-card-stats">
         <div className="pf-stat">
           <div className="pf-stat-k">Trail to Techno</div>
-          <div className="pf-stat-v">{techno ? `${techno.e} ${techno.v}` : "—"}</div>
+          <div className="pf-stat-v pf-stat-sm">{mr.e} {mr.v}</div>
         </div>
         <div className="pf-stat">
           <div className="pf-stat-k">Adhésion</div>
@@ -197,7 +206,6 @@ const ProfilPage = () => {
   const [copied, setCopied] = React.useState(false);
   const [sync, setSync] = React.useState("");
 
-  // Charge MA fiche depuis le serveur (source de vérité de mon compte).
   const loadMine = React.useCallback(async (a) => {
     if (!a || !(window.ttcConfigured && window.ttcConfigured())) return;
     try {
@@ -211,6 +219,7 @@ const ProfilPage = () => {
   const logout = () => { window.ttcAuth.logout(); try { localStorage.removeItem(PF_KEY); } catch (e) {} window.location.reload(); };
 
   const set = (k, v) => { setP((s) => ({ ...s, [k]: v })); setSaved(false); };
+  const pickTrail = (r) => { setP((s) => ({ ...s, niveau: r.v, avatar: r.e })); setSaved(false); };
   const toggle = (k, v) => setP((s) => {
     const cur = s[k];
     const next = cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v];
@@ -219,7 +228,6 @@ const ProfilPage = () => {
 
   const save = async () => {
     try { localStorage.setItem(PF_KEY, JSON.stringify(p)); } catch (e) {}
-    // Enregistre MA fiche sur le serveur (id dérivé du jeton de compte).
     if (auth && window.ttcConfigured && window.ttcConfigured()) {
       setSync("Enregistrement…");
       try {
@@ -245,17 +253,18 @@ const ProfilPage = () => {
 
   const asText = () => {
     const L = [];
+    const tr = trailRank(p.niveau), mr = musicRank(p.techno);
     const name = [p.prenom, p.pseudo && `« ${p.pseudo} »`].filter(Boolean).join(" ");
-    L.push(`${p.avatar} ${name || "—"} — carte TTC`);
+    L.push(`${tr.e} ${name || "—"} — carte TTC`);
     if (p.ville) L.push(`📍 ${p.ville}`);
-    L.push(`Niveau : ${p.niveau}${p.allure ? ` · ${p.allure}/km` : ""}`);
+    L.push(`Niveau meute : ${tr.v} (Niv ${tr.lvl})`);
     if (p.distances.length) L.push(`Distances : ${p.distances.join(", ")}`);
     if (p.terrains.length) L.push(`Terrains : ${p.terrains.join(", ")}`);
     if (p.jours.length || p.moments.length) L.push(`Dispos : ${[...p.jours, ...p.moments].join(", ")}`);
     if (p.objectif) L.push(`Objectif 2027 : ${p.objectif}`);
     if (p.courses) L.push(`🎯 Courses visées : ${p.courses}`);
     if (p.bio) L.push(`« ${p.bio} »`);
-    L.push(`Trail to Techno : ${p.techno}`);
+    L.push(`Trail to Techno : ${mr.e} ${mr.v}`);
     if (p.strava) L.push(`Strava : ${p.strava}`);
     if (p.insta) L.push(`Insta : ${p.insta}`);
     return L.join("\n");
@@ -263,21 +272,14 @@ const ProfilPage = () => {
 
   const copy = async () => {
     const txt = asText();
-    try {
-      await navigator.clipboard.writeText(txt);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2600);
-    } catch (e) {
-      window.prompt("Copie ta carte (Ctrl/Cmd+C) :", txt);
-    }
+    try { await navigator.clipboard.writeText(txt); setCopied(true); window.setTimeout(() => setCopied(false), 2600); }
+    catch (e) { window.prompt("Copie ta carte (Ctrl/Cmd+C) :", txt); }
   };
 
   if (!auth) return null; // MSGate garantit déjà la connexion
 
   return (
     <React.Fragment>
-      <window.MS.MSSubnav active="carte" />
-
       <section className="adh-hero">
         <HeroWaves />
         <div className="wrap">
@@ -285,10 +287,9 @@ const ProfilPage = () => {
           <h1>Ta carte de <span className="marker">coureur</span>.</h1>
           <div className="adh-hero-grid">
             <p className="adh-hero-lede">
-              Qui tu es, ton niveau, tes distances, quand tu cours. De quoi te retrouver
-              sur les sorties, former des groupes d'allure et faire les bonnes rencontres —
-              c'est ça, l'esprit <strong>social run</strong>. Tu remplis, ta carte se met en forme
-              en haut du panneau, tu l'enregistres — et tu la retrouves sur <strong>tous tes appareils</strong>.
+              Qui tu es, ton <strong>niveau dans l'aventure de la meute</strong>, tes distances, ton grade
+              Trail to Techno. Ton <strong>totem</strong> découle de ton niveau. Remplis à gauche, ta carte
+              se construit à droite et te suit à l'écran — puis tu l'enregistres.
             </p>
           </div>
         </div>
@@ -296,127 +297,98 @@ const ProfilPage = () => {
 
       <section className="adh-sec">
         <div className="wrap">
-          <div className="pf-skool">
-            <div className="pf-sk-card">
-              {/* ---- En-tête vivant (façon Skool) ---- */}
-              <div className="pf-sk-head">
-                <label className="pf-sk-avatar" title="Ajouter / changer ta photo">
-                  {p.photo ? <img src={p.photo} alt="" /> : <span className="pf-sk-av-emoji">{p.avatar}</span>}
-                  {p.photo && <span className="pf-sk-totem">{p.avatar}</span>}
-                  <span className="pf-sk-cam">📷</span>
-                  <input type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) resizeImage(f, (d) => set("photo", d)); }} />
-                </label>
-                {p.photo
-                  ? <button type="button" className="pf-sk-photolink" onClick={() => set("photo", "")}>Retirer la photo</button>
-                  : <div className="pf-sk-photohint">Clique la pastille pour ajouter ta photo</div>}
-                <div className="pf-sk-name">{p.prenom || p.pseudo || "Ton prénom"}{p.pseudo && p.prenom ? <span className="pf-sk-handle"> « {p.pseudo} »</span> : null}</div>
-                {p.role && <div className="pf-sk-role">★ {p.role}</div>}
-                <div className="pf-sk-meta">📍 {p.ville || "—"} · <b>{p.niveau}</b></div>
-                <div className="pf-sk-totems">
-                  {AVATARS.map((a) => (
-                    <button type="button" key={a} className={`pf-sk-tk ${p.avatar === a ? "on" : ""}`} onClick={() => set("avatar", a)}>{a}</button>
-                  ))}
+          <div className="pf-layout">
+            {/* ---- Formulaire ---- */}
+            <div className="pf-form">
+              <div className="pf-group">
+                <h3 className="pf-group-h">01 · Identité</h3>
+                <div className="pf-row2">
+                  <Field label="Prénom"><input className="pf-input" value={p.prenom} onChange={(e) => set("prenom", e.target.value)} placeholder="Camille" /></Field>
+                  <Field label="Surnom" hint="optionnel"><input className="pf-input" value={p.pseudo} onChange={(e) => set("pseudo", e.target.value)} placeholder="La Fusée" /></Field>
                 </div>
-                <div className="pf-sk-acct">
+                <div className="pf-row2">
+                  <Field label="Secteur / ville"><input className="pf-input" value={p.ville} onChange={(e) => set("ville", e.target.value)} placeholder="Nice, Vieux-Nice…" /></Field>
+                  <Field label="Adhésion">
+                    <select className="pf-input" value={p.adhesion} onChange={(e) => set("adhesion", e.target.value)}>
+                      {ADHESION.map((a) => <option key={a} value={a}>{a}</option>)}
+                    </select>
+                  </Field>
+                </div>
+                <Field label="Ta photo" hint="optionnel">
+                  <div className="pf-photo-row">
+                    <div className={`pf-photo-prev ${p.photo ? "has" : ""}`}>{p.photo ? <img src={p.photo} alt="" /> : <span>{trailRank(p.niveau).e}</span>}</div>
+                    <div className="pf-photo-btns">
+                      <label className="btn btn-sm">Choisir…<input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) resizeImage(f, (d) => set("photo", d)); }} /></label>
+                      {p.photo && <button type="button" className="pf-reset" onClick={() => set("photo", "")}>Retirer</button>}
+                    </div>
+                  </div>
+                </Field>
+                {isOrga() ? (
+                  <Field label="Rôle dans l'orga" hint="réservé au bureau">
+                    <input className="pf-input" value={p.role} onChange={(e) => set("role", e.target.value)} placeholder="Fondateur & Président, Trésorier·ère, Orga…" />
+                  </Field>
+                ) : p.role ? (
+                  <Field label="Rôle dans l'orga"><div className="pf-role-ro">★ {p.role} <em>· modifiable en accès orga</em></div></Field>
+                ) : null}
+              </div>
+
+              <div className="pf-group">
+                <h3 className="pf-group-h">02 · Ton niveau trail <em className="pf-hint">l'aventure de la meute · ton totem en découle</em></h3>
+                <RankGrid ranks={TRAIL_RANKS} value={p.niveau} onPick={pickTrail} />
+                <Field label="Distances préférées"><ChipToggle options={DISTANCES} value={p.distances} onToggle={(v) => toggle("distances", v)} /></Field>
+                <Field label="Terrains de jeu"><ChipToggle options={TERRAINS} value={p.terrains} onToggle={(v) => toggle("terrains", v)} /></Field>
+              </div>
+
+              <div className="pf-group">
+                <h3 className="pf-group-h">03 · Ton style Trail to Techno <em className="pf-hint">côté soirée</em></h3>
+                <RankGrid ranks={MUSIC_RANKS} value={p.techno} onPick={(r) => set("techno", r.v)} />
+              </div>
+
+              <div className="pf-group">
+                <h3 className="pf-group-h">04 · Tes dispos</h3>
+                <Field label="Jours où tu cours le plus">
+                  <ChipToggle options={JOURS} value={p.jours} onToggle={(v) => toggle("jours", v)} getKey={(o) => o[0]} getLabel={(o) => o[1]} />
+                </Field>
+                <Field label="Moments"><ChipToggle options={MOMENTS} value={p.moments} onToggle={(v) => toggle("moments", v)} /></Field>
+              </div>
+
+              <div className="pf-group">
+                <h3 className="pf-group-h">05 · Objectifs &amp; liens</h3>
+                <Field label="Ton objectif de la saison">
+                  <input className="pf-input" value={p.objectif} onChange={(e) => set("objectif", e.target.value)} placeholder="Finir mon premier trail long, passer sous les 45' au 10k…" />
+                </Field>
+                <Field label="Courses visées" hint="optionnel">
+                  <input className="pf-input" value={p.courses} onChange={(e) => set("courses", e.target.value)} placeholder="Marseille-Cassis, Trail du Mercantour…" />
+                </Field>
+                <Field label="Ta bio en une phrase">
+                  <textarea className="pf-input pf-textarea" value={p.bio} maxLength={140} onChange={(e) => set("bio", e.target.value)} placeholder="Ce qui te fait courir, en 140 signes." />
+                  <span className="pf-count">{p.bio.length}/140</span>
+                </Field>
+                <div className="pf-row2">
+                  <Field label="Strava" hint="lien profil"><input className="pf-input" value={p.strava} onChange={(e) => set("strava", e.target.value)} placeholder="https://strava.com/athletes/…" /></Field>
+                  <Field label="Instagram"><input className="pf-input" value={p.insta} onChange={(e) => set("insta", e.target.value)} placeholder="https://instagram.com/…" /></Field>
+                </div>
+              </div>
+            </div>
+
+            {/* ---- Aperçu collant (suit au scroll) ---- */}
+            <aside className="pf-aside">
+              <div className="pf-aside-sticky">
+                <div className="pf-aside-lab">Aperçu · ta carte</div>
+                <RunnerCard p={p} />
+                <div className="pf-actions">
+                  <button type="button" className="btn btn-primary" onClick={save}>{saved ? "✓ Enregistré" : "Enregistrer ma carte"}</button>
+                  <button type="button" className="btn btn-sm" onClick={copy}>{copied ? "✓ Copié" : "Copier pour WhatsApp"}</button>
+                  <button type="button" className="pf-reset" onClick={reset}>Réinitialiser</button>
+                </div>
+                <div className="pf-acct-line">
                   <span>Accès : <b>{auth.code || "connecté·e"}</b></span>
                   <button type="button" className="btn btn-sm" onClick={logout}>Déconnexion</button>
                 </div>
                 {sync && <div className="pf-note">{sync}</div>}
+                <p className="pf-note">Enregistre, et tu retrouves ta carte depuis <b>n'importe quel appareil</b>. Elle apparaît dans <b>la meute</b> et se met à jour pour tout le monde.</p>
               </div>
-
-              {/* ---- Champs ---- */}
-              <div className="pf-form">
-                <div className="pf-group">
-                  <h3 className="pf-group-h">01 · Identité</h3>
-                  <div className="pf-row2">
-                    <Field label="Prénom"><input className="pf-input" value={p.prenom} onChange={(e) => set("prenom", e.target.value)} placeholder="Camille" /></Field>
-                    <Field label="Surnom" hint="optionnel"><input className="pf-input" value={p.pseudo} onChange={(e) => set("pseudo", e.target.value)} placeholder="La Fusée" /></Field>
-                  </div>
-                  <div className="pf-row2">
-                    <Field label="Secteur / ville"><input className="pf-input" value={p.ville} onChange={(e) => set("ville", e.target.value)} placeholder="Nice, Vieux-Nice…" /></Field>
-                    <Field label="Adhésion">
-                      <select className="pf-input" value={p.adhesion} onChange={(e) => set("adhesion", e.target.value)}>
-                        {ADHESION.map((a) => <option key={a} value={a}>{a}</option>)}
-                      </select>
-                    </Field>
-                  </div>
-                  {isOrga() ? (
-                    <Field label="Rôle dans l'orga" hint="réservé au bureau">
-                      <input className="pf-input" value={p.role} onChange={(e) => set("role", e.target.value)} placeholder="Fondateur & Président, Trésorier·ère, Orga…" />
-                    </Field>
-                  ) : p.role ? (
-                    <Field label="Rôle dans l'orga"><div className="pf-role-ro">★ {p.role} <em>· modifiable en accès orga</em></div></Field>
-                  ) : null}
-                </div>
-
-                <div className="pf-group">
-                  <h3 className="pf-group-h">02 · Ton trail</h3>
-                  <Field label="Niveau">
-                    <div className="pf-levels">
-                      {NIVEAUX.map((n) => (
-                        <button type="button" key={n.v} className={`pf-level ${p.niveau === n.v ? "on" : ""}`} onClick={() => set("niveau", n.v)}>
-                          <span className="pf-level-v">{n.v}</span>
-                          <span className="pf-level-d">{n.d}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </Field>
-                  <Field label="Distances préférées"><ChipToggle options={DISTANCES} value={p.distances} onToggle={(v) => toggle("distances", v)} /></Field>
-                  <Field label="Terrains de jeu"><ChipToggle options={TERRAINS} value={p.terrains} onToggle={(v) => toggle("terrains", v)} /></Field>
-                </div>
-
-                <div className="pf-group">
-                  <h3 className="pf-group-h">03 · Tes dispos</h3>
-                  <Field label="Jours où tu cours le plus">
-                    <ChipToggle options={JOURS} value={p.jours} onToggle={(v) => toggle("jours", v)} getKey={(o) => o[0]} getLabel={(o) => o[1]} />
-                  </Field>
-                  <Field label="Moments"><ChipToggle options={MOMENTS} value={p.moments} onToggle={(v) => toggle("moments", v)} /></Field>
-                </div>
-
-                <div className="pf-group">
-                  <h3 className="pf-group-h">04 · Objectifs &amp; vibe</h3>
-                  <Field label="Ton objectif de la saison">
-                    <input className="pf-input" value={p.objectif} onChange={(e) => set("objectif", e.target.value)} placeholder="Finir mon premier trail long, passer sous les 45' au 10k…" />
-                  </Field>
-                  <Field label="Courses visées" hint="optionnel">
-                    <input className="pf-input" value={p.courses} onChange={(e) => set("courses", e.target.value)} placeholder="Marseille-Cassis, Trail du Mercantour…" />
-                  </Field>
-                  <Field label="Ta bio en une phrase">
-                    <textarea className="pf-input pf-textarea" value={p.bio} maxLength={140} onChange={(e) => set("bio", e.target.value)} placeholder="Ce qui te fait courir, en 140 signes." />
-                    <span className="pf-count">{p.bio.length}/140</span>
-                  </Field>
-                  <Field label="Trail to Techno" hint="ton rapport à l'after 🎶">
-                    <div className="pf-techno">
-                      {TECHNO.map((t) => (
-                        <button type="button" key={t.v} className={`pf-tk ${p.techno === t.v ? "on" : ""}`} onClick={() => set("techno", t.v)}>
-                          <span className="pf-tk-e">{t.e}</span>{t.v}
-                        </button>
-                      ))}
-                    </div>
-                  </Field>
-                </div>
-
-                <div className="pf-group">
-                  <h3 className="pf-group-h">05 · Tes liens</h3>
-                  <div className="pf-row2">
-                    <Field label="Strava" hint="lien profil"><input className="pf-input" value={p.strava} onChange={(e) => set("strava", e.target.value)} placeholder="https://strava.com/athletes/…" /></Field>
-                    <Field label="Instagram"><input className="pf-input" value={p.insta} onChange={(e) => set("insta", e.target.value)} placeholder="https://instagram.com/…" /></Field>
-                  </div>
-                </div>
-              </div>
-
-              {/* ---- Actions ---- */}
-              <div className="pf-actions pf-sk-actions">
-                <button type="button" className="btn btn-primary" onClick={save}>{saved ? "✓ Enregistré" : "Enregistrer ma carte"}</button>
-                <button type="button" className="btn btn-sm" onClick={copy}>{copied ? "✓ Copié" : "Copier pour WhatsApp"}</button>
-                <button type="button" className="pf-reset" onClick={reset}>Réinitialiser</button>
-              </div>
-              <p className="pf-note pf-sk-note">
-                Ta carte est reliée à <b>ton code</b> : enregistre, et tu la retrouves (et la modifies)
-                depuis <b>n'importe quel appareil</b>. Elle apparaît dans <b>Les membres</b> et se met à
-                jour pour toute la meute.
-              </p>
-            </div>
+            </aside>
           </div>
         </div>
       </section>
@@ -424,4 +396,4 @@ const ProfilPage = () => {
   );
 };
 
-window.PROFIL = { ProfilPage, RunnerCard };
+window.PROFIL = { ProfilPage, RunnerCard, TRAIL_RANKS, MUSIC_RANKS };

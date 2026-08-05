@@ -3,7 +3,7 @@
 
 const HUB_TOOLS = [
   { em: "🪪", t: "Ma carte de coureur", d: "Crée / mets à jour ta carte : niveau, objectifs, réseaux.", href: "profil.html" },
-  { em: "🐺", t: "Les membres", d: "Découvre la meute : qui court quoi, à quel niveau.", href: "membres.html" },
+  { em: "🐺", t: "La meute", d: "Découvre la meute : qui court quoi, à quel niveau.", href: "membres.html" },
   { em: "📅", t: "Calendrier & courses", d: "L'agenda du club + les courses : crée-en une, inscris-toi. On se retrouve sur les dossards.", href: "calendrier.html", hot: true },
   { em: "🗺️", t: "Traces GPX", d: "Partage et retrouve les parcours du club.", href: "gpx.html" },
   { em: "👕", t: "Le merch", d: "La boutique TTC — tenues & goodies aux couleurs du club.", href: "https://toutterrainclub.sumupstore.com/", ext: true },

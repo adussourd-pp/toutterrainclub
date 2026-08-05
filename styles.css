@@ -2859,3 +2859,38 @@ section.join {
 .legal-note p { margin: 0; color: var(--ink-2, #333); font-size: 15px; line-height: 1.6; }
 .legal-source { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; color: var(--muted); margin-top: 34px; }
 @media (max-width: 860px) { .legal-grid { grid-template-columns: 1fr; gap: 44px; } }
+
+/* ===== Avatar du bandeau + carte membre en surimpression ===== */
+.hdr-ava { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; border: 2px solid var(--green); background: var(--green-soft);
+  cursor: pointer; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; flex: none;
+  transition: transform .1s ease, box-shadow .15s ease; }
+.hdr-ava:hover { transform: scale(1.06); box-shadow: 0 4px 12px -4px rgba(0,0,0,.4); }
+.hdr-ava img { width: 100%; height: 100%; object-fit: cover; }
+
+.me-backdrop { position: fixed; inset: 0; background: rgba(15,15,15,.55); backdrop-filter: blur(3px); z-index: 2000;
+  display: flex; align-items: center; justify-content: center; padding: 20px; }
+.me-modal { position: relative; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 20px; padding: 26px; box-shadow: 0 30px 70px -28px rgba(0,0,0,.6); animation: mePop .18s ease; }
+@keyframes mePop { from { transform: translateY(10px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+.me-close { position: absolute; top: 10px; right: 14px; background: none; border: 0; font-size: 26px; line-height: 1; cursor: pointer; color: var(--muted); }
+.me-close:hover { color: var(--ink); }
+.me-card-top { display: flex; gap: 14px; align-items: center; }
+.me-ava { width: 66px; height: 66px; border-radius: 16px; background: var(--green); display: flex; align-items: center; justify-content: center;
+  font-size: 34px; flex: none; overflow: hidden; position: relative; }
+.me-ava.has { background: var(--paper-2); }
+.me-ava img { width: 100%; height: 100%; object-fit: cover; }
+.me-totem { position: absolute; bottom: -3px; right: -3px; width: 26px; height: 26px; border-radius: 50%; background: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,.3); }
+.me-name { font-family: var(--f-display); font-weight: 800; font-size: 19px; letter-spacing: -.01em; }
+.me-handle { font-weight: 500; color: var(--muted); font-size: 14px; }
+.me-role { color: var(--fire); font-weight: 600; font-size: 12.5px; }
+.me-meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.me-bio { font-style: italic; color: var(--ink-2); font-size: 14px; margin: 14px 0 0; }
+.me-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.me-tags span { font-size: 12px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 10px; }
+.me-obj { margin-top: 12px; font-size: 13.5px; color: var(--ink-2); }
+.me-links { display: flex; gap: 10px; margin-top: 14px; }
+.me-links a { font-size: 13px; color: var(--green-3); font-weight: 600; text-decoration: none; }
+.me-actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+.me-card-empty { text-align: center; }
+.me-card-empty .me-ava { margin: 0 auto 12px; }

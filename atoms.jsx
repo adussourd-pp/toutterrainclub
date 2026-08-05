@@ -15,6 +15,68 @@ const Brand = ({ to = "/" }) => (
   </a>
 );
 
+// Lit l'état de connexion + la carte depuis le navigateur (dispo partout).
+function readMe() {
+  let auth = null, card = null;
+  try { auth = JSON.parse(localStorage.getItem("ttc_auth") || "null"); } catch (e) {}
+  try { card = JSON.parse(localStorage.getItem("ttc_profile_v1") || "null"); } catch (e) {}
+  return { auth, card };
+}
+
+// Carte du membre en surimpression (ouverte depuis l'avatar du bandeau).
+const MeModal = ({ card, onClose }) => {
+  const p = card || {};
+  const name = p.prenom || p.pseudo || "Ta carte";
+  const hasCard = !!(p.prenom || p.pseudo || p.photo);
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [onClose]);
+  const logout = () => { try { localStorage.removeItem("ttc_auth"); sessionStorage.removeItem("ttc_member_ok"); } catch (e) {} window.location.href = "index.html"; };
+  return (
+    <div className="me-backdrop" onClick={onClose}>
+      <div className="me-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="me-close" onClick={onClose} aria-label="Fermer">×</button>
+        {hasCard ? (
+          <div className="me-card">
+            <div className="me-card-top">
+              {p.photo
+                ? <div className="me-ava has"><img src={p.photo} alt="" />{p.avatar && <span className="me-totem">{p.avatar}</span>}</div>
+                : <div className="me-ava">{p.avatar || "🐗"}</div>}
+              <div className="me-id">
+                <div className="me-name">{name}{p.pseudo && p.prenom ? <span className="me-handle"> « {p.pseudo} »</span> : null}</div>
+                {p.role && <div className="me-role">★ {p.role}</div>}
+                <div className="me-meta">📍 {p.ville || "—"} · {p.niveau || "—"}</div>
+              </div>
+            </div>
+            {p.bio && <p className="me-bio">« {p.bio} »</p>}
+            {p.distances && p.distances.length > 0 && <div className="me-tags">{p.distances.map((d, i) => <span key={i}>{d}</span>)}</div>}
+            {p.objectif && <div className="me-obj">🎯 {p.objectif}</div>}
+            {(p.strava || p.insta) && (
+              <div className="me-links">
+                {p.strava && <a href={p.strava} target="_blank" rel="noopener">Strava ↗</a>}
+                {p.insta && <a href={p.insta} target="_blank" rel="noopener">Instagram ↗</a>}
+              </div>
+            )}
+            <div className="me-actions">
+              <a className="btn btn-sm btn-primary" href="profil.html">Éditer ma carte →</a>
+              <button type="button" className="btn btn-sm" onClick={logout}>Déconnexion</button>
+            </div>
+          </div>
+        ) : (
+          <div className="me-card me-card-empty">
+            <div className="me-ava">🐗</div>
+            <p>Tu n'as pas encore rempli ta carte de coureur.</p>
+            <div className="me-actions"><a className="btn btn-sm btn-primary" href="profil.html">Créer ma carte →</a></div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const HeaderPublic = ({ active = "Accueil" }) => {
   // Le menu « espace membre » n'apparaît QUE sur les pages de l'espace membre
   // (celles qui chargent member-shell → window.MS). Le site public garde
@@ -30,11 +92,15 @@ const HeaderPublic = ({ active = "Accueil" }) => {
   const memberItems = [
     { label: "Espace membre", href: "membre.html" },
     { label: "Ma carte", href: "profil.html" },
-    { label: "Membres", href: "membres.html" },
+    { label: "La meute", href: "membres.html" },
     { label: "Calendrier & courses", href: "calendrier.html" },
     { label: "Traces GPX", href: "gpx.html" },
   ];
   const items = member ? memberItems : publicItems;
+  const me = readMe();
+  const [meOpen, setMeOpen] = React.useState(false);
+  const avaSrc = me.card && me.card.photo;
+  const avaEmoji = (me.card && me.card.avatar) || "🐗";
   return (
     <header className="header">
       <div className="wrap header-inner">
@@ -50,8 +116,14 @@ const HeaderPublic = ({ active = "Accueil" }) => {
           ) : (
             <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
           )}
+          {me.auth && (
+            <button type="button" className="hdr-ava" onClick={() => setMeOpen(true)} title="Ma carte">
+              {avaSrc ? <img src={avaSrc} alt="Ma carte" /> : <span>{avaEmoji}</span>}
+            </button>
+          )}
         </div>
       </div>
+      {meOpen && <MeModal card={me.card} onClose={() => setMeOpen(false)} />}
     </header>
   );
 };
