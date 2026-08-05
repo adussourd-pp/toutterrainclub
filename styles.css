@@ -256,7 +256,8 @@ img { display: block; max-width: 100%; }
   min-height: 100vh;
   background: var(--paper);
   position: relative;
-  overflow-x: hidden;
+  overflow-x: hidden;   /* repli navigateurs anciens */
+  overflow-x: clip;     /* bloque le débordement horizontal SANS casser position: sticky */
 }
 
 /* Topbar promo strip */
