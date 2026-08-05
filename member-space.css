@@ -801,3 +801,25 @@ select.pf-input { cursor: pointer; }
 .ms-race-del { background: none; border: 1px solid var(--rule); border-radius: 8px; cursor: pointer; font-size: 14px;
   padding: 4px 8px; line-height: 1; opacity: .7; transition: opacity .12s ease, border-color .12s ease; }
 .ms-race-del:hover { opacity: 1; border-color: var(--fire); }
+
+/* Questionnaire d'affinités (carte) */
+.pf-qs { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.pf-q { display: flex; align-items: center; gap: 10px; text-align: left; cursor: pointer; border: 1px solid var(--rule);
+  background: var(--paper); border-radius: 10px; padding: 10px 12px; transition: border-color .12s ease, background .12s ease; }
+.pf-q.on { border-color: var(--green-3); background: rgba(125,223,100,.16); }
+.pf-q-em { font-size: 18px; line-height: 1; }
+.pf-q-q { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.pf-q-yes { font-family: var(--f-mono); font-size: 10.5px; font-weight: 600; color: var(--muted); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+.pf-q.on .pf-q-yes { color: var(--green-3); border-color: var(--green-3); background: #fff; }
+/* Puce de rôle sur la carte */
+.pf-card-tags .role { background: rgba(255,94,26,.1); border-color: rgba(255,94,26,.32); color: var(--fire); font-weight: 600; }
+
+/* Meute : les 2 totems nommés distinctement */
+.ms-mcard-totems { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
+.ms-totem-line { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  border: 1px solid var(--rule); border-radius: 9px; padding: 7px 11px; background: var(--paper); }
+.ms-totem-k { font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.ms-totem-v { font-size: 13.5px; font-weight: 600; color: var(--ink); text-align: right; }
+.ms-mcard-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.ms-role-chip { font-size: 11.5px; font-weight: 600; color: var(--fire); background: rgba(255,94,26,.1);
+  border: 1px solid rgba(255,94,26,.3); border-radius: 999px; padding: 3px 10px; }

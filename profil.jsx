@@ -33,6 +33,20 @@ const MUSIC_RANKS = [
 const trailRank = (name) => TRAIL_RANKS.find((r) => r.v === name) || TRAIL_RANKS[0];
 const musicRank = (name) => MUSIC_RANKS.find((r) => r.v === name) || MUSIC_RANKS[0];
 
+// Questionnaire d'affinités → rôles affichés sur la carte (réponds « oui »).
+const AFFINITES = [
+  { role: "Ultra trailer", e: "🏃", q: "Ultra trailer ?" },
+  { role: "Cycliste / gravel", e: "🚴", q: "Cycliste / gravel ?" },
+  { role: "Skieur / Snow", e: "🎿", q: "Ski · Snow ?" },
+  { role: "Teuffeur", e: "🪩", q: "Teuf ?" },
+  { role: "Grimpeur", e: "🧗", q: "Grimpe / escalade ?" },
+  { role: "Nageur / eau libre", e: "🏊", q: "Nage / eau libre ?" },
+];
+const affinite = (role) => AFFINITES.find((a) => a.role === role);
+const ACTIVITES = ["⛰️ Trail", "🚴 Vélo-gravel", "🥾 Rando", "🤝 Rencontrer du monde", "💬 Partager des conseils", "🌍 Événements de la commu"];
+// Les formats du club qui comptent le plus pour toi (plusieurs choix).
+const FORMATS = ["Lundi trail", "Jeudi trail", "Happy trail", "La Pause", "Partage ta sortie", "Team Course", "Les Challenges", "Événements Trail to Techno", "Collabs / testing matériel", "Sorties longues du week-end"];
+
 const DISTANCES = ["5–10 km", "10–20 km", "Trail court (<25)", "Trail long (25–45)", "Ultra (45+)", "Route", "Piste / fractionné"];
 const TERRAINS = ["Sentier", "Montagne", "Technique", "Route", "Bord de mer", "Nuit / aube"];
 const JOURS = [["L","Lundi"],["M","Mardi"],["Me","Mercredi"],["J","Jeudi"],["V","Vendredi"],["S","Samedi"],["D","Dimanche"]];
@@ -42,7 +56,7 @@ const ADHESION = ["Sympathisant", "Don de soutien", "Adhérent", "Adhérent + Li
 const EMPTY = {
   prenom: "", pseudo: "", ville: "Nice", avatar: "🐣", photo: "", role: "", email: "",
   niveau: "Poussin des sentiers", distances: [], terrains: [],
-  jours: [], moments: [], objectif: "", courses: "", bio: "",
+  tags: [], activites: [], formats: [], objectif: "", courses: "", bio: "",
   strava: "", insta: "", techno: "Petit tapeur de pied", adhesion: "Adhérent",
 };
 
@@ -70,6 +84,7 @@ function fromServer(m) {
     distances: Array.isArray(m.distances) ? m.distances : [],
     terrains: Array.isArray(t.t) ? t.t : [], photo: t.photo || "", role: t.role || "",
     courses: t.courses || "", bio: t.bio || "",
+    tags: Array.isArray(t.tags) ? t.tags : [], activites: Array.isArray(t.activites) ? t.activites : [], formats: Array.isArray(t.formats) ? t.formats : [],
   });
 }
 
@@ -141,7 +156,6 @@ const RunnerCard = ({ p }) => {
           <div className="pf-card-meta">
             <span>📍 {p.ville || "—"}</span>
           </div>
-          <div className="pf-card-rank">{tr.e} {tr.v}</div>
         </div>
       </div>
 
@@ -149,14 +163,27 @@ const RunnerCard = ({ p }) => {
 
       <div className="pf-card-stats">
         <div className="pf-stat">
+          <div className="pf-stat-k">Totem de meute</div>
+          <div className="pf-stat-v pf-stat-sm">{tr.e} {tr.v}</div>
+        </div>
+        <div className="pf-stat">
           <div className="pf-stat-k">Trail to Techno</div>
           <div className="pf-stat-v pf-stat-sm">{mr.e} {mr.v}</div>
         </div>
-        <div className="pf-stat">
-          <div className="pf-stat-k">Adhésion</div>
-          <div className="pf-stat-v pf-stat-sm">{p.adhesion}</div>
-        </div>
       </div>
+
+      {p.tags.length > 0 && (
+        <div className="pf-card-block">
+          <div className="pf-card-bk">Rôles / affinités</div>
+          <div className="pf-card-tags">{p.tags.map((t) => { const a = affinite(t); return <span key={t} className="role">{a ? a.e + " " : ""}{t}</span>; })}</div>
+        </div>
+      )}
+      {p.activites.length > 0 && (
+        <div className="pf-card-block">
+          <div className="pf-card-bk">Ses envies</div>
+          <div className="pf-card-tags">{p.activites.map((d) => <span key={d} className="alt">{d}</span>)}</div>
+        </div>
+      )}
 
       {p.distances.length > 0 && (
         <div className="pf-card-block">
@@ -170,13 +197,10 @@ const RunnerCard = ({ p }) => {
           <div className="pf-card-tags">{p.terrains.map((d) => <span key={d} className="alt">{d}</span>)}</div>
         </div>
       )}
-      {(p.jours.length > 0 || p.moments.length > 0) && (
+      {p.formats.length > 0 && (
         <div className="pf-card-block">
-          <div className="pf-card-bk">Dispos</div>
-          <div className="pf-card-dispo">
-            {p.jours.length > 0 && <span>{p.jours.join(" · ")}</span>}
-            {p.moments.length > 0 && <span className="pf-card-moments">{p.moments.join(" / ")}</span>}
-          </div>
+          <div className="pf-card-bk">Formats préférés</div>
+          <div className="pf-card-tags">{p.formats.map((d) => <span key={d}>{d}</span>)}</div>
         </div>
       )}
       {(p.objectif || p.courses) && (
@@ -235,7 +259,7 @@ const ProfilPage = () => {
           niveau: p.niveau, objectif: p.objectif, strava: p.strava, insta: p.insta,
           techno: p.techno, adhesion: p.adhesion,
           distances: p.distances,
-          terrains: { t: p.terrains, photo: p.photo, role: p.role, courses: p.courses, bio: p.bio },
+          terrains: { t: p.terrains, photo: p.photo, role: p.role, courses: p.courses, bio: p.bio, tags: p.tags, activites: p.activites, formats: p.formats },
         } });
         setSync("");
       } catch (e) { setSync("Échec de l'enregistrement en ligne (reconnecte-toi ?)."); }
@@ -259,7 +283,8 @@ const ProfilPage = () => {
     L.push(`Totem de meute : ${tr.v}`);
     if (p.distances.length) L.push(`Distances : ${p.distances.join(", ")}`);
     if (p.terrains.length) L.push(`Terrains : ${p.terrains.join(", ")}`);
-    if (p.jours.length || p.moments.length) L.push(`Dispos : ${[...p.jours, ...p.moments].join(", ")}`);
+    if (p.tags.length) L.push(`Rôles : ${p.tags.join(", ")}`);
+    if (p.formats.length) L.push(`Formats : ${p.formats.join(", ")}`);
     if (p.objectif) L.push(`Objectif 2027 : ${p.objectif}`);
     if (p.courses) L.push(`🎯 Courses visées : ${p.courses}`);
     if (p.bio) L.push(`« ${p.bio} »`);
@@ -305,14 +330,7 @@ const ProfilPage = () => {
                   <Field label="Prénom"><input className="pf-input" value={p.prenom} onChange={(e) => set("prenom", e.target.value)} placeholder="Camille" /></Field>
                   <Field label="Surnom" hint="optionnel"><input className="pf-input" value={p.pseudo} onChange={(e) => set("pseudo", e.target.value)} placeholder="La Fusée" /></Field>
                 </div>
-                <div className="pf-row2">
-                  <Field label="Secteur / ville"><input className="pf-input" value={p.ville} onChange={(e) => set("ville", e.target.value)} placeholder="Nice, Vieux-Nice…" /></Field>
-                  <Field label="Adhésion">
-                    <select className="pf-input" value={p.adhesion} onChange={(e) => set("adhesion", e.target.value)}>
-                      {ADHESION.map((a) => <option key={a} value={a}>{a}</option>)}
-                    </select>
-                  </Field>
-                </div>
+                <Field label="Secteur / ville"><input className="pf-input" value={p.ville} onChange={(e) => set("ville", e.target.value)} placeholder="Nice, Vieux-Nice…" /></Field>
                 <Field label="Ta photo" hint="optionnel">
                   <div className="pf-photo-row">
                     <div className={`pf-photo-prev ${p.photo ? "has" : ""}`}>{p.photo ? <img src={p.photo} alt="" /> : <span>{trailRank(p.niveau).e}</span>}</div>
@@ -344,15 +362,29 @@ const ProfilPage = () => {
               </div>
 
               <div className="pf-group">
-                <h3 className="pf-group-h">04 · Tes dispos</h3>
-                <Field label="Jours où tu cours le plus">
-                  <ChipToggle options={JOURS} value={p.jours} onToggle={(v) => toggle("jours", v)} getKey={(o) => o[0]} getLabel={(o) => o[1]} />
-                </Field>
-                <Field label="Moments"><ChipToggle options={MOMENTS} value={p.moments} onToggle={(v) => toggle("moments", v)} /></Field>
+                <h3 className="pf-group-h">04 · Tes affinités <em className="pf-hint">réponds — ça t'attribue tes rôles</em></h3>
+                <div className="pf-qs">
+                  {AFFINITES.map((a) => {
+                    const on = p.tags.includes(a.role);
+                    return (
+                      <button type="button" key={a.role} className={`pf-q ${on ? "on" : ""}`} onClick={() => toggle("tags", a.role)}>
+                        <span className="pf-q-em">{a.e}</span>
+                        <span className="pf-q-q">{a.q}</span>
+                        <span className="pf-q-yes">{on ? "✓ Oui" : "Oui ?"}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <Field label="Ce que tu veux partager avec la meute"><ChipToggle options={ACTIVITES} value={p.activites} onToggle={(v) => toggle("activites", v)} /></Field>
               </div>
 
               <div className="pf-group">
-                <h3 className="pf-group-h">05 · Objectifs &amp; liens</h3>
+                <h3 className="pf-group-h">05 · Les formats qui comptent le plus <em className="pf-hint">plusieurs choix</em></h3>
+                <ChipToggle options={FORMATS} value={p.formats} onToggle={(v) => toggle("formats", v)} />
+              </div>
+
+              <div className="pf-group">
+                <h3 className="pf-group-h">06 · Objectifs &amp; liens</h3>
                 <Field label="Ton objectif de la saison">
                   <input className="pf-input" value={p.objectif} onChange={(e) => set("objectif", e.target.value)} placeholder="Finir mon premier trail long, passer sous les 45' au 10k…" />
                 </Field>

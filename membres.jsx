@@ -5,33 +5,46 @@ function localProfile() {
   try { const p = JSON.parse(localStorage.getItem("ttc_profile_v1") || "null"); return p && (p.prenom || p.pseudo) ? p : null; } catch (e) { return null; }
 }
 function myId() { try { return localStorage.getItem("ttc_member_id") || ""; } catch (e) { return ""; } }
-// terrains peut être un tableau (local) ou un objet {t,photo,role} (API)
+// Emoji du grade Trail to Techno (par nom) — pour l'afficher dans la meute.
+const MUSIC_EMOJI = {
+  "Petit tapeur de pied": "👟", "Danseur de buffet": "🕺", "Amateur de BPM": "🎧",
+  "Chasseur de caissons": "🔊", "Maxi Teufeur": "🔥", "Briseur de semelles": "🔨",
+  "Machine à Techno": "🔋", "Chaman des platines": "🧙", "Légende de l'After": "🌅", "Dieu de la Rave": "👑",
+};
+
+// terrains peut être un tableau (local) ou un objet {t,photo,role,tags} (API)
 function ext(m) {
   const t = m.terrains;
   const o = (t && !Array.isArray(t) && typeof t === "object") ? t : {};
-  return { photo: m.photo || o.photo || "", role: m.role || o.role || "" };
+  return { photo: m.photo || o.photo || "", role: m.role || o.role || "", tags: Array.isArray(o.tags) ? o.tags : [] };
 }
 
 const MemberCard = ({ m, me }) => {
   const e = ext(m);
   const dists = Array.isArray(m.distances) ? m.distances : [];
+  const trE = m.avatar || "🐗";
+  const muE = MUSIC_EMOJI[m.techno] || "🎶";
   return (
     <div className={`ms-mcard ${me ? "me" : ""}`}>
       {me && <span className="ms-mcard-you">C'est toi</span>}
       {e.role && <div className="ms-mcard-role">★ {e.role}</div>}
       <div className="ms-mcard-top">
         {e.photo
-          ? <span className="ms-mcard-av ms-mcard-photo"><img src={e.photo} alt="" /><i>{m.avatar || "🐗"}</i></span>
-          : <span className="ms-mcard-av">{m.avatar || "🐗"}</span>}
+          ? <span className="ms-mcard-av ms-mcard-photo"><img src={e.photo} alt="" /><i>{trE}</i></span>
+          : <span className="ms-mcard-av">{trE}</span>}
         <div>
           <div className="ms-mcard-name">{m.prenom || m.pseudo || "Coureur"}{m.pseudo && m.prenom ? ` · ${m.pseudo}` : ""}</div>
-          <div className="ms-mcard-sub">{[m.ville, m.niveau].filter(Boolean).join(" · ")}</div>
+          <div className="ms-mcard-sub">📍 {m.ville || "—"}</div>
         </div>
       </div>
+      <div className="ms-mcard-totems">
+        {m.niveau && <div className="ms-totem-line"><span className="ms-totem-k">Totem trail</span><span className="ms-totem-v">{trE} {m.niveau}</span></div>}
+        {m.techno && <div className="ms-totem-line"><span className="ms-totem-k">Trail to Techno</span><span className="ms-totem-v">{muE} {m.techno}</span></div>}
+      </div>
+      {e.tags.length > 0 && <div className="ms-mcard-tags">{e.tags.map((t) => <span key={t} className="ms-role-chip">{t}</span>)}</div>}
       {m.objectif && <div className="ms-mcard-obj">🎯 {m.objectif}</div>}
       {dists.length > 0 && <div className="ms-dist-chips">{dists.map((d, i) => <span key={i} className="ms-dist-chip">{typeof d === "string" ? d : (d.km + " km")}</span>)}</div>}
       <div className="ms-mcard-soc">
-        {m.adhesion && <span className="ms-chip">{m.adhesion}</span>}
         {m.strava && <a href={m.strava} target="_blank" rel="noopener">🟠 Strava</a>}
         {m.insta && <a href={m.insta} target="_blank" rel="noopener">📸 Insta</a>}
       </div>
