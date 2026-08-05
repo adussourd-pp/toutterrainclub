@@ -7,6 +7,7 @@
 //   • POST /api/invites/revoke {code}  -> révoque un code
 // Espace privé : membres / courses / gpx lisibles UNIQUEMENT connecté (jeton).
 //   • POST /api/races/:id/delete       -> supprime une course + ses inscriptions
+//   • POST /api/races/:id/update       -> modifie les infos d'une course
 
 const enc = new TextEncoder();
 const json = (data, status, origin) =>
@@ -135,6 +136,8 @@ export default {
       if (m && write) { const b = await body(req); if (b.participation_id) await env.DB.prepare("DELETE FROM participations WHERE id=? AND race_id=?").bind(b.participation_id, m[1]).run(); else if (b.member) await env.DB.prepare("DELETE FROM participations WHERE race_id=? AND member=?").bind(m[1], b.member).run(); return json({ ok: true }, 200, origin); }
       m = path.match(/^\/api\/races\/([^/]+)\/delete$/);
       if (m && write) { await env.DB.prepare("DELETE FROM participations WHERE race_id=?").bind(m[1]).run(); await env.DB.prepare("DELETE FROM races WHERE id=?").bind(m[1]).run(); return json({ ok: true }, 200, origin); }
+      m = path.match(/^\/api\/races\/([^/]+)\/update$/);
+      if (m && write) { const b = await body(req); if (!b.name) return json({ error: "name" }, 400, origin); await env.DB.prepare("UPDATE races SET name=?,date_start=?,date_end=?,location=?,type=?,distances=?,site_url=? WHERE id=?").bind(b.name, b.date_start || "", b.date_end || "", b.location || "", b.type || "trail", JSON.stringify(b.distances || []), b.site_url || "", m[1]).run(); return json({ ok: true }, 200, origin); }
 
       if (path === "/api/gpx") {
         if (req.method === "GET") { const { results } = await env.DB.prepare("SELECT * FROM gpx ORDER BY created_at DESC").all(); return json({ gpx: results }, 200, origin); }
