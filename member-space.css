@@ -835,8 +835,8 @@ select.pf-input { cursor: pointer; }
 .ms-full { display: flex; flex-direction: column; gap: 12px; align-items: center; }
 .ms-full .ms-see { align-self: center; }
 
-/* Carte : totems en lignes labellisées (cohérent partout) */
-.pf-card-totems { display: flex; flex-direction: column; gap: 6px; margin: 14px 0; }
+/* Carte : les 2 totems côte à côte */
+.pf-card-totems { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
 /* Hub : la carte du membre (même RunnerCard) */
 .ms-mecard { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .ms-mecard .pf-card { width: 100%; max-width: 420px; }

@@ -149,7 +149,7 @@ const RunnerCard = ({ p }) => {
       {p.role && <div className="pf-card-role">★ {p.role}</div>}
       <div className="pf-card-top">
         {p.photo
-          ? <div className="pf-avatar pf-avatar-photo"><img src={p.photo} alt="" /><span className="pf-totem">{tr.e}</span></div>
+          ? <div className="pf-avatar pf-avatar-photo"><img src={p.photo} alt="" /></div>
           : <div className="pf-avatar">{tr.e}</div>}
         <div className="pf-card-id">
           <div className="pf-card-name">{name} {handle && <span className="pf-card-handle">{handle}</span>}</div>
@@ -162,8 +162,8 @@ const RunnerCard = ({ p }) => {
       {p.bio && <p className="pf-card-bio">« {p.bio} »</p>}
 
       <div className="pf-card-totems">
-        <div className="ms-totem-line"><span className="ms-totem-k">Totem trail</span><span className="ms-totem-v">{tr.e} {tr.v}</span></div>
-        <div className="ms-totem-line"><span className="ms-totem-k">Trail to Techno</span><span className="ms-totem-v">{mr.e} {mr.v}</span></div>
+        <div className="pf-stat"><div className="pf-stat-k">Totem trail</div><div className="pf-stat-v pf-stat-sm">{tr.e} {tr.v}</div></div>
+        <div className="pf-stat"><div className="pf-stat-k">Trail to Techno</div><div className="pf-stat-v pf-stat-sm">{mr.e} {mr.v}</div></div>
       </div>
 
       {p.tags.length > 0 && (
