@@ -38,7 +38,7 @@ const AFFINITES = [
   { role: "Ultra trailer", e: "🏃", q: "Ultra trailer ?" },
   { role: "Cycliste / gravel", e: "🚴", q: "Cycliste / gravel ?" },
   { role: "Skieur / Snow", e: "🎿", q: "Ski · Snow ?" },
-  { role: "Teuffeur", e: "🪩", q: "Teuf ?" },
+  { role: "Teufeur", e: "🪩", q: "Teuf ?" },
   { role: "Grimpeur", e: "🧗", q: "Grimpe / escalade ?" },
   { role: "Nageur / eau libre", e: "🏊", q: "Nage / eau libre ?" },
 ];
