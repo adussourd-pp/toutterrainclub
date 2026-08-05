@@ -17,17 +17,30 @@ function mySocials() {
   catch (e) { return { strava: "", insta: "" }; }
 }
 
+// Une distance est un objet {km, dplus}. (compat : anciennes valeurs = string)
+function distLabel(d) { return typeof d === "string" ? d : `${d.km} km · ${d.dplus || 0} D+`; }
+function distCat(d) { return typeof d === "string" ? null : window.TTC_TRAIL.utmbCategory(d.km, d.dplus).code; }
 const Chips = ({ items }) => (
-  <span className="ms-dist-chips">{(items || []).map((d, i) => <span key={i} className="ms-dist-chip">{d}</span>)}</span>
+  <span className="ms-dist-chips">{(items || []).map((d, i) => {
+    const c = distCat(d);
+    return <span key={i} className="ms-dist-chip">{distLabel(d)}{c && c !== "—" ? <b className="ms-dist-cat"> {c}</b> : null}</span>;
+  })}</span>
 );
 
 const RaceForm = ({ onAdd, onClose }) => {
-  const [f, setF] = React.useState({ name: "", date_start: "", date_end: "", location: "", type: "trail", distances: "", site_url: "" });
+  const [f, setF] = React.useState({ name: "", date_start: "", date_end: "", location: "", type: "trail", site_url: "" });
+  const [dists, setDists] = React.useState([{ km: "", dplus: "" }]);
   const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
+  const setD = (i, k, v) => setDists((a) => a.map((d, j) => (j === i ? { ...d, [k]: v } : d)));
+  const addD = () => setDists((a) => [...a, { km: "", dplus: "" }]);
+  const rmD = (i) => setDists((a) => a.filter((_, j) => j !== i));
   const submit = (e) => {
     e.preventDefault();
     if (!f.name.trim()) return;
-    onAdd({ ...f, distances: f.distances.split(",").map((s) => s.trim()).filter(Boolean) });
+    const distances = dists
+      .filter((d) => String(d.km).trim() !== "")
+      .map((d) => ({ km: Number(d.km) || 0, dplus: Number(d.dplus) || 0 }));
+    onAdd({ ...f, distances });
   };
   return (
     <form className="ms-form" onSubmit={submit}>
@@ -43,11 +56,26 @@ const RaceForm = ({ onAdd, onClose }) => {
         <label className="pf-field"><span className="pf-label">Type</span>
           <select className="pf-input" value={f.type} onChange={(e) => set("type", e.target.value)}>
             {RACE_TYPES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></label>
-        <label className="pf-field"><span className="pf-label">Distances <em className="pf-hint">séparées par des virgules</em></span>
-          <input className="pf-input" value={f.distances} onChange={(e) => set("distances", e.target.value)} placeholder="20K, 50K, 100K" /></label>
-        <label className="pf-field"><span className="pf-label">Site officiel</span>
+        <label className="pf-field" style={{ gridColumn: "1 / -1" }}><span className="pf-label">Site officiel</span>
           <input type="url" className="pf-input" value={f.site_url} onChange={(e) => set("site_url", e.target.value)} placeholder="https://…" /></label>
       </div>
+
+      <div className="ms-dist-editor">
+        <div className="pf-label">Distances proposées <em className="pf-hint">km + D+ → catégorie UTMB auto</em></div>
+        {dists.map((d, i) => {
+          const cat = window.TTC_TRAIL.utmbCategory(d.km, d.dplus);
+          return (
+            <div className="ms-dist-row" key={i}>
+              <input type="number" className="pf-input" value={d.km} onChange={(e) => setD(i, "km", e.target.value)} placeholder="km" />
+              <input type="number" className="pf-input" value={d.dplus} onChange={(e) => setD(i, "dplus", e.target.value)} placeholder="D+ (m)" />
+              <span className={`ms-cat ${cat.code === "—" ? "muted" : ""}`} title={cat.full}>{d.km ? cat.code : "—"}</span>
+              {dists.length > 1 && <button type="button" className="ms-dist-rm" onClick={() => rmD(i)}>×</button>}
+            </div>
+          );
+        })}
+        <button type="button" className="btn btn-sm" onClick={addD}>+ Ajouter une distance</button>
+      </div>
+
       <div className="ms-form-actions">
         <button type="button" className="btn" onClick={onClose}>Annuler</button>
         <button type="submit" className="btn btn-primary">Ajouter la course →</button>
@@ -58,7 +86,8 @@ const RaceForm = ({ onAdd, onClose }) => {
 
 const JoinForm = ({ race, onJoin, onClose }) => {
   const soc = mySocials();
-  const [f, setF] = React.useState({ member: myName(), distance: (race.distances || [])[0] || "", status: "inscrit", strava: soc.strava, insta: soc.insta });
+  const first = (race.distances || [])[0];
+  const [f, setF] = React.useState({ member: myName(), distance: first ? distLabel(first) : "", status: "inscrit", strava: soc.strava, insta: soc.insta });
   const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
   const submit = (e) => { e.preventDefault(); if (!f.member.trim()) return; onJoin(f); };
   return (
@@ -66,7 +95,7 @@ const JoinForm = ({ race, onJoin, onClose }) => {
       <input className="pf-input" value={f.member} onChange={(e) => set("member", e.target.value)} placeholder="Ton prénom" />
       {(race.distances || []).length > 0 && (
         <select className="pf-input" value={f.distance} onChange={(e) => set("distance", e.target.value)}>
-          {(race.distances || []).map((d) => <option key={d} value={d}>{d}</option>)}
+          {(race.distances || []).map((d, i) => { const l = distLabel(d); const c = distCat(d); return <option key={i} value={l}>{l}{c && c !== "—" ? " · " + c : ""}</option>; })}
         </select>
       )}
       <select className="pf-input" value={f.status} onChange={(e) => set("status", e.target.value)}>
