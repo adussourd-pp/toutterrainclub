@@ -4,9 +4,8 @@
 const HUB_TOOLS = [
   { em: "🪪", t: "Ma carte de coureur", d: "Crée / mets à jour ta carte : niveau, objectifs, réseaux.", href: "profil.html" },
   { em: "🐺", t: "Les membres", d: "Découvre la meute : qui court quoi, à quel niveau.", href: "membres.html" },
-  { em: "🏁", t: "Courses — qui fait quoi", d: "Crée une course ou inscris-toi. On se retrouve sur les dossards.", href: "courses.html", hot: true },
+  { em: "📅", t: "Calendrier & courses", d: "L'agenda du club + les courses : crée-en une, inscris-toi. On se retrouve sur les dossards.", href: "calendrier.html", hot: true },
   { em: "🗺️", t: "Traces GPX", d: "Partage et retrouve les parcours du club.", href: "gpx.html" },
-  { em: "📅", t: "Calendrier partagé", d: "L'agenda des sorties et temps forts (Google Agenda).", href: "calendrier.html" },
   { em: "🧰", t: "Préparer une course", d: "L'outil de prépa (bientôt maison — Noah). Pour l'instant : Sisyf.", href: "https://app.sisyf.com/", ext: true },
 ];
 

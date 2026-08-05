@@ -2,20 +2,22 @@
 // Réservé : porte par mot de passe côté client (soft gate, pas une vraie
 // sécurité — le mot de passe reste visible dans la source du site).
 
-const MEMBER_PW = "T2Tfestival";
+// ⬇️ Mot de passe ORGA (bureau) — DIFFÉRENT du mot de passe membre (T2Tfestival).
+//    Change-le ici quand tu veux (soft gate, visible dans la source).
+const ORGA_PW = "TTCorga26";
 
-// ---- Porte d'accès --------------------------------------------------------
-const MemberGate = ({ children }) => {
+// ---- Porte d'accès ORGA (séparée de l'espace membre) ----------------------
+const OrgaGate = ({ children }) => {
   const [ok, setOk] = React.useState(() => {
-    try { return sessionStorage.getItem("ttc_member_ok") === "1"; } catch (e) { return false; }
+    try { return sessionStorage.getItem("ttc_orga_ok") === "1"; } catch (e) { return false; }
   });
   const [val, setVal] = React.useState("");
   const [err, setErr] = React.useState(false);
 
   const submit = (e) => {
     e.preventDefault();
-    if (val.trim() === MEMBER_PW) {
-      try { sessionStorage.setItem("ttc_member_ok", "1"); } catch (e) {}
+    if (val.trim() === ORGA_PW) {
+      try { sessionStorage.setItem("ttc_orga_ok", "1"); } catch (e) {}
       setOk(true);
     } else {
       setErr(true);
@@ -28,16 +30,15 @@ const MemberGate = ({ children }) => {
     <section className="adh-hero ms-lock">
       <HeroWaves />
       <div className="wrap">
-        <span className="adh-hero-eyebrow">★ Espace membre · accès réservé</span>
-        <h1>La <span className="marker">meute</span>,<br/>côté coulisses.</h1>
+        <span className="adh-hero-eyebrow">★ Espace orga · accès restreint</span>
+        <h1>Côté <span className="marker">orga</span>.</h1>
         <div className="ms-lock-grid">
           <p className="adh-hero-lede">
-            Cette page rassemble l'analyse des retours de la communauté sur le passage en
-            association. Elle est <strong>réservée aux membres</strong>. Entre le mot de passe
-            partagé sur le groupe pour y accéder.
+            Espace réservé au <strong>bureau</strong> : analyse du sondage et stratégie. Rien à voir
+            ici pour les adhérents — l'espace membre, c'est <a href="membre.html">par là</a>.
           </p>
           <form className="ms-lock-card" onSubmit={submit}>
-            <label className="ms-lock-label" htmlFor="ms-pw">Mot de passe</label>
+            <label className="ms-lock-label" htmlFor="ms-pw">Mot de passe orga</label>
             <input
               id="ms-pw"
               type="password"
@@ -48,9 +49,9 @@ const MemberGate = ({ children }) => {
               placeholder="••••••••••"
               onChange={(e) => { setVal(e.target.value); setErr(false); }}
             />
-            {err && <div className="ms-lock-err">Mot de passe incorrect — redemande-le sur le groupe.</div>}
-            <button type="submit" className="btn btn-primary">Entrer dans l'espace →</button>
-            <div className="ms-lock-hint">Pas encore membre ? La commu et les runs restent gratuits.</div>
+            {err && <div className="ms-lock-err">Mot de passe incorrect.</div>}
+            <button type="submit" className="btn btn-primary">Entrer côté orga →</button>
+            <div className="ms-lock-hint">Réservé au bureau de l'asso.</div>
           </form>
         </div>
       </div>
@@ -58,13 +59,10 @@ const MemberGate = ({ children }) => {
   );
 };
 
-// ---- Sous-navigation de l'espace membre -----------------------------------
-const MemberSubnav = ({ active }) => (
+// ---- Sous-navigation ORGA (analyse + stratégie uniquement) ----------------
+const OrgaSubnav = ({ active }) => (
   <div className="wrap">
     <nav className="ms-subnav">
-      <a href="calendrier.html" className={active === "calendrier" ? "active" : ""}>◆ Calendrier de la meute</a>
-      <a href="profil.html" className={active === "profil" ? "active" : ""}>◆ Ma carte de coureur</a>
-      <span className="ms-subnav-sep" aria-hidden="true" />
       <a href="espace-membre.html" className={active === "analyse" ? "active" : ""}>◆ Analyse du sondage</a>
       <a href="strategie-buzz.html" className={active === "strategie" ? "active" : ""}>◆ Stratégie · buzz &amp; QG</a>
     </nav>
@@ -482,7 +480,7 @@ const MemberReco = () => (
 
 const MemberAnalysis = () => (
   <React.Fragment>
-    <MemberSubnav active="analyse" />
+    <OrgaSubnav active="analyse" />
     <MemberHero />
     <MemberVerdict />
     <MemberConfront />
@@ -494,4 +492,4 @@ const MemberAnalysis = () => (
   </React.Fragment>
 );
 
-window.MEMBER = { MemberGate, MemberAnalysis, MemberSubnav, Bar, Row };
+window.MEMBER = { OrgaGate, MemberAnalysis, OrgaSubnav, Bar, Row };

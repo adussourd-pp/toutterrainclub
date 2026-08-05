@@ -54,9 +54,8 @@ const MS_LINKS = [
   { key: "hub", label: "Espace membre", href: "membre.html" },
   { key: "carte", label: "Ma carte", href: "profil.html" },
   { key: "membres", label: "Les membres", href: "membres.html" },
-  { key: "courses", label: "Courses", href: "courses.html" },
+  { key: "calendrier", label: "Calendrier & courses", href: "calendrier.html" },
   { key: "gpx", label: "Traces GPX", href: "gpx.html" },
-  { key: "calendrier", label: "Calendrier", href: "calendrier.html" },
 ];
 
 const MSSubnav = ({ active }) => (

@@ -408,7 +408,7 @@ const StratKeepDrop = () => (
 
 const StrategiePage = () => (
   <React.Fragment>
-    <window.MEMBER.MemberSubnav active="strategie" />
+    <window.MEMBER.OrgaSubnav active="strategie" />
     <StratHero />
     <StratDecrypt />
     <StratPanorama />

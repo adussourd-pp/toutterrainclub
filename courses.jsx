@@ -2,7 +2,7 @@
 // Chaque membre peut créer une course ou s'inscrire. Live via l'API Cloudflare,
 // sinon mode démo (localStorage).
 
-const RACE_TYPES = [["trail", "Trail"], ["route", "Route"], ["autre", "Autre"]];
+const RACE_TYPES = [["trail", "Trail"], ["route", "Route"], ["off", "Off / aventure (plusieurs jours)"], ["autre", "Autre"]];
 const STATUSES = [["inscrit", "✅ Inscrit"], ["chaud", "🔥 Chaud"]];
 
 // Nom d'affichage par défaut : depuis la carte de coureur si elle existe.
@@ -151,16 +151,16 @@ const CoursesPage = () => {
 
   return (
     <React.Fragment>
-      <window.MS.MSSubnav active="courses" />
+      <window.MS.MSSubnav active="calendrier" />
       <section className="adh-hero">
         <HeroWaves />
         <div className="wrap">
-          <span className="adh-hero-eyebrow">★ Espace membre · courses</span>
-          <h1>Qui fait <span className="marker">quoi</span> ?</h1>
+          <span className="adh-hero-eyebrow">★ Espace membre · calendrier</span>
+          <h1>Le <span className="marker">calendrier</span><br/>des courses.</h1>
           <div className="adh-hero-grid">
             <p className="adh-hero-lede">
-              Les <strong>courses</strong> où l'on se retrouve — pas les runs hebdo. Crée une course,
-              inscris-toi, vois qui est chaud. On fait bloc sur les dossards.
+              Les <strong>courses</strong> où l'on se retrouve — pas les runs hebdo (ceux-là restent sur WhatsApp).
+              Crée une course, inscris-toi, vois qui est chaud. On fait bloc sur les dossards.
             </p>
             <div className="adh-hero-cta">
               <button className="btn btn-primary" onClick={() => setAdding((v) => !v)}>+ Ajouter une course</button>
@@ -169,8 +169,26 @@ const CoursesPage = () => {
         </div>
       </section>
 
+      {window.TTC_AGENDA_EMBED && (
+        <section className="adh-sec ms-sec-alt">
+          <div className="wrap">
+            <div className="adh-sec-head">
+              <h2 className="adh-h2">L'agenda <span className="g">Google</span>.</h2>
+              <p className="ms-sec-lede">Sorties, week-ends et temps forts du club.</p>
+            </div>
+            <div className="ms-agenda">
+              <iframe title="Agenda TTC" src={window.TTC_AGENDA_EMBED} style={{ border: 0, width: "100%", height: 600 }} />
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="adh-sec">
         <div className="wrap">
+          <div className="adh-sec-head">
+            <h2 className="adh-h2">Les <span className="g">courses</span>.</h2>
+            <p className="ms-sec-lede">Qui fait quoi sur les dossards — inscris-toi, on se retrouve là-bas.</p>
+          </div>
           {!live && <window.MS.MSDemo what="Le suivi des courses" />}
           {adding && <RaceForm onAdd={addRace} onClose={() => setAdding(false)} />}
           {state === "loading" && <p className="ms-note-muted">Chargement…</p>}
