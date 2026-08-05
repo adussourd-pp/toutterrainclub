@@ -15,6 +15,36 @@ const Brand = ({ to = "/" }) => (
   </a>
 );
 
+// Lit compte + carte (forme sûre pour RunnerCard) depuis le navigateur.
+function readMe() {
+  let auth = null, raw = null;
+  try { auth = JSON.parse(localStorage.getItem("ttc_auth") || "null"); } catch (e) {}
+  try { raw = JSON.parse(localStorage.getItem("ttc_profile_v1") || "null"); } catch (e) {}
+  const card = raw ? Object.assign({ distances: [], terrains: [], tags: [], activites: [], formats: [], niveau: "", techno: "", avatar: "🐗" }, raw) : null;
+  return { auth, card };
+}
+
+// Ta carte en popup (ouverte depuis l'avatar du header, espace membre).
+const HeaderCardModal = ({ card, onClose }) => {
+  React.useEffect(() => {
+    const k = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", k);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", k); document.body.style.overflow = ""; };
+  }, [onClose]);
+  const hasCard = card && (card.prenom || card.pseudo);
+  return (
+    <div className="me-backdrop" onClick={onClose}>
+      <div className="me-modal me-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="me-close" onClick={onClose} aria-label="Fermer">×</button>
+        {hasCard && window.PROFIL && window.PROFIL.RunnerCard
+          ? <window.PROFIL.RunnerCard p={card} />
+          : <div className="pf-card" style={{ textAlign: "center" }}><p>Tu n'as pas encore rempli ta carte de coureur.</p><a className="btn btn-sm btn-primary" href="profil.html">Créer ma carte →</a></div>}
+      </div>
+    </div>
+  );
+};
+
 const HeaderPublic = ({ active = "Accueil" }) => {
   // Le menu « espace membre » n'apparaît QUE sur les pages de l'espace membre
   // (celles qui chargent member-shell → window.MS). Le site public garde
@@ -35,6 +65,8 @@ const HeaderPublic = ({ active = "Accueil" }) => {
     { label: "Traces GPX", href: "gpx.html" },
   ];
   const items = member ? memberItems : publicItems;
+  const me = readMe();
+  const [meOpen, setMeOpen] = React.useState(false);
   return (
     <header className="header">
       <div className="wrap header-inner">
@@ -46,7 +78,14 @@ const HeaderPublic = ({ active = "Accueil" }) => {
         </nav>
         <div className="header-right">
           {member ? (
-            <a href="index.html" className="btn btn-sm">← Revenir au site</a>
+            <React.Fragment>
+              <a href="index.html" className="btn btn-sm">← Revenir au site</a>
+              {me.auth && (
+                <button type="button" className="hdr-ava" onClick={() => setMeOpen(true)} title="Ma carte">
+                  {me.card && me.card.photo ? <img src={me.card.photo} alt="Ma carte" /> : <span>{(me.card && me.card.avatar) || "🐗"}</span>}
+                </button>
+              )}
+            </React.Fragment>
           ) : (
             <>
               <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
@@ -55,6 +94,7 @@ const HeaderPublic = ({ active = "Accueil" }) => {
           )}
         </div>
       </div>
+      {meOpen && <HeaderCardModal card={me.card} onClose={() => setMeOpen(false)} />}
     </header>
   );
 };
