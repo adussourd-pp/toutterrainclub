@@ -31,6 +31,21 @@ function adminAuthed(req, env) { const s = req.headers.get("x-ttc-admin") || "";
 function safe(s) { try { return JSON.parse(s || "[]"); } catch (e) { return []; } }
 function pubMember(r) { let terr = {}; try { terr = JSON.parse(r.terrains || "{}"); } catch (e) {} return { id: r.id, prenom: r.prenom, pseudo: r.pseudo, ville: r.ville, avatar: r.avatar, niveau: r.niveau, objectif: r.objectif, strava: r.strava, insta: r.insta, techno: r.techno, adhesion: r.adhesion, distances: safe(r.distances), terrains: terr }; }
 
+// Tables "sociales" des traces (réactions « fait » + commentaires) créées à la
+// volée : pas de migration manuelle à lancer côté D1. Gardé en mémoire de
+// l'isolate pour ne le faire qu'une fois.
+let _gpxSocialReady = false;
+async function ensureGpxSocial(env) {
+  if (_gpxSocialReady) return;
+  await env.DB.batch([
+    env.DB.prepare("CREATE TABLE IF NOT EXISTS gpx_done (id TEXT PRIMARY KEY, gpx_id TEXT NOT NULL, member_id TEXT NOT NULL, emoji TEXT, created_at TEXT NOT NULL, UNIQUE(gpx_id,member_id))"),
+    env.DB.prepare("CREATE TABLE IF NOT EXISTS gpx_comments (id TEXT PRIMARY KEY, gpx_id TEXT NOT NULL, member_id TEXT NOT NULL, text TEXT NOT NULL, created_at TEXT NOT NULL)"),
+  ]);
+  _gpxSocialReady = true;
+}
+// Nom + avatar affichables d'un membre (fallbacks neutres).
+function whoOf(map, id) { const w = map[id] || {}; return { name: w.prenom || w.pseudo || "Membre", avatar: w.avatar || "🙂" }; }
+
 export default {
   async fetch(req, env) {
     const origin = pickOrigin(req, env);
@@ -136,12 +151,76 @@ export default {
       m = path.match(/^\/api\/races\/([^/]+)\/delete$/);
       if (m && write) { await env.DB.prepare("DELETE FROM participations WHERE race_id=?").bind(m[1]).run(); await env.DB.prepare("DELETE FROM races WHERE id=?").bind(m[1]).run(); return json({ ok: true }, 200, origin); }
 
+      if (path.startsWith("/api/gpx")) await ensureGpxSocial(env);
+
       if (path === "/api/gpx") {
-        if (req.method === "GET") { const { results } = await env.DB.prepare("SELECT * FROM gpx ORDER BY created_at DESC").all(); return json({ gpx: results }, 200, origin); }
+        if (req.method === "GET") {
+          const gpx = (await env.DB.prepare("SELECT * FROM gpx ORDER BY created_at DESC").all()).results;
+          const dones = (await env.DB.prepare("SELECT * FROM gpx_done").all()).results;
+          const coms = (await env.DB.prepare("SELECT * FROM gpx_comments ORDER BY created_at ASC").all()).results;
+          const mem = (await env.DB.prepare("SELECT id,prenom,pseudo,avatar FROM members").all()).results;
+          const who = {}; for (const m of mem) who[m.id] = m;
+          const dByG = {}, cByG = {};
+          for (const d of dones) { const w = whoOf(who, d.member_id); (dByG[d.gpx_id] = dByG[d.gpx_id] || []).push({ member_id: d.member_id, emoji: d.emoji || "✅", name: w.name, avatar: w.avatar }); }
+          for (const c of coms) { const w = whoOf(who, c.member_id); (cByG[c.gpx_id] = cByG[c.gpx_id] || []).push({ id: c.id, member_id: c.member_id, text: c.text, created_at: c.created_at, name: w.name, avatar: w.avatar, mine: c.member_id === meId }); }
+          const out = gpx.map((g) => { const dz = dByG[g.id] || []; const me = dz.find((x) => x.member_id === meId); return { ...g, done: dz, done_count: dz.length, done_me: me ? me.emoji : "", comments: cByG[g.id] || [] }; });
+          return json({ gpx: out }, 200, origin);
+        }
         const b = await body(req); const id = uid();
         await env.DB.prepare(`INSERT INTO gpx (id,created_at,name,distance_km,denivele_m,region,start_point,type,url,added_by) VALUES (?,?,?,?,?,?,?,?,?,?)`)
-          .bind(id, now(), b.name || "", Number(b.distance_km) || 0, Number(b.denivele_m) || 0, b.region || "", b.start_point || "", b.type || "Boucle", b.url || "", b.added_by || "").run();
+          .bind(id, now(), b.name || "", Number(b.distance_km) || 0, Number(b.denivele_m) || 0, b.region || "", b.start_point || "", b.type || "Boucle", b.url || "", b.added_by || meId || "").run();
         return json({ id }, 200, origin);
+      }
+
+      // ---- Édition d'une trace (tout membre connecté) : métadonnées + infos
+      // en plus. La géométrie (url.gpxz/gpx) n'est jamais touchée ici.
+      let mg = path.match(/^\/api\/gpx\/([^/]+)\/edit$/);
+      if (mg && write) {
+        if (!meId) return json({ error: "unauthorized" }, 401, origin);
+        const b = await body(req);
+        const row = (await env.DB.prepare("SELECT url FROM gpx WHERE id=?").bind(mg[1]).all()).results[0];
+        if (!row) return json({ error: "not-found" }, 404, origin);
+        let data = {}; try { data = JSON.parse(row.url || "{}"); } catch (e) {}
+        if (b.link !== undefined) data.link = String(b.link || "");
+        if (b.official !== undefined) data.official = !!b.official;
+        if (b.notes !== undefined) data.notes = String(b.notes || "").slice(0, 2000);
+        if (b.place !== undefined) data.place = b.place && b.place.lat != null ? { lat: Number(b.place.lat), lon: Number(b.place.lon), label: String(b.place.label || "").slice(0, 160) } : null;
+        await env.DB.prepare("UPDATE gpx SET name=COALESCE(?,name), region=COALESCE(?,region), start_point=COALESCE(?,start_point), type=COALESCE(?,type), url=? WHERE id=?")
+          .bind(b.name != null ? String(b.name).slice(0, 120) : null, b.region != null ? String(b.region).slice(0, 120) : null, b.start_point != null ? String(b.start_point).slice(0, 120) : null, b.type != null ? String(b.type) : null, JSON.stringify(data), mg[1]).run();
+        return json({ ok: true }, 200, origin);
+      }
+
+      // ---- « Je l'ai fait » : toggle avec emoji d'humeur (1 par membre/trace)
+      mg = path.match(/^\/api\/gpx\/([^/]+)\/done$/);
+      if (mg && write) {
+        if (!meId) return json({ error: "unauthorized" }, 401, origin);
+        const b = await body(req);
+        if (b.done === false) { await env.DB.prepare("DELETE FROM gpx_done WHERE gpx_id=? AND member_id=?").bind(mg[1], meId).run(); }
+        else {
+          const emoji = String(b.emoji || "✅").slice(0, 8);
+          await env.DB.prepare("INSERT INTO gpx_done (id,gpx_id,member_id,emoji,created_at) VALUES (?,?,?,?,?) ON CONFLICT(gpx_id,member_id) DO UPDATE SET emoji=excluded.emoji").bind(uid(), mg[1], meId, emoji, now()).run();
+        }
+        return json({ ok: true }, 200, origin);
+      }
+
+      // ---- Commentaires liés au profil
+      mg = path.match(/^\/api\/gpx\/([^/]+)\/comment$/);
+      if (mg && write) {
+        if (!meId) return json({ error: "unauthorized" }, 401, origin);
+        const b = await body(req);
+        const text = String(b.text || "").trim().slice(0, 1000);
+        if (!text) return json({ error: "empty" }, 400, origin);
+        const id = uid();
+        await env.DB.prepare("INSERT INTO gpx_comments (id,gpx_id,member_id,text,created_at) VALUES (?,?,?,?,?)").bind(id, mg[1], meId, text, now()).run();
+        return json({ id }, 200, origin);
+      }
+      mg = path.match(/^\/api\/gpx\/([^/]+)\/comment\/([^/]+)\/delete$/);
+      if (mg && write) {
+        const c = (await env.DB.prepare("SELECT member_id FROM gpx_comments WHERE id=?").bind(mg[2]).all()).results[0];
+        if (!c) return json({ ok: true }, 200, origin);
+        if (c.member_id !== meId && !adminAuthed(req, env)) return json({ error: "forbidden" }, 403, origin);
+        await env.DB.prepare("DELETE FROM gpx_comments WHERE id=?").bind(mg[2]).run();
+        return json({ ok: true }, 200, origin);
       }
 
       return json({ error: "not found", path }, 404, origin);

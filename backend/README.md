@@ -17,7 +17,16 @@ membre du site (connexion par code, courses, inscriptions, GPX, membres).
 | GET/POST | `/api/members` | Fiches membres (lecture connecté, écriture = sa fiche) |
 | GET/POST | `/api/races` | Liste / création de courses |
 | POST | `/api/races/:id/join` · `/leave` · `/delete` | S'inscrire · se retirer · **supprimer la course** |
-| GET/POST | `/api/gpx` | Parcours GPX partagés |
+| GET/POST | `/api/gpx` | Parcours GPX partagés (avec réactions « fait » + commentaires agrégés) |
+| POST | `/api/gpx/:id/edit` | Modifier une trace (nom, région, type, lien, officielle, **infos en plus**) — tout membre connecté |
+| POST | `/api/gpx/:id/done` | Toggle « je l'ai fait » + emoji d'humeur (1 par membre/trace) — `{done:true,emoji}` ou `{done:false}` |
+| POST | `/api/gpx/:id/comment` | Ajouter un commentaire lié à son profil — `{text}` |
+| POST | `/api/gpx/:id/comment/:cid/delete` | Supprimer son propre commentaire (ou orga) |
+
+> **Tables auto-créées.** `gpx_done` et `gpx_comments` sont créées automatiquement
+> au premier appel (`CREATE TABLE IF NOT EXISTS`), aucune migration manuelle à
+> lancer côté D1. La « région » côté site utilise l'autocomplétion de lieux
+> OpenStreetMap / Nominatim (gratuit, sans clé, appelée depuis le navigateur).
 
 ## Déployer une mise à jour
 
