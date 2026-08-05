@@ -114,7 +114,10 @@ const HeaderPublic = ({ active = "Accueil" }) => {
           {member ? (
             <a href="index.html" className="btn btn-sm">← Revenir au site</a>
           ) : (
-            <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
+            <>
+              <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
+              <a href="membre.html" className="btn btn-sm">Espace membre</a>
+            </>
           )}
           {me.auth && (
             <button type="button" className="hdr-ava" onClick={() => setMeOpen(true)} title="Ma carte">
