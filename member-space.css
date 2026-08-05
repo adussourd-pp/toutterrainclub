@@ -237,9 +237,15 @@
 .ms-avoid-col.drop li::before { content: "✕"; position: absolute; left: 1px; color: var(--fire); font-weight: 700; }
 .ms-avoid-col li b { color: var(--ink); }
 
+/* — Partenariats : paliers d'offre + chips — */
+.ms-tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: start; }
+.ms-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.ms-chip { font-family: var(--f-mono); font-size: 12.5px; padding: 8px 14px; border-radius: 999px; background: var(--paper); border: 1px solid var(--rule); color: var(--ink); }
+.ms-chip.g { border-color: var(--green-3); color: var(--green-3); background: var(--green-tint); }
+
 @media (max-width: 860px) {
   .ms-stats { grid-template-columns: repeat(2, 1fr); }
-  .ms-verdict, .ms-ingr, .ms-powers, .ms-lanes, .ms-models { grid-template-columns: 1fr; }
+  .ms-verdict, .ms-ingr, .ms-powers, .ms-lanes, .ms-models, .ms-tiers { grid-template-columns: 1fr; }
   .ms-lock-grid { grid-template-columns: 1fr; gap: 28px; }
   .ms-row-body { grid-template-columns: 1fr; }
   .ms-cell.plan { border-right: none; border-bottom: 1px solid var(--rule); }
