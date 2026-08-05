@@ -724,3 +724,50 @@ select.pf-input { cursor: pointer; }
 @media (max-width: 640px) {
   .ac-act-c { flex-direction: column; align-items: flex-end; }
 }
+
+/* ===== Carte de coureur — panneau centré façon Skool ===== */
+.pf-skool { display: flex; justify-content: center; }
+.pf-sk-card {
+  width: 100%; max-width: 520px; background: #fffdf9; border: 1px solid var(--rule);
+  border-radius: 22px; padding: 30px 28px 26px; box-shadow: 0 30px 60px -38px rgba(20,18,10,.55);
+}
+.pf-sk-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px;
+  padding-bottom: 22px; margin-bottom: 24px; border-bottom: 1px solid var(--rule); }
+.pf-sk-avatar {
+  position: relative; width: 100px; height: 100px; border-radius: 50%; overflow: hidden; cursor: pointer;
+  background: var(--green); display: flex; align-items: center; justify-content: center;
+  border: 3px solid #fff; box-shadow: 0 8px 22px -10px rgba(0,0,0,.45);
+}
+.pf-sk-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.pf-sk-av-emoji { font-size: 46px; line-height: 1; }
+.pf-sk-totem {
+  position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; border-radius: 50%;
+  background: #fff; display: flex; align-items: center; justify-content: center; font-size: 17px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+}
+.pf-sk-cam {
+  position: absolute; top: 0; right: 4px; font-size: 13px; opacity: 0; transition: opacity .15s ease;
+  background: rgba(0,0,0,.55); border-radius: 50%; padding: 3px;
+}
+.pf-sk-avatar:hover .pf-sk-cam { opacity: 1; }
+.pf-sk-photolink, .pf-sk-photohint { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.pf-sk-photolink { background: none; border: 0; cursor: pointer; text-decoration: underline; }
+.pf-sk-name { font-family: var(--f-display); font-weight: 800; font-size: 22px; letter-spacing: -.01em; margin-top: 6px; }
+.pf-sk-handle { font-weight: 500; color: var(--muted); font-size: 15px; }
+.pf-sk-role { color: var(--fire); font-weight: 600; font-size: 13px; }
+.pf-sk-meta { font-size: 13.5px; color: var(--muted); }
+.pf-sk-meta b { color: var(--ink); font-weight: 600; }
+.pf-sk-totems { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 8px; }
+.pf-sk-tk { width: 34px; height: 34px; border: 1px solid var(--rule); background: var(--paper); border-radius: 9px;
+  font-size: 17px; cursor: pointer; line-height: 1; transition: border-color .12s ease, background .12s ease; }
+.pf-sk-tk.on { border-color: var(--green-3); background: rgba(125,223,100,.2); }
+.pf-sk-acct { display: flex; align-items: center; gap: 12px; margin-top: 12px; font-family: var(--f-mono);
+  font-size: 12.5px; color: var(--muted); }
+.pf-sk-acct b { color: var(--ink); letter-spacing: .06em; }
+.pf-sk-actions { margin-top: 26px; }
+.pf-sk-actions .btn-primary { width: 100%; justify-content: center; }
+.pf-sk-note { text-align: center; }
+@media (max-width: 560px) {
+  .pf-sk-card { padding: 24px 18px; }
+  .pf-row2 { grid-template-columns: 1fr; }
+}
