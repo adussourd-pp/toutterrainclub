@@ -27,7 +27,7 @@ const TECHNO = [
 const ADHESION = ["Sympathisant", "Don de soutien", "Adhérent", "Adhérent + Licence FFA"];
 
 const EMPTY = {
-  prenom: "", pseudo: "", ville: "Nice", avatar: "🐗", photo: "", role: "",
+  prenom: "", pseudo: "", ville: "Nice", avatar: "🐗", photo: "", role: "", email: "",
   niveau: "Progression", allure: "", distances: [], terrains: [],
   jours: [], moments: [], objectif: "", courses: "", bio: "",
   strava: "", insta: "", techno: "Amateur", adhesion: "Adhérent",
@@ -50,6 +50,26 @@ function memberId() {
   } catch (e) { return "m" + Date.now(); }
 }
 const isOrga = () => { try { return sessionStorage.getItem("ttc_orga_ok") === "1"; } catch (e) { return false; } };
+
+// Identité stable : l'e-mail sert de clé (même e-mail = même carte, partout).
+function idFor(p) {
+  const e = (p.email || "").trim().toLowerCase();
+  if (e) { try { localStorage.setItem("ttc_member_id", "e-" + e); } catch (x) {} return "e-" + e; }
+  return memberId();
+}
+// Reconstruit une carte à partir d'un enregistrement serveur.
+function fromServer(m) {
+  const t = (m.terrains && typeof m.terrains === "object" && !Array.isArray(m.terrains)) ? m.terrains : {};
+  return {
+    ...EMPTY,
+    prenom: m.prenom || "", pseudo: m.pseudo || "", ville: m.ville || "", avatar: m.avatar || "🐗",
+    niveau: m.niveau || "Progression", objectif: m.objectif || "", strava: m.strava || "", insta: m.insta || "",
+    techno: m.techno || "Amateur", adhesion: m.adhesion || "Adhérent",
+    distances: Array.isArray(m.distances) ? m.distances : [],
+    terrains: Array.isArray(t.t) ? t.t : [], photo: t.photo || "", role: t.role || "",
+    courses: t.courses || "", bio: t.bio || "", email: t.email || "",
+  };
+}
 
 // Redimensionne une image (max 320px) → data URI léger pour la stocker.
 function resizeImage(file, cb) {
@@ -121,10 +141,6 @@ const RunnerCard = ({ p }) => {
 
       <div className="pf-card-stats">
         <div className="pf-stat">
-          <div className="pf-stat-k">Allure repère</div>
-          <div className="pf-stat-v">{p.allure ? p.allure : "—"}<span> /km</span></div>
-        </div>
-        <div className="pf-stat">
           <div className="pf-stat-k">Trail to Techno</div>
           <div className="pf-stat-v">{techno ? `${techno.e} ${techno.v}` : "—"}</div>
         </div>
@@ -178,6 +194,33 @@ const ProfilPage = () => {
   const [p, setP] = React.useState(loadProfile);
   const [saved, setSaved] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
+  const [sync, setSync] = React.useState("");
+
+  const pullFromServer = React.useCallback(async (id) => {
+    if (!id || !(window.ttcConfigured && window.ttcConfigured())) return false;
+    try {
+      const d = await window.ttcApi("/api/members");
+      const m = (d.members || []).find((x) => x.id === id);
+      if (m) { setP(fromServer(m)); return true; }
+    } catch (e) {}
+    return false;
+  }, []);
+
+  React.useEffect(() => {
+    // Au chargement : recharge la version serveur (source de vérité, cross-appareil).
+    let id = "";
+    try { id = (p.email ? "e-" + p.email.trim().toLowerCase() : localStorage.getItem("ttc_member_id")) || ""; } catch (e) {}
+    if (id) pullFromServer(id);
+    // eslint-disable-next-line
+  }, []);
+
+  const recover = async () => {
+    if (!p.email.trim()) { setSync("Entre ton e-mail pour retrouver ta carte."); return; }
+    setSync("Recherche…");
+    const ok = await pullFromServer("e-" + p.email.trim().toLowerCase());
+    setSync(ok ? "✓ Carte chargée depuis le cloud" : "Aucune carte trouvée pour cet e-mail.");
+    window.setTimeout(() => setSync(""), 3200);
+  };
 
   const set = (k, v) => { setP((s) => ({ ...s, [k]: v })); setSaved(false); };
   const toggle = (k, v) => setP((s) => {
@@ -192,13 +235,13 @@ const ProfilPage = () => {
     if (window.ttcConfigured && window.ttcConfigured()) {
       try {
         await window.ttcApi("/api/members", { method: "POST", body: {
-          id: memberId(),
+          id: idFor(p),
           prenom: p.prenom, pseudo: p.pseudo, ville: p.ville, avatar: p.avatar,
           niveau: p.niveau, objectif: p.objectif, strava: p.strava, insta: p.insta,
           techno: p.techno, adhesion: p.adhesion,
           distances: p.distances,
-          // on emballe terrains + photo + rôle dans le champ terrains (JSON)
-          terrains: { t: p.terrains, photo: p.photo, role: p.role, allure: p.allure, courses: p.courses, bio: p.bio },
+          // on emballe le reste dans le champ terrains (JSON) : zéro changement de base
+          terrains: { t: p.terrains, photo: p.photo, role: p.role, courses: p.courses, bio: p.bio, email: p.email },
         } });
       } catch (e) { /* hors-ligne : reste en local, resync au prochain save */ }
     }
@@ -280,6 +323,13 @@ const ProfilPage = () => {
                     </select>
                   </Field>
                 </div>
+                <Field label="E-mail" hint="ta clé perso — retrouve ta carte sur n'importe quel appareil">
+                  <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                    <input className="pf-input" type="email" value={p.email} onChange={(e) => set("email", e.target.value)} placeholder="prenom@email.fr" style={{ flex: 1 }} />
+                    <button type="button" className="btn btn-sm" onClick={recover}>Récupérer</button>
+                  </div>
+                  {sync && <div className="pf-note" style={{ marginTop: 6 }}>{sync}</div>}
+                </Field>
                 <div className="pf-row2">
                   <Field label="Ta photo" hint="optionnel">
                     <div className="pf-photo-row">
@@ -318,9 +368,6 @@ const ProfilPage = () => {
                       </button>
                     ))}
                   </div>
-                </Field>
-                <Field label="Allure repère" hint="ton rythme en sortie tranquille">
-                  <input className="pf-input" value={p.allure} onChange={(e) => set("allure", e.target.value)} placeholder="5'30, 6'00…" />
                 </Field>
                 <Field label="Distances préférées"><ChipToggle options={DISTANCES} value={p.distances} onToggle={(v) => toggle("distances", v)} /></Field>
                 <Field label="Terrains de jeu"><ChipToggle options={TERRAINS} value={p.terrains} onToggle={(v) => toggle("terrains", v)} /></Field>
@@ -378,7 +425,8 @@ const ProfilPage = () => {
                 </div>
                 <p className="pf-note">
                   En cliquant <b>Enregistrer</b>, ta carte apparaît dans <b>Les membres</b> et se met
-                  à jour <b>pour toute la meute</b>. Reviens la modifier quand tu veux : ça resynchronise.
+                  à jour <b>pour toute la meute</b>. Renseigne ton <b>e-mail</b> : c'est ta clé — sur un
+                  autre appareil, tape le même e-mail et clique <b>Récupérer</b> pour retrouver ta carte.
                 </p>
               </div>
             </aside>
