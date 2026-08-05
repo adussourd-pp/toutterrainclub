@@ -260,7 +260,7 @@
 /* ============================================================
    PROFIL MEMBRE — ma carte de coureur
    ============================================================ */
-.pf-layout { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+.pf-layout { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; max-width: 680px; margin: 0 auto; }
 
 /* — Formulaire — */
 .pf-form { display: flex; flex-direction: column; gap: 28px; }
@@ -317,7 +317,7 @@ select.pf-input { cursor: pointer; }
 .pf-tk-e { font-size: 15px; }
 
 /* — Aperçu collant — */
-.pf-aside-sticky { position: sticky; top: 20px; }
+.pf-aside-sticky { position: static; top: auto; }
 .pf-aside-lab { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
 .pf-card {
   border: 1px solid var(--green-3); border-radius: var(--radius-lg);
@@ -667,9 +667,9 @@ select.pf-input { cursor: pointer; }
 
 /* carte aperçu (profil) : photo + totem + rôle */
 .pf-card-role { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; color: var(--green-3); margin-bottom: 8px; }
-.pf-avatar-photo { position: relative; overflow: visible; }
-.pf-avatar-photo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-.pf-avatar-photo .pf-totem { position: absolute; right: -4px; bottom: -4px; font-size: 20px; }
+.pf-avatar-photo { position: relative; overflow: visible; padding: 0; }
+.pf-avatar-photo img { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; display: block; }
+.pf-avatar-photo .pf-totem { position: absolute; right: -7px; bottom: -7px; font-size: 20px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.35)); }
 .pf-photo-row { display: flex; align-items: center; gap: 12px; }
 .pf-photo-prev { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; background: var(--green-tint); display: flex; align-items: center; justify-content: center; font-size: 26px; flex: 0 0 auto; }
 .pf-photo-prev img { width: 100%; height: 100%; object-fit: cover; }

@@ -198,26 +198,8 @@ const CoursesPage = () => {
         </div>
       </section>
 
-      {window.TTC_AGENDA_EMBED && (
-        <section className="adh-sec ms-sec-alt">
-          <div className="wrap">
-            <div className="adh-sec-head">
-              <h2 className="adh-h2">L'agenda <span className="g">Google</span>.</h2>
-              <p className="ms-sec-lede">Sorties, week-ends et temps forts du club.</p>
-            </div>
-            <div className="ms-agenda">
-              <iframe title="Agenda TTC" src={window.TTC_AGENDA_EMBED} style={{ border: 0, width: "100%", height: 600 }} />
-            </div>
-          </div>
-        </section>
-      )}
-
       <section className="adh-sec">
         <div className="wrap">
-          <div className="adh-sec-head">
-            <h2 className="adh-h2">Les <span className="g">courses</span>.</h2>
-            <p className="ms-sec-lede">Qui fait quoi sur les dossards — inscris-toi, on se retrouve là-bas.</p>
-          </div>
           {!live && <window.MS.MSDemo what="Le suivi des courses" />}
           {adding && <RaceForm onAdd={addRace} onClose={() => setAdding(false)} />}
           {state === "loading" && <p className="ms-note-muted">Chargement…</p>}
