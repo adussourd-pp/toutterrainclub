@@ -4,7 +4,7 @@
 
 // ⬇️ Mot de passe ORGA (bureau) — DIFFÉRENT du mot de passe membre (T2Tfestival).
 //    Change-le ici quand tu veux (soft gate, visible dans la source).
-const ORGA_PW = "TTCorga26";
+const ORGA_PW = "T2Tfestival";
 
 // ---- Porte d'accès ORGA (séparée de l'espace membre) ----------------------
 const OrgaGate = ({ children }) => {
