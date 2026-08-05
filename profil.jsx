@@ -71,6 +71,61 @@ function fromServer(m) {
   };
 }
 
+// ---- Compte (session) -----------------------------------------------------
+function getAuth() { try { return JSON.parse(localStorage.getItem("ttc_auth") || "null"); } catch (e) { return null; } }
+function setAuth(a) { try { localStorage.setItem("ttc_auth", JSON.stringify(a)); localStorage.setItem("ttc_member_id", a.id); } catch (e) {} }
+function logoutAuth() { try { localStorage.removeItem("ttc_auth"); } catch (e) {} }
+
+const AuthGate = ({ onAuth }) => {
+  const [mode, setMode] = React.useState("login");
+  const [email, setEmail] = React.useState("");
+  const [pw, setPw] = React.useState("");
+  const [err, setErr] = React.useState("");
+  const [busy, setBusy] = React.useState(false);
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!window.ttcConfigured || !window.ttcConfigured()) { setErr("Backend non configuré."); return; }
+    setBusy(true); setErr("");
+    try {
+      const d = await window.ttcApi("/api/auth", { method: "POST", body: { email: email.trim(), password: pw, mode } });
+      setAuth({ token: d.token, id: d.id, email: d.email });
+      onAuth();
+    } catch (x) {
+      const s = String((x && x.message) || "");
+      if (mode === "signup" && s.indexOf("409") >= 0) setErr("Un compte existe déjà — connecte-toi.");
+      else if (mode === "login" && s.indexOf("401") >= 0) setErr("E-mail ou mot de passe incorrect.");
+      else if (s.indexOf("400") >= 0) setErr("E-mail invalide ou mot de passe trop court (4 caractères min).");
+      else setErr("Comptes pas encore activés côté serveur (mise à jour Cloudflare requise).");
+    }
+    setBusy(false);
+  };
+  return (
+    <section className="adh-hero ms-lock">
+      <HeroWaves />
+      <div className="wrap">
+        <span className="adh-hero-eyebrow">★ Ma carte · mon compte</span>
+        <h1>{mode === "login" ? <span>Connecte-<span className="marker">toi</span>.</span> : <span>Crée ton <span className="marker">compte</span>.</span>}</h1>
+        <div className="ms-lock-grid">
+          <p className="adh-hero-lede">Ton compte relie ta carte de coureur à toi. Tu la retrouves et la modifies depuis <strong>n'importe quel appareil</strong>, et elle se met à jour pour toute la meute.</p>
+          <form className="ms-lock-card" onSubmit={submit}>
+            <label className="ms-lock-label" htmlFor="au-mail">E-mail</label>
+            <input id="au-mail" type="email" className="pf-input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="prenom@email.fr" autoFocus />
+            <label className="ms-lock-label" htmlFor="au-pw" style={{ marginTop: 4 }}>Mot de passe</label>
+            <input id="au-pw" type="password" className="pf-input" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="••••••••" />
+            {err && <div className="ms-lock-err">{err}</div>}
+            <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? "…" : mode === "login" ? "Se connecter →" : "Créer mon compte →"}</button>
+            <div className="ms-lock-hint">
+              {mode === "login"
+                ? <span>Pas encore de compte ? <a href="#" onClick={(e) => { e.preventDefault(); setMode("signup"); setErr(""); }}>Créer un compte</a></span>
+                : <span>Déjà un compte ? <a href="#" onClick={(e) => { e.preventDefault(); setMode("login"); setErr(""); }}>Se connecter</a></span>}
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // Redimensionne une image (max 320px) → data URI léger pour la stocker.
 function resizeImage(file, cb) {
   const rd = new FileReader();
@@ -191,38 +246,25 @@ const RunnerCard = ({ p }) => {
 
 // ---- La page --------------------------------------------------------------
 const ProfilPage = () => {
+  const [auth, setAuthState] = React.useState(getAuth);
   const [p, setP] = React.useState(loadProfile);
   const [saved, setSaved] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const [sync, setSync] = React.useState("");
 
-  const pullFromServer = React.useCallback(async (id) => {
-    if (!id || !(window.ttcConfigured && window.ttcConfigured())) return false;
+  // Charge MA fiche depuis le serveur (source de vérité de mon compte).
+  const loadMine = React.useCallback(async (a) => {
+    if (!a || !(window.ttcConfigured && window.ttcConfigured())) return;
     try {
-      const d = await window.ttcApi("/api/members");
-      const m = (d.members || []).find((x) => x.id === id);
-      if (m) { setP(fromServer(m)); return true; }
+      const d = await window.ttcApi("/api/members?id=" + encodeURIComponent(a.id));
+      if (d && d.member) setP({ ...fromServer(d.member), email: a.email });
     } catch (e) {}
-    return false;
   }, []);
 
-  React.useEffect(() => {
-    // On garde ta version locale (tes édits, ta photo). On ne va chercher le
-    // serveur QUE si la carte locale est vide (nouvel appareil) — jamais d'écrasement.
-    if (p.prenom || p.pseudo || p.photo) return;
-    let id = "";
-    try { id = (p.email ? "e-" + p.email.trim().toLowerCase() : localStorage.getItem("ttc_member_id")) || ""; } catch (e) {}
-    if (id) pullFromServer(id);
-    // eslint-disable-next-line
-  }, []);
+  React.useEffect(() => { if (auth) loadMine(auth); /* eslint-disable-next-line */ }, []);
 
-  const recover = async () => {
-    if (!p.email.trim()) { setSync("Entre ton e-mail pour retrouver ta carte."); return; }
-    setSync("Recherche…");
-    const ok = await pullFromServer("e-" + p.email.trim().toLowerCase());
-    setSync(ok ? "✓ Carte chargée depuis le cloud" : "Aucune carte trouvée pour cet e-mail.");
-    window.setTimeout(() => setSync(""), 3200);
-  };
+  const onAuth = () => { const a = getAuth(); setAuthState(a); loadMine(a); };
+  const logout = () => { logoutAuth(); setAuthState(null); setP({ ...EMPTY }); try { localStorage.removeItem(PF_KEY); } catch (e) {} };
 
   const set = (k, v) => { setP((s) => ({ ...s, [k]: v })); setSaved(false); };
   const toggle = (k, v) => setP((s) => {
@@ -233,19 +275,19 @@ const ProfilPage = () => {
 
   const save = async () => {
     try { localStorage.setItem(PF_KEY, JSON.stringify(p)); } catch (e) {}
-    // Publie / met à jour la fiche dans la meute (même id → écrase partout).
-    if (window.ttcConfigured && window.ttcConfigured()) {
+    // Enregistre MA fiche sur le serveur (id dérivé du jeton de compte).
+    if (auth && window.ttcConfigured && window.ttcConfigured()) {
+      setSync("Enregistrement…");
       try {
         await window.ttcApi("/api/members", { method: "POST", body: {
-          id: idFor(p),
           prenom: p.prenom, pseudo: p.pseudo, ville: p.ville, avatar: p.avatar,
           niveau: p.niveau, objectif: p.objectif, strava: p.strava, insta: p.insta,
           techno: p.techno, adhesion: p.adhesion,
           distances: p.distances,
-          // on emballe le reste dans le champ terrains (JSON) : zéro changement de base
-          terrains: { t: p.terrains, photo: p.photo, role: p.role, courses: p.courses, bio: p.bio, email: p.email },
+          terrains: { t: p.terrains, photo: p.photo, role: p.role, courses: p.courses, bio: p.bio },
         } });
-      } catch (e) { /* hors-ligne : reste en local, resync au prochain save */ }
+        setSync("");
+      } catch (e) { setSync("Échec de l'enregistrement en ligne (reconnecte-toi ?)."); }
     }
     setSaved(true);
     window.setTimeout(() => setSaved(false), 2600);
@@ -286,6 +328,8 @@ const ProfilPage = () => {
     }
   };
 
+  if (!auth) return <AuthGate onAuth={onAuth} />;
+
   return (
     <React.Fragment>
       <window.MS.MSSubnav active="carte" />
@@ -300,7 +344,7 @@ const ProfilPage = () => {
               Qui tu es, ton niveau, tes distances, quand tu cours. De quoi te retrouver
               sur les sorties, former des groupes d'allure et faire les bonnes rencontres —
               c'est ça, l'esprit <strong>social run</strong>. Tu remplis, tu vois ta carte se
-              construire à droite, tu l'enregistres. <strong>Rien ne quitte ton navigateur.</strong>
+              construire à droite, tu l'enregistres — et tu la retrouves sur <strong>tous tes appareils</strong>.
             </p>
           </div>
         </div>
@@ -325,10 +369,10 @@ const ProfilPage = () => {
                     </select>
                   </Field>
                 </div>
-                <Field label="E-mail" hint="ta clé perso — retrouve ta carte sur n'importe quel appareil">
-                  <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                    <input className="pf-input" type="email" value={p.email} onChange={(e) => set("email", e.target.value)} placeholder="prenom@email.fr" style={{ flex: 1 }} />
-                    <button type="button" className="btn btn-sm" onClick={recover}>Récupérer</button>
+                <Field label="Mon compte">
+                  <div style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: "space-between" }}>
+                    <span style={{ fontFamily: "var(--f-mono)", fontSize: 13, color: "var(--muted)" }}>{auth.email}</span>
+                    <button type="button" className="btn btn-sm" onClick={logout}>Déconnexion</button>
                   </div>
                   {sync && <div className="pf-note" style={{ marginTop: 6 }}>{sync}</div>}
                 </Field>
@@ -426,9 +470,9 @@ const ProfilPage = () => {
                   <button type="button" className="pf-reset" onClick={reset}>Réinitialiser</button>
                 </div>
                 <p className="pf-note">
-                  En cliquant <b>Enregistrer</b>, ta carte apparaît dans <b>Les membres</b> et se met
-                  à jour <b>pour toute la meute</b>. Renseigne ton <b>e-mail</b> : c'est ta clé — sur un
-                  autre appareil, tape le même e-mail et clique <b>Récupérer</b> pour retrouver ta carte.
+                  Ta carte est reliée à <b>ton compte</b> : enregistre, et tu la retrouves (et la
+                  modifies) depuis <b>n'importe quel appareil</b> en te connectant. Elle apparaît dans
+                  <b> Les membres</b> et se met à jour pour toute la meute.
                 </p>
               </div>
             </aside>
