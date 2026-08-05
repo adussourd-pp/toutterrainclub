@@ -13,30 +13,23 @@ const MSGate = ({ children }) => {
 };
 
 const MSAuth = ({ onDone }) => {
-  const [mode, setMode] = React.useState("login"); // "login" | "signup"
-  const [email, setEmail] = React.useState("");
-  const [pw, setPw] = React.useState("");
   const [code, setCode] = React.useState("");
   const [err, setErr] = React.useState("");
   const [busy, setBusy] = React.useState(false);
-  const signup = mode === "signup";
 
   const submit = async (e) => {
     e.preventDefault();
     setErr("");
     if (!window.ttcConfigured || !window.ttcConfigured()) { setErr("Espace en cours de préparation — réessaie bientôt."); return; }
-    if (!email.trim() || pw.length < 4) { setErr("E-mail + mot de passe (4 caractères min)."); return; }
-    if (signup && code.trim() !== (window.TTC_CLUB_CODE || "")) { setErr("Code du club incorrect — demande-le sur le groupe WhatsApp."); return; }
+    if (!code.trim()) { setErr("Entre ton code d'accès."); return; }
     setBusy(true);
     try {
-      const d = await window.ttcApi("/api/auth", { method: "POST", body: { email: email.trim(), password: pw, mode } });
-      window.ttcAuth.set({ token: d.token, id: d.id, email: d.email });
+      const d = await window.ttcApi("/api/auth", { method: "POST", body: { code: code.trim() } });
+      window.ttcAuth.set({ token: d.token, id: d.id, code: d.code });
       onDone(window.ttcAuth.get());
     } catch (x) {
       const s = String((x && x.message) || "");
-      if (signup && s.indexOf("409") >= 0) { setErr("Un compte existe déjà avec cet e-mail — connecte-toi."); setMode("login"); }
-      else if (!signup && s.indexOf("401") >= 0) setErr("E-mail ou mot de passe incorrect.");
-      else if (s.indexOf("400") >= 0) setErr("E-mail invalide ou mot de passe trop court.");
+      if (s.indexOf("401") >= 0) setErr("Code invalide ou révoqué — demande le tien à l'orga.");
       else setErr("Connexion au serveur impossible — réessaie dans un instant.");
     }
     setBusy(false);
@@ -47,38 +40,20 @@ const MSAuth = ({ onDone }) => {
       <HeroWaves />
       <div className="wrap">
         <span className="adh-hero-eyebrow">★ Espace membre · la meute</span>
-        <h1>{signup ? <span>Rejoins la <span className="marker">meute</span>.</span> : <span>Content de te <span className="marker">revoir</span>.</span>}</h1>
+        <h1>La <span className="marker">meute</span>,<br/>ton espace.</h1>
         <div className="ms-lock-grid">
           <p className="adh-hero-lede">
-            {signup
-              ? <span>Un compte, et c'est tout : ta carte de coureur, les membres, le calendrier des courses, les traces GPX. Tu le retrouves sur <strong>tous tes appareils</strong>.</span>
-              : <span>Entre avec ton compte. Tu retrouves ta carte et tout l'espace, <strong>où que tu sois</strong>.</span>}
+            Ton <strong>code d'accès perso</strong> te donne toute la meute : ta carte de coureur,
+            les membres, le calendrier des courses, les traces GPX. Un seul code, rien à retenir
+            d'autre, et il te suit sur <strong>tous tes appareils</strong>.
           </p>
           <form className="ms-lock-card" onSubmit={submit}>
-            <div className="ms-auth-tabs">
-              <button type="button" className={!signup ? "on" : ""} onClick={() => { setMode("login"); setErr(""); }}>Se connecter</button>
-              <button type="button" className={signup ? "on" : ""} onClick={() => { setMode("signup"); setErr(""); }}>Créer un compte</button>
-            </div>
-            <label className="ms-lock-label" htmlFor="ms-email">E-mail</label>
-            <input id="ms-email" type="email" className="ms-lock-input" value={email} autoComplete="email" autoFocus
-              placeholder="prenom@email.fr" onChange={(e) => { setEmail(e.target.value); setErr(""); }} />
-            <label className="ms-lock-label" htmlFor="ms-pw" style={{ marginTop: 10 }}>Mot de passe</label>
-            <input id="ms-pw" type="password" className="ms-lock-input" value={pw} autoComplete={signup ? "new-password" : "current-password"}
-              placeholder="••••••••" onChange={(e) => { setPw(e.target.value); setErr(""); }} />
-            {signup && (
-              <React.Fragment>
-                <label className="ms-lock-label" htmlFor="ms-code" style={{ marginTop: 10 }}>Code du club <em className="pf-hint">· une seule fois</em></label>
-                <input id="ms-code" type="text" className="ms-lock-input" value={code} autoComplete="off"
-                  placeholder="Le code partagé sur le groupe" onChange={(e) => { setCode(e.target.value); setErr(""); }} />
-              </React.Fragment>
-            )}
+            <label className="ms-lock-label" htmlFor="ms-code">Ton code d'accès</label>
+            <input id="ms-code" type="text" className="ms-lock-input" value={code} autoComplete="off" autoFocus
+              placeholder="XXXX-XXXX" onChange={(e) => { setCode(e.target.value); setErr(""); }} />
             {err && <div className="ms-lock-err">{err}</div>}
-            <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? "…" : signup ? "Créer mon compte →" : "Entrer dans l'espace →"}</button>
-            <div className="ms-lock-hint">
-              {signup
-                ? <span>Déjà un compte ? <a href="#" onClick={(e) => { e.preventDefault(); setMode("login"); setErr(""); }}>Se connecter</a></span>
-                : <span>Pas encore de compte ? <a href="#" onClick={(e) => { e.preventDefault(); setMode("signup"); setErr(""); }}>En créer un</a></span>}
-            </div>
+            <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? "…" : "Entrer dans l'espace →"}</button>
+            <div className="ms-lock-hint">Pas de code ? Demande le tien à un membre de l'orga (il est perso et unique).</div>
           </form>
         </div>
       </div>

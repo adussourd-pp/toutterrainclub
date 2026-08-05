@@ -202,7 +202,7 @@ const ProfilPage = () => {
     if (!a || !(window.ttcConfigured && window.ttcConfigured())) return;
     try {
       const d = await window.ttcApi("/api/members?id=" + encodeURIComponent(a.id));
-      if (d && d.member) setP({ ...fromServer(d.member), email: a.email });
+      if (d && d.member) setP(fromServer(d.member));
     } catch (e) {}
   }, []);
 
@@ -313,9 +313,9 @@ const ProfilPage = () => {
                     </select>
                   </Field>
                 </div>
-                <Field label="Mon compte">
+                <Field label="Ton accès" hint="code perso">
                   <div style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontFamily: "var(--f-mono)", fontSize: 13, color: "var(--muted)" }}>{auth.email}</span>
+                    <span style={{ fontFamily: "var(--f-mono)", fontSize: 14, letterSpacing: ".08em", color: "var(--ink)" }}>{auth.code || "connecté·e"}</span>
                     <button type="button" className="btn btn-sm" onClick={logout}>Déconnexion</button>
                   </div>
                   {sync && <div className="pf-note" style={{ marginTop: 6 }}>{sync}</div>}

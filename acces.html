@@ -4,37 +4,43 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="robots" content="noindex,nofollow" />
-<title>Tout Terrain Club — Espace membre · Calendrier &amp; courses</title>
+<title>Tout Terrain Club — Espace orga · Accès & codes</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+
 <link rel="stylesheet" href="styles.css" />
 <link rel="stylesheet" href="member-space.css?v=10" />
 <script src="member-config.js?v=4"></script>
-<script src="trail-utils.js?v=1"></script>
 </head>
 <body>
-<div id="root" data-screen-label="Calendrier"></div>
+
+<div id="root" data-screen-label="Accès & codes"></div>
+
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
 <script type="text/babel" src="data.jsx"></script>
 <script type="text/babel" src="atoms.jsx?v=4"></script>
-<script type="text/babel" src="member-shell.jsx?v=4"></script>
-<script type="text/babel" src="courses.jsx?v=4"></script>
+<script type="text/babel" src="espace-membre.jsx?v=5"></script>
+<script type="text/babel" src="acces.jsx?v=1"></script>
+
 <script type="text/babel">
 function App() {
   return (
     <div className="page">
-      <HeaderPublic active="Espace membre" />
-      <window.MS.MSGate>
-        <window.COURSES.CoursesPage />
-      </window.MS.MSGate>
+      <HeaderPublic active="Accueil" />
+      <window.MEMBER.OrgaGate>
+        <window.ACCES.AccesPage />
+      </window.MEMBER.OrgaGate>
       <FooterPublic />
     </div>
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
+
 </body>
 </html>

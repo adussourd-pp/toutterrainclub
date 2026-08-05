@@ -59,12 +59,13 @@ const OrgaGate = ({ children }) => {
   );
 };
 
-// ---- Sous-navigation ORGA (analyse + stratégie uniquement) ----------------
+// ---- Sous-navigation ORGA -------------------------------------------------
 const OrgaSubnav = ({ active }) => (
   <div className="wrap">
     <nav className="ms-subnav">
       <a href="espace-membre.html" className={active === "analyse" ? "active" : ""}>◆ Analyse du sondage</a>
       <a href="strategie-buzz.html" className={active === "strategie" ? "active" : ""}>◆ Stratégie · buzz &amp; QG</a>
+      <a href="acces.html" className={active === "acces" ? "active" : ""}>◆ Accès &amp; codes</a>
     </nav>
   </div>
 );
