@@ -45,26 +45,17 @@ window.TTC_TRAIL = (function () {
     }
     return pts;
   }
-  // Reconstruit un GPX minimal (lat/lon/altitude seuls) sous une taille cible.
+  const escXml = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+  // Reconstruit un GPX propre à partir des points (lat/lon/altitude uniquement).
   // On jette time + extensions (hr/cad/power/atemp…) — ~85 % du poids d'un
-  // export Strava — et on échantillonne uniformément si besoin. Le tracé reste
-  // un .gpx valide, chargeable dans une montre ; les stats (km, D+, profil)
-  // sont, elles, calculées sur le fichier complet en amont.
-  function slimGPX(text, name, targetBytes) {
-    const budget = targetBytes || 1.8 * 1024 * 1024;
-    const pts = extractPts(text);
-    if (pts.length < 2) throw new Error("gpx-vide");
-    // ~68 octets par point une fois minifié → nombre de points qui tient.
-    const overhead = 400;
-    let keep = pts.length;
-    const maxPts = Math.floor((budget - overhead) / 68);
-    let step = 1;
-    if (keep > maxPts && maxPts > 1) step = Math.ceil(keep / maxPts);
-    const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+  // export Strava, et zéro information sur le tracé lui-même. `step` permet un
+  // sous-échantillonnage (1 = tous les points, précision pleine).
+  function buildGPX(pts, name, step) {
+    step = Math.max(1, step || 1);
     const parts = [
       '<?xml version="1.0" encoding="UTF-8"?>\n',
       '<gpx version="1.1" creator="Tout Terrain Club" xmlns="http://www.topografix.com/GPX/1/1">\n',
-      " <trk>\n  <name>" + esc(name || "trace") + "</name>\n  <trkseg>\n",
+      " <trk>\n  <name>" + escXml(name || "trace") + "</name>\n  <trkseg>\n",
     ];
     const push = (p) => {
       let s = '   <trkpt lat="' + p.lat.toFixed(6) + '" lon="' + p.lon.toFixed(6) + '">';
@@ -72,10 +63,54 @@ window.TTC_TRAIL = (function () {
       parts.push(s + "</trkpt>\n");
     };
     for (let i = 0; i < pts.length; i += step) push(pts[i]);
-    // toujours garder le dernier point pour ne pas tronquer le tracé
-    if ((pts.length - 1) % step !== 0) push(pts[pts.length - 1]);
+    if ((pts.length - 1) % step !== 0) push(pts[pts.length - 1]); // garde le dernier point
     parts.push("  </trkseg>\n </trk>\n</gpx>\n");
     return parts.join("");
+  }
+
+  // --- Compression gzip via l'API navigateur (CompressionStream) ---
+  function bytesToB64(bytes) {
+    let bin = ""; const CH = 0x8000;
+    for (let i = 0; i < bytes.length; i += CH) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+    return btoa(bin);
+  }
+  function b64ToBytes(b64) {
+    const bin = atob(b64); const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  async function gzipToB64(str) {
+    const stream = new Blob([str]).stream().pipeThrough(new CompressionStream("gzip"));
+    const buf = await new Response(stream).arrayBuffer();
+    return bytesToB64(new Uint8Array(buf));
+  }
+  async function gunzipFromB64(b64) {
+    const stream = new Blob([b64ToBytes(b64)]).stream().pipeThrough(new DecompressionStream("gzip"));
+    return await new Response(stream).text();
+  }
+
+  // Prépare un GPX pour le stockage, quelle que soit sa taille :
+  //   1. on garde TOUS les points (aucune perte de précision du tracé) ;
+  //   2. on retire les extensions/horodatage inutiles au partage ;
+  //   3. on compresse en gzip (base64) → un export de 21 Mo tient en ~0,4 Mo.
+  // Renvoie { gpxz } (compressé) ou { gpx } (repli si CompressionStream absent).
+  // Le sous-échantillonnage n'intervient qu'en tout dernier recours (fichier
+  // gigantesque qui dépasse encore la limite une fois compressé).
+  async function packGPX(text, name, cap) {
+    const budget = cap || 1.9 * 1024 * 1024; // marge sous la limite D1 (2 Mo/valeur)
+    const pts = extractPts(text);
+    if (pts.length < 2) throw new Error("gpx-vide");
+    const kept = (step) => Math.floor((pts.length - 1) / step) + 1;
+    const canGz = typeof CompressionStream !== "undefined";
+    let step = 1, gpx = buildGPX(pts, name, step);
+    if (canGz) {
+      let b64 = await gzipToB64(gpx);
+      while (b64.length > budget && step < 64) { step += 1; gpx = buildGPX(pts, name, step); b64 = await gzipToB64(gpx); }
+      return { gpxz: b64, step, points: kept(step), srcBytes: text.length, storedBytes: b64.length, full: step === 1 };
+    }
+    // Repli navigateur sans compression : on décime juste assez pour tenir.
+    while (gpx.length > budget && step < 64) { step += 1; gpx = buildGPX(pts, name, step); }
+    return { gpx, step, points: kept(step), srcBytes: text.length, storedBytes: gpx.length, full: step === 1 };
   }
   // Parse un fichier GPX (texte) → {km, dplus, eleMin, eleMax, profile:[{d,e}]}
   function parseGPX(text) {
@@ -113,5 +148,5 @@ window.TTC_TRAIL = (function () {
       profile: prof,
     };
   }
-  return { kmEffort, utmbCategory, difficulty, parseGPX, slimGPX };
+  return { kmEffort, utmbCategory, difficulty, parseGPX, packGPX, gunzipFromB64 };
 })();

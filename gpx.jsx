@@ -45,10 +45,13 @@ function unpack(g) {
   try { data = JSON.parse(g.url || "{}"); } catch (e) { data = { link: g.url }; }
   return data;
 }
-function downloadGpx(g) {
+async function downloadGpx(g) {
   const data = unpack(g);
-  if (!data.gpx) { if (data.link) window.open(data.link, "_blank", "noopener"); return; }
-  const blob = new Blob([data.gpx], { type: "application/gpx+xml" });
+  let text = data.gpx;
+  // traces récentes : GPX gzippé en base64 (data.gpxz) → on décompresse
+  if (!text && data.gpxz) { try { text = await T().gunzipFromB64(data.gpxz); } catch (e) { text = ""; } }
+  if (!text) { if (data.link) window.open(data.link, "_blank", "noopener"); return; }
+  const blob = new Blob([text], { type: "application/gpx+xml" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = (g.name || "trace").replace(/[^\w\-]+/g, "_") + ".gpx";
@@ -66,20 +69,19 @@ const GpxForm = ({ onAdd, onClose }) => {
   const onFile = (e) => {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
-    // Le fichier brut peut être lourd (exports Strava avec fréquence cardiaque,
-    // cadence, puissance…) : on le lit, puis on n'en garde qu'une trace allégée.
-    if (file.size > 60 * 1024 * 1024) { setErr("Fichier trop lourd (max 60 Mo)."); return; }
+    // Les exports Strava embarquent fréquence cardiaque, cadence, puissance,
+    // horodatage… et pèsent parfois 20 Mo+. On lit le brut, on garde TOUS les
+    // points du tracé (aucune perte), puis on compresse pour le stockage.
+    if (file.size > 100 * 1024 * 1024) { setErr("Fichier trop lourd (max 100 Mo)."); return; }
     setBusy(true); setErr("");
     const guessName = file.name.replace(/\.gpx$/i, "").replace(/[_-]+/g, " ");
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
         const text = String(reader.result);
-        const r = T().parseGPX(text);
-        // On reconstruit un GPX minimal (lat/lon/altitude) sous ~1,8 Mo, en
-        // repartant du fichier complet : le tracé reste valide pour une montre.
-        const slim = T().slimGPX(text, f.name.trim() || guessName);
-        setParsed({ ...r, gpx: slim, srcBytes: text.length, outBytes: slim.length });
+        const r = T().parseGPX(text); // stats (km, D+, profil) sur le fichier complet
+        const packed = await T().packGPX(text, f.name.trim() || guessName);
+        setParsed({ ...r, ...packed });
         setF((s) => ({ ...s, name: s.name || guessName }));
       } catch (x) { setErr("Fichier GPX illisible."); }
       setBusy(false);
@@ -93,7 +95,7 @@ const GpxForm = ({ onAdd, onClose }) => {
     onAdd({
       name: f.name, region: f.region, start_point: f.start_point, type: f.type,
       distance_km: parsed.km, denivele_m: parsed.dplus,
-      url: JSON.stringify({ gpx: parsed.gpx, profile: parsed.profile, eleMin: parsed.eleMin, eleMax: parsed.eleMax, link: f.link || "", official: !!f.official }),
+      url: JSON.stringify({ gpxz: parsed.gpxz, gpx: parsed.gpxz ? undefined : parsed.gpx, profile: parsed.profile, eleMin: parsed.eleMin, eleMax: parsed.eleMax, link: f.link || "", official: !!f.official }),
     });
   };
 
@@ -116,8 +118,12 @@ const GpxForm = ({ onAdd, onClose }) => {
             <Diff km={parsed.km} dplus={parsed.dplus} />
           </div>
           <ElevProfile profile={parsed.profile} eleMin={parsed.eleMin} eleMax={parsed.eleMax} />
-          {parsed.srcBytes && parsed.srcBytes > parsed.outBytes * 1.2 && (
-            <div className="ms-gpx-note">Trace allégée : {(parsed.srcBytes / 1048576).toFixed(1)} Mo → {(parsed.outBytes / 1048576).toFixed(1)} Mo (extensions et horodatage retirés, tracé et altitude conservés).</div>
+          {parsed.srcBytes && (
+            <div className="ms-gpx-note">
+              {parsed.full
+                ? <>Trace optimisée : {(parsed.srcBytes / 1048576).toFixed(1)} Mo → {(parsed.storedBytes / 1048576).toFixed(2)} Mo. <b>Tous les points ({parsed.points}) sont conservés</b> — seules les données superflues (fréquence cardiaque, cadence, horodatage) ont été retirées, puis le tracé est compressé.</>
+                : <>Fichier très volumineux : ramené à {parsed.points} points pour tenir dans la limite ({(parsed.storedBytes / 1048576).toFixed(2)} Mo stockés).</>}
+            </div>
           )}
         </div>
       )}
