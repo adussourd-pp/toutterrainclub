@@ -199,7 +199,7 @@ const ProfilPage = () => {
 
   return (
     <React.Fragment>
-      <window.MEMBER.MemberSubnav active="profil" />
+      <window.MS.MSSubnav active="carte" />
 
       <section className="adh-hero">
         <HeroWaves />

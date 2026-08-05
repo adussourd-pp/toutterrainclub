@@ -16,11 +16,25 @@ const Brand = ({ to = "/" }) => (
 );
 
 const HeaderPublic = ({ active = "Accueil" }) => {
-  const items = [
+  // Quand le membre est connecté (porte déverrouillée), le menu bascule sur
+  // l'espace membre : ses pages apparaissent directement dans le bandeau.
+  const [member, setMember] = React.useState(false);
+  React.useEffect(() => {
+    try { setMember(sessionStorage.getItem("ttc_member_ok") === "1"); } catch (e) {}
+  }, []);
+  const publicItems = [
     { label: "Accueil", href: "index.html" },
     { label: "Trail to Techno", href: "trail-to-techno.html" },
     { label: "Contact", href: "mailto:toutterrainclub@gmail.com" },
   ];
+  const memberItems = [
+    { label: "Espace membre", href: "membre.html" },
+    { label: "Ma carte", href: "profil.html" },
+    { label: "Membres", href: "membres.html" },
+    { label: "Calendrier & courses", href: "calendrier.html" },
+    { label: "Traces GPX", href: "gpx.html" },
+  ];
+  const items = member ? memberItems : publicItems;
   return (
     <header className="header">
       <div className="wrap header-inner">
@@ -31,8 +45,17 @@ const HeaderPublic = ({ active = "Accueil" }) => {
           ))}
         </nav>
         <div className="header-right">
-          <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
-          <a href="membre.html" className="btn btn-sm">Espace membre</a>
+          {member ? (
+            <>
+              <a href="index.html" className="btn btn-sm">← Site</a>
+              <a href="membre.html" className="btn btn-sm btn-primary">Mon espace</a>
+            </>
+          ) : (
+            <>
+              <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
+              <a href="membre.html" className="btn btn-sm">Espace membre</a>
+            </>
+          )}
         </div>
       </div>
     </header>
