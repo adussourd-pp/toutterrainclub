@@ -295,7 +295,7 @@ const JoinCta = () => (
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: 260 }}>
           <a href="adhesion-2027.html" className="btn btn-primary">Adhérer →</a>
-          <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn btn-dark" style={{ background: "transparent", color: "var(--paper)", borderColor: "rgba(255,255,255,0.3)" }}>Rejoindre le club Strava</a>
+          <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn btn-dark" style={{ background: "transparent", color: "var(--paper)", borderColor: "rgba(255,255,255,0.3)" }}>Nos sorties sur Strava</a>
           <div style={{ fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".06em", color: "rgba(250,250,247,0.5)", textTransform: "uppercase", marginTop: 8 }}>
             Sorties gratuites · départ Nice
           </div>
@@ -383,7 +383,7 @@ const WeeklyRuns = () => {
             <p style={{ color: "var(--muted)", fontSize: 15, lineHeight: 1.55, margin: 0 }}>
               Tous les lundis et jeudis, au départ de Nice. Sorties officielles gratuites, ouvertes à tous les niveaux.
             </p>
-            <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="chip" style={{ marginTop: 14, textDecoration: "none" }}>● Postées chaque semaine sur Strava →</a>
+            <a href="https://www.strava.com/clubs/toutterrainclub" target="_blank" rel="noopener" className="btn btn-primary" style={{ marginTop: 14, display: "inline-flex" }}>Rejoindre le club Strava →</a>
           </div>
         </div>
         <div className="mini-3col" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>

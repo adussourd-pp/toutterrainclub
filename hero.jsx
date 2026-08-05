@@ -47,7 +47,7 @@ const HeroSplit = () => (
                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 58%" }} />
         </div>
       </div>
-      <div className="hero-bottom" style={{ marginTop: 56, gridTemplateColumns: "1.1fr 1.4fr 0.7fr" }}>
+      <div className="hero-bottom" style={{ marginTop: 56, gridTemplateColumns: "1.1fr 1.4fr" }}>
         <p className="hero-lede">
           Social trail run, born in Nice, techno lovers.
         </p>
@@ -59,9 +59,6 @@ const HeroSplit = () => (
               <div style={{ color: "var(--muted)", fontSize: 13, marginTop: 4, lineHeight: 1.5 }}>{d.ex}</div>
             </div>
           ))}
-        </div>
-        <div className="hero-cta">
-          <a href="#" className="btn btn-primary">Voir les courses →</a>
         </div>
       </div>
     </div>
