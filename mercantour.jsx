@@ -79,7 +79,6 @@ const MercExpo = () => {
             </div>
             <div style={{ display: "flex", gap: 10, marginTop: 28, flexWrap: "wrap" }}>
               <a href="expedition-gelas.html" className="btn btn-uv">Le plan complet de l'expé →</a>
-              <a href="https://wa.me/33668681188" target="_blank" rel="noopener" className="btn btn-line-light">Candidater</a>
               <a href="#formats" className="btn btn-line-light">Autres formats</a>
             </div>
           </div>
@@ -377,7 +376,7 @@ const MercPricing = () => {
           </ul>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginTop: 22 }}>
-          <a href="https://tally.so/r/b5GkPg" target="_blank" rel="noopener" className="btn btn-uv">Réserver ma formule →</a>
+          <span className="btn btn-uv" style={{ opacity: 0.55, cursor: "not-allowed", pointerEvents: "none" }}>Inscription fermée</span>
           {p.options.map((o, i) => (
             <span key={i} className="t2t-daychip">{o}</span>
           ))}
@@ -390,20 +389,6 @@ const MercPricing = () => {
     </section>
   );
 };
-
-const MercReserve = () => (
-  <section className="t2t-final" id="reserver">
-    <div className="glow"></div>
-    <div className="wrap">
-      <div className="t2t-final-stamp"><window.Tampons.TamponMercantour /></div>
-      <div className="sub">Édition Mercantour · {M().when} · places limitées</div>
-      <h2>Prends ta<br/><span className="uv">place</span>.</h2>
-      <div className="t2t-final-cta">
-        <a href="https://tally.so/r/b5GkPg" target="_blank" rel="noopener" className="btn btn-uv">Réserver le week-end →</a>
-      </div>
-    </div>
-  </section>
-);
 
 const MercCommu = () => {
   const c = M().commu;
@@ -449,4 +434,4 @@ const MercCommu = () => {
   );
 };
 
-window.MERC = { MercHero, MercMetabar, MercExpo, MercFormats, MercCommu, MercLocation, MercNight, MercProgram, MercPartnersSec, MercPricing, MercReserve };
+window.MERC = { MercHero, MercMetabar, MercExpo, MercFormats, MercCommu, MercLocation, MercNight, MercProgram, MercPartnersSec, MercPricing };

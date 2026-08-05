@@ -65,9 +65,9 @@ const EMPTY = {
 function normalize(p) {
   p.avatar = trailRank(p.niveau).e;
   if (Array.isArray(p.tags)) {
+    // on ne garde QUE les rôles valides (les anciens tags, ex. « Teuffeur », disparaissent)
     const valid = AFFINITES.map((a) => a.role);
-    const migrate = { "Teuffeur": "Teufeur" };
-    p.tags = [...new Set(p.tags.map((t) => migrate[t] || t).filter((t) => valid.includes(t)))];
+    p.tags = [...new Set(p.tags.filter((t) => valid.includes(t)))];
   }
   return p;
 }
@@ -175,13 +175,13 @@ const RunnerCard = ({ p, collapsed }) => {
         <div className="pf-stat"><div className="pf-stat-k">Trail to Techno</div><div className="pf-stat-v pf-stat-sm">{mr.e} {mr.v}</div></div>
       </div>
 
-      {!collapsed && <React.Fragment>
       {p.tags.length > 0 && (
         <div className="pf-card-block">
           <div className="pf-card-bk">Rôles / affinités</div>
           <div className="pf-card-tags">{p.tags.map((t) => { const a = affinite(t); return <span key={t} className="role">{a ? a.e + " " : ""}{t}</span>; })}</div>
         </div>
       )}
+      {!collapsed && <React.Fragment>
       {p.activites.length > 0 && (
         <div className="pf-card-block">
           <div className="pf-card-bk">Ses envies</div>

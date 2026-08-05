@@ -19,15 +19,36 @@ function toCard(m, live) {
   try { return window.PROFIL.fromServer(m); } catch (e) { return m; }
 }
 
+const MeuteModal = ({ p, onClose }) => {
+  React.useEffect(() => {
+    const k = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", k);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", k); document.body.style.overflow = ""; };
+  }, [onClose]);
+  return (
+    <div className="me-backdrop" onClick={onClose}>
+      <div className="me-modal me-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="me-close" onClick={onClose} aria-label="Fermer">×</button>
+        <window.PROFIL.RunnerCard p={p} />
+      </div>
+    </div>
+  );
+};
+
 const MeuteCard = ({ m, me, live }) => {
   const p = toCard(m, live);
   const [open, setOpen] = React.useState(false);
   return (
-    <div className={`ms-mcard-wrap ${me ? "me" : ""} ${open ? "open" : ""}`}>
-      {me && <span className="ms-mcard-you">C'est toi</span>}
-      <window.PROFIL.RunnerCard p={p} collapsed={!open} />
-      <button type="button" className="btn btn-sm ms-see" onClick={() => setOpen((v) => !v)}>{open ? "Voir moins ▴" : "Voir plus ▾"}</button>
-    </div>
+    <React.Fragment>
+      <div className={`ms-mcard-wrap clickable ${me ? "me" : ""}`} role="button" tabIndex={0}
+           onClick={() => setOpen(true)}
+           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(true); } }}>
+        {me && <span className="ms-mcard-you">C'est toi</span>}
+        <window.PROFIL.RunnerCard p={p} collapsed={true} />
+      </div>
+      {open && <MeuteModal p={p} onClose={() => setOpen(false)} />}
+    </React.Fragment>
   );
 };
 

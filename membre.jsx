@@ -65,8 +65,6 @@ const MeBadge = () => {
 
 const MemberHub = () => (
   <React.Fragment>
-    <div className="wrap ms-badge-wrap"><MeBadge /></div>
-
     <section className="adh-hero">
       <HeroWaves />
       <div className="wrap">

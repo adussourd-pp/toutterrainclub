@@ -27,9 +27,21 @@ const Chips = ({ items }) => (
   })}</span>
 );
 
-const RaceForm = ({ onAdd, onClose }) => {
-  const [f, setF] = React.useState({ name: "", date_start: "", date_end: "", location: "", type: "trail", site_url: "" });
-  const [dists, setDists] = React.useState([{ km: "", dplus: "" }]);
+const RaceForm = ({ initial, onSubmit, onClose }) => {
+  const editing = !!(initial && initial.id);
+  const [f, setF] = React.useState({
+    name: (initial && initial.name) || "",
+    date_start: (initial && initial.date_start) || "",
+    date_end: (initial && initial.date_end) || "",
+    location: (initial && initial.location) || "",
+    type: (initial && initial.type) || "trail",
+    site_url: (initial && initial.site_url) || "",
+  });
+  const [dists, setDists] = React.useState(
+    initial && Array.isArray(initial.distances) && initial.distances.length
+      ? initial.distances.map((d) => (typeof d === "string" ? { km: "", dplus: "" } : { km: d.km, dplus: d.dplus }))
+      : [{ km: "", dplus: "" }]
+  );
   const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
   const setD = (i, k, v) => setDists((a) => a.map((d, j) => (j === i ? { ...d, [k]: v } : d)));
   const addD = () => setDists((a) => [...a, { km: "", dplus: "" }]);
@@ -40,7 +52,7 @@ const RaceForm = ({ onAdd, onClose }) => {
     const distances = dists
       .filter((d) => String(d.km).trim() !== "")
       .map((d) => ({ km: Number(d.km) || 0, dplus: Number(d.dplus) || 0 }));
-    onAdd({ ...f, distances });
+    onSubmit({ ...f, distances });
   };
   return (
     <form className="ms-form" onSubmit={submit}>
@@ -78,7 +90,7 @@ const RaceForm = ({ onAdd, onClose }) => {
 
       <div className="ms-form-actions">
         <button type="button" className="btn" onClick={onClose}>Annuler</button>
-        <button type="submit" className="btn btn-primary">Ajouter la course →</button>
+        <button type="submit" className="btn btn-primary">{editing ? "Enregistrer les modifications →" : "Ajouter la course →"}</button>
       </div>
     </form>
   );
@@ -106,8 +118,76 @@ const JoinForm = ({ race, onJoin, onClose }) => {
   );
 };
 
-const RaceCard = ({ race, onJoin, onLeave, onDelete }) => {
+// Retrouve la carte de coureur d'un participant (match par prénom / pseudo).
+function findMember(members, name) {
+  const n = String(name || "").trim().toLowerCase();
+  if (!n) return null;
+  return (members || []).find((m) =>
+    String(m.prenom || "").trim().toLowerCase() === n ||
+    String(m.pseudo || "").trim().toLowerCase() === n
+  ) || null;
+}
+// photo + rôle, que terrains soit un tableau (local) ou un objet {photo,role} (API).
+function memberExt(m) {
+  const t = m.terrains;
+  const o = (t && !Array.isArray(t) && typeof t === "object") ? t : {};
+  return { photo: m.photo || o.photo || "", role: m.role || o.role || "" };
+}
+// Mon identifiant membre (pour reconnaître MA carte et proposer de la modifier).
+function myMemberId() { try { return localStorage.getItem("ttc_member_id") || ""; } catch (e) { return ""; } }
+
+// Popup : la carte de coureur, ouverte au clic sur la bulle d'un participant.
+const MemberPopup = ({ member, fallback, onClose }) => {
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  const m = member;
+  const e = m ? memberExt(m) : { photo: "", role: "" };
+  const dists = m && Array.isArray(m.distances) ? m.distances : [];
+  const strava = (m && m.strava) || (fallback && fallback.strava) || "";
+  const insta = (m && m.insta) || (fallback && fallback.insta) || "";
+  const name = (m && (m.prenom || m.pseudo)) || (fallback && fallback.member) || "Coureur";
+  const isMe = !!(m && m.id && m.id === myMemberId());
+  return (
+    <div className="ms-cpop-overlay" onClick={onClose}>
+      <div className="ms-cpop" onClick={(ev) => ev.stopPropagation()}>
+        <button className="ms-cpop-close" onClick={onClose} title="Fermer">×</button>
+        <div className="ms-mcard">
+          {m && e.role && <div className="ms-mcard-role">★ {e.role}</div>}
+          <div className="ms-mcard-top">
+            {e.photo
+              ? <span className="ms-mcard-av ms-mcard-photo"><img src={e.photo} alt="" /><i>{(m && m.avatar) || "🐗"}</i></span>
+              : <span className="ms-mcard-av">{(m && m.avatar) || "🐗"}</span>}
+            <div>
+              <div className="ms-mcard-name">{name}{m && m.pseudo && m.prenom ? ` · ${m.pseudo}` : ""}</div>
+              <div className="ms-mcard-sub">{m ? ([m.ville, m.niveau].filter(Boolean).join(" · ") || "Coureur de la meute") : "Pas encore de carte de coureur"}</div>
+            </div>
+          </div>
+          {m && m.objectif && <div className="ms-mcard-obj">🎯 {m.objectif}</div>}
+          {dists.length > 0 && <div className="ms-dist-chips">{dists.map((d, i) => <span key={i} className="ms-dist-chip">{typeof d === "string" ? d : (d.km + " km")}</span>)}</div>}
+          {(m && m.adhesion) || strava || insta ? (
+            <div className="ms-mcard-soc">
+              {m && m.adhesion && <span className="ms-chip">{m.adhesion}</span>}
+              {strava && <a href={strava} target="_blank" rel="noopener">🟠 Strava</a>}
+              {insta && <a href={insta} target="_blank" rel="noopener">📸 Insta</a>}
+            </div>
+          ) : null}
+          <div className="ms-cpop-actions">
+            {isMe && <a className="btn btn-sm btn-primary" href="profil.html">✏️ Modifier ma carte</a>}
+            <a className="btn btn-sm" href="membres.html">Voir toute la meute →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const RaceCard = ({ race, members, onJoin, onLeave, onEdit, onDelete }) => {
   const [open, setOpen] = React.useState(false);
+  const [cardOf, setCardOf] = React.useState(null);
+  const [editing, setEditing] = React.useState(false);
   const parts = race.participants || [];
   return (
     <div className="ms-race">
@@ -117,13 +197,23 @@ const RaceCard = ({ race, onJoin, onLeave, onDelete }) => {
           <div className="ms-race-meta">
             {fmtDate(race.date_start, race.date_end)}{race.location ? " · " + race.location : ""}
           </div>
+          {race.site_url && <a className="ms-race-site" href={race.site_url} target="_blank" rel="noopener">🔗 Site officiel <span aria-hidden="true">↗</span></a>}
         </div>
         <div className="ms-race-right">
           <Chips items={race.distances} />
-          {race.site_url && <a className="ms-promo-link" href={race.site_url} target="_blank" rel="noopener">site ↗</a>}
-          {onDelete && <button className="ms-race-del" title="Supprimer la course" onClick={() => onDelete(race)}>🗑</button>}
+          <div className="ms-race-actions">
+            {onEdit && <button className="ms-race-edit" title="Modifier la course" onClick={() => setEditing((v) => !v)}>✏️</button>}
+            {onDelete && <button className="ms-race-del" title="Supprimer la course" onClick={() => onDelete(race)}>🗑</button>}
+          </div>
         </div>
       </div>
+
+      {editing && (
+        <div className="ms-race-edit-wrap">
+          <div className="ms-race-edit-h">Modifier « {race.name} »</div>
+          <RaceForm initial={race} onClose={() => setEditing(false)} onSubmit={(data) => { onEdit(race, data); setEditing(false); }} />
+        </div>
+      )}
 
       <div className="ms-race-parts">
         <div className="ms-race-parts-h">
@@ -134,22 +224,28 @@ const RaceCard = ({ race, onJoin, onLeave, onDelete }) => {
         {parts.length > 0 && (
           <table className="ms-part-table">
             <tbody>
-              {parts.map((p, i) => (
+              {parts.map((p, i) => {
+                const pm = findMember(members, p.member);
+                const photo = pm ? memberExt(pm).photo : "";
+                const av = (pm && pm.avatar) || "🐗";
+                return (
                 <tr key={p.id || i}>
-                  <td className="ms-part-name">{p.member}</td>
+                  <td className="ms-part-av">
+                    <button className="ms-part-bubble" title={`${p.member} — voir la carte`} onClick={() => setCardOf(p)}>
+                      {photo ? <img src={photo} alt={p.member} /> : <span>{av}</span>}
+                    </button>
+                  </td>
                   <td className="ms-part-dist">{p.distance}</td>
                   <td><span className={`ms-part-status ${p.status}`}>{p.status === "chaud" ? "🔥 Chaud" : "✅ Inscrit"}</span></td>
-                  <td className="ms-part-soc">
-                    {p.strava && <a href={p.strava} target="_blank" rel="noopener" title="Strava">🟠</a>}
-                    {p.insta && <a href={p.insta} target="_blank" rel="noopener" title="Insta">📸</a>}
-                  </td>
                   <td className="ms-part-x"><button title="Retirer" onClick={() => onLeave(race, p)}>×</button></td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         )}
       </div>
+      {cardOf && <MemberPopup member={findMember(members, cardOf.member)} fallback={cardOf} onClose={() => setCardOf(null)} />}
     </div>
   );
 };
@@ -162,6 +258,7 @@ function fmtDate(a, b) {
 
 const CoursesPage = () => {
   const { items: races, setItems, state, reload, saveLocal } = window.MS.useCollection("/api/races", "ttc_races_demo");
+  const { items: members } = window.MS.useCollection("/api/members", "ttc_members_demo_unused");
   const [adding, setAdding] = React.useState(false);
   const live = window.ttcConfigured();
 
@@ -169,6 +266,10 @@ const CoursesPage = () => {
     if (live) { try { await window.ttcApi("/api/races", { method: "POST", body: r }); await reload(); } catch (e) { alert("Erreur (droits ?). Reconnecte-toi."); } }
     else { const next = [...races, { ...r, id: "loc" + Date.now(), participants: [] }]; setItems(next); saveLocal(next); }
     setAdding(false);
+  };
+  const editRace = async (race, data) => {
+    if (live) { try { await window.ttcApi(`/api/races/${race.id}/update`, { method: "POST", body: data }); await reload(); } catch (e) { console.error("update race:", e); alert("Modification impossible — code : " + (e && e.message ? e.message : "inconnu") + "\n(api-404 = route /update absente sur le Worker · api-401 = pas connecté)"); } }
+    else { const next = races.map((r) => r.id === race.id ? { ...r, ...data } : r); setItems(next); saveLocal(next); }
   };
   const joinRace = async (race, f) => {
     if (live) { try { await window.ttcApi(`/api/races/${race.id}/join`, { method: "POST", body: f }); await reload(); } catch (e) { alert("Erreur d'inscription."); } }
@@ -180,7 +281,7 @@ const CoursesPage = () => {
   };
   const deleteRace = async (race) => {
     if (!window.confirm(`Supprimer la course « ${race.name} » ? C'est définitif.`)) return;
-    if (live) { try { await window.ttcApi(`/api/races/${race.id}/delete`, { method: "POST", body: {} }); await reload(); } catch (e) { alert("Suppression impossible (mets à jour le Worker Cloudflare)."); } }
+    if (live) { try { await window.ttcApi(`/api/races/${race.id}/delete`, { method: "POST", body: {} }); await reload(); } catch (e) { console.error("delete race:", e); alert("Suppression impossible — code : " + (e && e.message ? e.message : "inconnu") + "\n(api-404 = route absente sur le Worker · api-401 = pas connecté · api-500 = erreur serveur)"); } }
     else { const next = races.filter((r) => r.id !== race.id); setItems(next); saveLocal(next); }
   };
 
@@ -207,13 +308,13 @@ const CoursesPage = () => {
       <section className="adh-sec">
         <div className="wrap">
           {!live && <window.MS.MSDemo what="Le suivi des courses" />}
-          {adding && <RaceForm onAdd={addRace} onClose={() => setAdding(false)} />}
+          {adding && <RaceForm onSubmit={addRace} onClose={() => setAdding(false)} />}
           {state === "loading" && <p className="ms-note-muted">Chargement…</p>}
           {races.length === 0 && state !== "loading" && (
             <div className="ms-empty">Aucune course pour l'instant. <button className="btn btn-sm btn-primary" onClick={() => setAdding(true)}>Ajoute la première →</button></div>
           )}
           <div className="ms-races">
-            {races.map((r) => <RaceCard key={r.id} race={r} onJoin={joinRace} onLeave={leaveRace} onDelete={deleteRace} />)}
+            {races.map((r) => <RaceCard key={r.id} race={r} members={members} onJoin={joinRace} onLeave={leaveRace} onEdit={editRace} onDelete={deleteRace} />)}
           </div>
         </div>
       </section>
