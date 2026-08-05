@@ -49,10 +49,16 @@ const MeBadge = () => {
     </div>
   );
   return (
-    <div className="ms-mecard">
-      <div className="ms-mecard-hi">Salut <b>{p.prenom || p.pseudo}</b> 👋 — voici ta carte</div>
-      <window.PROFIL.RunnerCard p={p} />
-      <a className="btn btn-sm btn-primary ms-mecard-edit" href="profil.html">Modifier ma carte →</a>
+    <div className="ms-thinbadge">
+      {p.photo ? <span className="ms-tb-av"><img src={p.photo} alt="" /></span> : <span className="ms-tb-av emoji">{p.avatar || "🐗"}</span>}
+      <div className="ms-tb-txt">
+        <div className="ms-tb-name">Salut <b>{p.prenom || p.pseudo}</b>{p.role ? <span className="ms-tb-role"> · ★ {p.role}</span> : null}</div>
+        <div className="ms-tb-totems">
+          <span className="ms-tb-pill">{p.avatar || "🐗"} {p.niveau || "—"}</span>
+          <span className="ms-tb-pill">{MUSIC_EMOJI[p.techno] || "🎶"} {p.techno || "—"}</span>
+        </div>
+      </div>
+      <a className="btn btn-sm" href="profil.html">Ma carte</a>
     </div>
   );
 };
