@@ -207,7 +207,9 @@ const ProfilPage = () => {
   }, []);
 
   React.useEffect(() => {
-    // Au chargement : recharge la version serveur (source de vérité, cross-appareil).
+    // On garde ta version locale (tes édits, ta photo). On ne va chercher le
+    // serveur QUE si la carte locale est vide (nouvel appareil) — jamais d'écrasement.
+    if (p.prenom || p.pseudo || p.photo) return;
     let id = "";
     try { id = (p.email ? "e-" + p.email.trim().toLowerCase() : localStorage.getItem("ttc_member_id")) || ""; } catch (e) {}
     if (id) pullFromServer(id);
