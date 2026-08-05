@@ -65,8 +65,7 @@ const MeBadge = () => {
 
 const MemberHub = () => (
   <React.Fragment>
-    <window.MS.MSSubnav active="hub" />
-    <div className="wrap"><MeBadge /></div>
+    <div className="wrap ms-badge-wrap"><MeBadge /></div>
 
     <section className="adh-hero">
       <HeroWaves />
