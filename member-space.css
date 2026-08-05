@@ -823,3 +823,14 @@ select.pf-input { cursor: pointer; }
 .ms-mcard-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 .ms-role-chip { font-size: 11.5px; font-weight: 600; color: var(--fire); background: rgba(255,94,26,.1);
   border: 1px solid rgba(255,94,26,.3); border-radius: 999px; padding: 3px 10px; }
+
+/* Meute : cartes repliables (compact ↔ carte complète) */
+.ms-mcard-wrap { position: relative; }
+.ms-mcard-wrap:not(.open) { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 18px; }
+.ms-mcard-wrap.me:not(.open) { border-color: var(--green-3); box-shadow: 0 0 0 1px var(--green-3) inset; }
+.ms-mini { display: flex; flex-direction: column; gap: 12px; }
+.ms-mini-top { display: flex; gap: 12px; align-items: center; }
+.ms-see { align-self: flex-start; }
+.ms-mcard-wrap.open { grid-column: 1 / -1; max-width: 440px; margin: 0 auto; }
+.ms-full { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.ms-full .ms-see { align-self: center; }

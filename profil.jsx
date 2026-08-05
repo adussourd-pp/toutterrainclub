@@ -427,4 +427,4 @@ const ProfilPage = () => {
   );
 };
 
-window.PROFIL = { ProfilPage, RunnerCard, TRAIL_RANKS, MUSIC_RANKS };
+window.PROFIL = { ProfilPage, RunnerCard, TRAIL_RANKS, MUSIC_RANKS, fromServer };
