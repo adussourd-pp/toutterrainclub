@@ -859,3 +859,6 @@ select.pf-input { cursor: pointer; }
 .me-modal-card { padding: 0; background: transparent; border: 0; box-shadow: none; max-width: 420px; overflow: visible; }
 .me-modal-card .pf-card { max-height: 84vh; overflow-y: auto; }
 .me-modal-card .me-close { top: -12px; right: -12px; background: var(--ink); color: var(--paper); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 3px 10px rgba(0,0,0,.4); }
+
+.me-modal-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+.me-modal-actions .btn { background: var(--paper); }

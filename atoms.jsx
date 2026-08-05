@@ -33,13 +33,18 @@ const HeaderCardModal = ({ card, onClose }) => {
     return () => { document.removeEventListener("keydown", k); document.body.style.overflow = ""; };
   }, [onClose]);
   const hasCard = card && (card.prenom || card.pseudo);
+  const logout = () => { try { localStorage.removeItem("ttc_auth"); sessionStorage.removeItem("ttc_member_ok"); } catch (e) {} window.location.href = "index.html"; };
   return (
     <div className="me-backdrop" onClick={onClose}>
       <div className="me-modal me-modal-card" onClick={(e) => e.stopPropagation()}>
         <button type="button" className="me-close" onClick={onClose} aria-label="Fermer">×</button>
         {hasCard && window.PROFIL && window.PROFIL.RunnerCard
           ? <window.PROFIL.RunnerCard p={card} />
-          : <div className="pf-card" style={{ textAlign: "center" }}><p>Tu n'as pas encore rempli ta carte de coureur.</p><a className="btn btn-sm btn-primary" href="profil.html">Créer ma carte →</a></div>}
+          : <div className="pf-card" style={{ textAlign: "center" }}><p>Tu n'as pas encore rempli ta carte de coureur.</p></div>}
+        <div className="me-modal-actions">
+          <a className="btn btn-sm btn-primary" href="profil.html">{hasCard ? "Modifier ma carte →" : "Créer ma carte →"}</a>
+          <button type="button" className="btn btn-sm" onClick={logout}>Déconnexion</button>
+        </div>
       </div>
     </div>
   );
