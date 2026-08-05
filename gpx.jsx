@@ -57,7 +57,7 @@ function downloadGpx(g) {
 }
 
 const GpxForm = ({ onAdd, onClose }) => {
-  const [f, setF] = React.useState({ name: "", region: "", start_point: "", type: "Boucle", link: "" });
+  const [f, setF] = React.useState({ name: "", region: "", start_point: "", type: "Boucle", link: "", official: false });
   const [parsed, setParsed] = React.useState(null); // {km,dplus,eleMin,eleMax,profile,gpx}
   const [busy, setBusy] = React.useState(false);
   const [err, setErr] = React.useState("");
@@ -87,7 +87,7 @@ const GpxForm = ({ onAdd, onClose }) => {
     onAdd({
       name: f.name, region: f.region, start_point: f.start_point, type: f.type,
       distance_km: parsed.km, denivele_m: parsed.dplus,
-      url: JSON.stringify({ gpx: parsed.gpx, profile: parsed.profile, eleMin: parsed.eleMin, eleMax: parsed.eleMax, link: f.link || "" }),
+      url: JSON.stringify({ gpx: parsed.gpx, profile: parsed.profile, eleMin: parsed.eleMin, eleMax: parsed.eleMax, link: f.link || "", official: !!f.official }),
     });
   };
 
@@ -125,6 +125,10 @@ const GpxForm = ({ onAdd, onClose }) => {
             {["Boucle", "Aller-retour", "Point à point", "Trace libre"].map((t) => <option key={t} value={t}>{t}</option>)}</select></label>
         <label className="pf-field"><span className="pf-label">Lien Strava/Komoot <em className="pf-hint">optionnel</em></span>
           <input type="url" className="pf-input" value={f.link} onChange={(e) => set("link", e.target.value)} placeholder="https://…" /></label>
+        <label className="pf-check" style={{ gridColumn: "1 / -1" }}>
+          <input type="checkbox" checked={f.official} onChange={(e) => set("official", e.target.checked)} />
+          <span>🏁 <b>Course officielle</b> — cette trace correspond au parcours d'une course</span>
+        </label>
       </div>
       <div className="ms-form-actions">
         <button type="button" className="btn" onClick={onClose}>Annuler</button>
@@ -140,7 +144,7 @@ const GpxCard = ({ g }) => {
     <div className="ms-gpx-card">
       <div className="ms-gpx-card-h">
         <div>
-          <div className="ms-gpx-name">{g.name}</div>
+          <div className="ms-gpx-name">{data.official && <span className="ms-official">🏁 Course officielle</span>}{g.name}</div>
           <div className="ms-gpx-meta">{[g.region, g.start_point, g.type].filter(Boolean).join(" · ")}</div>
         </div>
         <Diff km={g.distance_km} dplus={g.denivele_m} />
@@ -179,6 +183,7 @@ const GpxPage = () => {
   const [dist, setDist] = React.useState("");
   const [diff, setDiff] = React.useState("");
   const [region, setRegion] = React.useState("");
+  const [officialOnly, setOfficialOnly] = React.useState(false);
   const live = window.ttcConfigured();
 
   const add = async (g) => {
@@ -193,10 +198,11 @@ const GpxPage = () => {
     const okDist = inBand(g.distance_km, dist);
     const okDiff = !diff || T().difficulty(g.distance_km, g.denivele_m).label === diff;
     const okReg = !region || (g.region || "").trim() === region;
-    return okQ && okDist && okDiff && okReg;
+    const okOff = !officialOnly || unpack(g).official;
+    return okQ && okDist && okDiff && okReg && okOff;
   });
-  const anyFilter = q || dist || diff || region;
-  const clearFilters = () => { setQ(""); setDist(""); setDiff(""); setRegion(""); };
+  const anyFilter = q || dist || diff || region || officialOnly;
+  const clearFilters = () => { setQ(""); setDist(""); setDiff(""); setRegion(""); setOfficialOnly(false); };
 
   return (
     <React.Fragment>
@@ -230,6 +236,7 @@ const GpxPage = () => {
               <option value="">Toutes régions</option>
               {regions.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
+            <button type="button" className={`btn btn-sm ms-off-toggle ${officialOnly ? "on" : ""}`} onClick={() => setOfficialOnly((v) => !v)}>🏁 Officielles</button>
             {anyFilter && <button type="button" className="btn btn-sm" onClick={clearFilters}>✕ Filtres</button>}
           </div>
           {(anyFilter || filtered.length > 0) && <div className="ms-gpx-count">{filtered.length} trace{filtered.length > 1 ? "s" : ""}{anyFilter ? " · filtré" : ""}</div>}

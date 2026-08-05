@@ -24,6 +24,7 @@ const HeaderPublic = ({ active = "Accueil" }) => {
     { label: "Accueil", href: "index.html" },
     { label: "Trail to Techno", href: "trail-to-techno.html" },
     { label: "Saison 2027", href: "adhesion-2027.html" },
+    { label: "Espace membre", href: "membre.html" },
     { label: "Contact", href: "mailto:toutterrainclub@gmail.com" },
   ];
   const memberItems = [
@@ -45,15 +46,9 @@ const HeaderPublic = ({ active = "Accueil" }) => {
         </nav>
         <div className="header-right">
           {member ? (
-            <>
-              <a href="index.html" className="btn btn-sm">← Site</a>
-              <a href="membre.html" className="btn btn-sm btn-primary">Mon espace</a>
-            </>
+            <a href="index.html" className="btn btn-sm">← Revenir au site</a>
           ) : (
-            <>
-              <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
-              <a href="membre.html" className="btn btn-sm">Espace membre</a>
-            </>
+            <a href="adhesion-2027.html" className="btn btn-sm btn-primary">Saison 2027 →</a>
           )}
         </div>
       </div>
