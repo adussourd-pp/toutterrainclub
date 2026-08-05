@@ -17,13 +17,28 @@ function mySocials() {
   catch (e) { return { strava: "", insta: "" }; }
 }
 
+// Commentaire + lien groupe WhatsApp de la course : rangés dans la colonne
+// existante `created_by` (JSON) → persiste sans changer le Worker.
+function raceMeta(race) {
+  if (!race) return { commentaire: "", whatsapp: "" };
+  if (race.commentaire != null || race.whatsapp != null) return { commentaire: race.commentaire || "", whatsapp: race.whatsapp || "" };
+  try { const m = JSON.parse(race.created_by || "{}"); return { commentaire: m.commentaire || "", whatsapp: m.whatsapp || "" }; }
+  catch (e) { return { commentaire: "", whatsapp: "" }; }
+}
+
 // Une distance est un objet {km, dplus}. (compat : anciennes valeurs = string)
 function distLabel(d) { return typeof d === "string" ? d : `${d.km} km · ${d.dplus || 0} D+`; }
 function distCat(d) { return typeof d === "string" ? null : window.TTC_TRAIL.utmbCategory(d.km, d.dplus).code; }
-const Chips = ({ items }) => (
+const Chips = ({ items, gpxList, onGpx }) => (
   <span className="ms-dist-chips">{(items || []).map((d, i) => {
     const c = distCat(d);
-    return <span key={i} className="ms-dist-chip">{distLabel(d)}{c && c !== "—" ? <b className="ms-dist-cat"> {c}</b> : null}</span>;
+    const g = d && d.gpx_id ? (gpxList || []).find((x) => x.id === d.gpx_id) : null;
+    return (
+      <span key={i} className={`ms-dist-chip ${g ? "has-gpx" : ""}`}>
+        {distLabel(d)}{c && c !== "—" ? <b className="ms-dist-cat"> {c}</b> : null}
+        {g && onGpx && <button type="button" className="ms-dist-gpx" title="Profil & téléchargement du GPX" onClick={() => onGpx(g)}>⛰️</button>}
+      </span>
+    );
   })}</span>
 );
 
@@ -101,6 +116,59 @@ async function downloadGpxById(gpxList, id) {
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 }
 
+// Profil altimétrique (SVG) — mini version, comme la page GPX.
+function ElevSVG({ profile, eleMin, eleMax, h = 92 }) {
+  if (!profile || profile.length < 2) return null;
+  const W = 480;
+  const es = profile.map((p) => p.e), ds = profile.map((p) => p.d);
+  const dMax = Math.max.apply(null, ds) || 1;
+  const lo = eleMin != null ? eleMin : Math.min.apply(null, es);
+  const hi = eleMax != null ? eleMax : Math.max.apply(null, es);
+  const span = Math.max(1, hi - lo);
+  const x = (d) => (d / dMax) * W, y = (e) => h - ((e - lo) / span) * (h - 10) - 4;
+  let line = ""; profile.forEach((p, i) => { line += (i ? " L" : "M") + x(p.d).toFixed(1) + " " + y(p.e).toFixed(1); });
+  const area = line + ` L${W} ${h} L0 ${h} Z`;
+  return (
+    <svg className="ms-elev" viewBox={`0 0 ${W} ${h}`} preserveAspectRatio="none" aria-hidden="true">
+      <path d={area} className="ms-elev-fill" />
+      <path d={line} className="ms-elev-line" fill="none" />
+    </svg>
+  );
+}
+
+// Popup profil d'un parcours (avec téléchargement du .gpx).
+const GpxPopup = ({ gpx, onClose }) => {
+  React.useEffect(() => {
+    const k = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", k); document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", k); document.body.style.overflow = ""; };
+  }, [onClose]);
+  let data = {}; try { data = JSON.parse(gpx.url || "{}"); } catch (e) {}
+  const cat = window.TTC_TRAIL.utmbCategory(gpx.distance_km, gpx.denivele_m);
+  const diff = window.TTC_TRAIL.difficulty(gpx.distance_km, gpx.denivele_m);
+  return (
+    <div className="me-backdrop" onClick={onClose}>
+      <div className="me-modal me-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="me-close" onClick={onClose} aria-label="Fermer">×</button>
+        <div className="pf-card ms-gpx-pop">
+          <div className="ms-gpx-name">⛰️ {gpx.name || "Parcours"}</div>
+          <div className="ms-gpx-meta">
+            <span><b>{gpx.distance_km}</b> km</span>
+            <span><b>{gpx.denivele_m}</b> m D+</span>
+            <span className={`ms-diff ${diff.cls}`}>{diff.label}</span>
+            {cat.code !== "—" && <span className="ms-cat" title={cat.full}>{cat.code}</span>}
+          </div>
+          <ElevSVG profile={data.profile} eleMin={data.eleMin} eleMax={data.eleMax} />
+          <div className="ms-gpx-pop-actions">
+            <button type="button" className="btn btn-primary btn-sm" onClick={() => downloadGpxById([gpx], gpx.id)}>⬇ Télécharger le GPX</button>
+            {data.link && <a className="btn btn-sm" href={data.link} target="_blank" rel="noopener">Strava/Komoot ↗</a>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Contrôle par distance : associer une trace de la banque OU en uploader une.
 // L'upload crée la trace dans la banque GPX (marquée « course officielle ») via
 // l'endpoint /api/gpx existant — donc elle apparaît toute seule dans les Traces.
@@ -171,6 +239,7 @@ const DistGpxControl = ({ dist, raceName, gpxList, onSet, onUpload }) => {
 
 const RaceForm = ({ initial, gpxList, onUploadGpx, onSubmit, onClose }) => {
   const editing = !!(initial && initial.id);
+  const meta0 = raceMeta(initial);
   const [f, setF] = React.useState({
     name: (initial && initial.name) || "",
     date_start: (initial && initial.date_start) || "",
@@ -178,6 +247,8 @@ const RaceForm = ({ initial, gpxList, onUploadGpx, onSubmit, onClose }) => {
     location: (initial && initial.location) || "",
     type: (initial && initial.type) || "trail",
     site_url: (initial && initial.site_url) || "",
+    commentaire: meta0.commentaire,
+    whatsapp: meta0.whatsapp,
   });
   const [dists, setDists] = React.useState(
     initial && Array.isArray(initial.distances) && initial.distances.length
@@ -194,7 +265,8 @@ const RaceForm = ({ initial, gpxList, onUploadGpx, onSubmit, onClose }) => {
     const distances = dists
       .filter((d) => String(d.km).trim() !== "")
       .map((d) => ({ km: Number(d.km) || 0, dplus: Number(d.dplus) || 0, ...(d.gpx_id ? { gpx_id: d.gpx_id, gpx_name: d.gpx_name || "" } : {}) }));
-    onSubmit({ ...f, distances });
+    const created_by = JSON.stringify({ commentaire: f.commentaire || "", whatsapp: f.whatsapp || "" });
+    onSubmit({ name: f.name, date_start: f.date_start, date_end: f.date_end, location: f.location, type: f.type, site_url: f.site_url, distances, created_by, commentaire: f.commentaire || "", whatsapp: f.whatsapp || "" });
   };
   return (
     <form className="ms-form" onSubmit={submit}>
@@ -212,6 +284,10 @@ const RaceForm = ({ initial, gpxList, onUploadGpx, onSubmit, onClose }) => {
             {RACE_TYPES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></label>
         <label className="pf-field" style={{ gridColumn: "1 / -1" }}><span className="pf-label">Site officiel</span>
           <input type="url" className="pf-input" value={f.site_url} onChange={(e) => set("site_url", e.target.value)} placeholder="https://…" /></label>
+        <label className="pf-field" style={{ gridColumn: "1 / -1" }}><span className="pf-label">Lien groupe WhatsApp <em className="pf-hint">team course</em></span>
+          <input type="url" className="pf-input" value={f.whatsapp} onChange={(e) => set("whatsapp", e.target.value)} placeholder="https://chat.whatsapp.com/…" /></label>
+        <label className="pf-field" style={{ gridColumn: "1 / -1" }}><span className="pf-label">Commentaire <em className="pf-hint">infos, logistique, covoit…</em></span>
+          <textarea className="pf-input pf-textarea" value={f.commentaire} onChange={(e) => set("commentaire", e.target.value)} placeholder="Ex : départ 6h, covoit depuis Nice, on dort au refuge la veille…" /></label>
       </div>
 
       <div className="ms-dist-editor">
@@ -319,9 +395,9 @@ const MemberPopup = ({ member, fallback, onClose }) => {
 const RaceCard = ({ race, members, gpxList, onUploadGpx, onJoin, onLeave, onEdit, onDelete }) => {
   const [open, setOpen] = React.useState(false);
   const [cardOf, setCardOf] = React.useState(null);
+  const [gpxOf, setGpxOf] = React.useState(null);
   const [editing, setEditing] = React.useState(false);
   const parts = race.participants || [];
-  const traces = (race.distances || []).filter((d) => d && typeof d === "object" && d.gpx_id);
   return (
     <div className="ms-race">
       <div className="ms-race-top">
@@ -330,10 +406,13 @@ const RaceCard = ({ race, members, gpxList, onUploadGpx, onJoin, onLeave, onEdit
           <div className="ms-race-meta">
             {fmtDate(race.date_start, race.date_end)}{race.location ? " · " + race.location : ""}
           </div>
-          {race.site_url && <a className="ms-race-site" href={race.site_url} target="_blank" rel="noopener">🔗 Site officiel <span aria-hidden="true">↗</span></a>}
+          <div className="ms-race-links">
+            {race.site_url && <a className="ms-race-site" href={race.site_url} target="_blank" rel="noopener">🔗 Site officiel <span aria-hidden="true">↗</span></a>}
+            {raceMeta(race).whatsapp && <a className="ms-race-wa" href={raceMeta(race).whatsapp} target="_blank" rel="noopener">💬 Groupe WhatsApp <span aria-hidden="true">↗</span></a>}
+          </div>
+          {raceMeta(race).commentaire && <p className="ms-race-comment">{raceMeta(race).commentaire}</p>}
         </div>
         <div className="ms-race-right">
-          <Chips items={race.distances} />
           <div className="ms-race-actions">
             {onEdit && <button className="ms-race-edit" title="Modifier la course" onClick={() => setEditing((v) => !v)}>✏️</button>}
             {onDelete && <button className="ms-race-del" title="Supprimer la course" onClick={() => onDelete(race)}>🗑</button>}
@@ -341,16 +420,10 @@ const RaceCard = ({ race, members, gpxList, onUploadGpx, onJoin, onLeave, onEdit
         </div>
       </div>
 
-      {traces.length > 0 && (
-        <div className="ms-race-traces">
+      {(race.distances || []).length > 0 && (
+        <div className="ms-race-parcours">
           <span className="ms-race-traces-h">⛰️ Parcours</span>
-          {traces.map((d, i) => (
-            <span className="ms-race-trace" key={i}>
-              {d.gpx_name || "Trace"} <b>{d.km} km</b>
-              <button type="button" className="ms-trace-dl" title="Télécharger le GPX" onClick={() => downloadGpxById(gpxList, d.gpx_id)}>⬇</button>
-              <a className="ms-trace-link" href="gpx.html" title="Voir dans les traces GPX">↗</a>
-            </span>
-          ))}
+          <Chips items={race.distances} gpxList={gpxList} onGpx={setGpxOf} />
         </div>
       )}
 
@@ -392,6 +465,7 @@ const RaceCard = ({ race, members, gpxList, onUploadGpx, onJoin, onLeave, onEdit
         )}
       </div>
       {cardOf && <MemberPopup member={findMember(members, cardOf.member)} fallback={cardOf} onClose={() => setCardOf(null)} />}
+      {gpxOf && <GpxPopup gpx={gpxOf} onClose={() => setGpxOf(null)} />}
     </div>
   );
 };

@@ -286,6 +286,7 @@ const GpxCard = ({ g, me, live, onEdit, onDone, onComment, onDeleteComment, onDe
         <div>
           <div className="ms-gpx-name">{data.official && <span className="ms-official">🏁 Course officielle</span>}{g.name}</div>
           <div className="ms-gpx-meta">{[g.region, g.start_point, g.type].filter(Boolean).join(" · ")}</div>
+          {(data.race || data.official) && <a className="ms-gpx-course" href="calendrier.html">📅 {data.race ? data.race + " · " : ""}voir dans le calendrier <span aria-hidden="true">↗</span></a>}
         </div>
         <div className="ms-gpx-right">
           <Diff km={g.distance_km} dplus={g.denivele_m} />
