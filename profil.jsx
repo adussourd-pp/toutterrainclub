@@ -118,7 +118,6 @@ const RankGrid = ({ ranks, value, onPick }) => (
     {ranks.map((r) => (
       <button type="button" key={r.v} className={`pf-rank ${value === r.v ? "on" : ""}`} onClick={() => onPick(r)} title={r.d}>
         <span className="pf-rank-e">{r.e}</span>
-        <span className="pf-rank-lvl">Niv {r.lvl}</span>
         <span className="pf-rank-v">{r.v}</span>
       </button>
     ))}
@@ -142,7 +141,7 @@ const RunnerCard = ({ p }) => {
           <div className="pf-card-meta">
             <span>📍 {p.ville || "—"}</span>
           </div>
-          <div className="pf-card-rank">{tr.e} {tr.v} <b>· Niv {tr.lvl}</b></div>
+          <div className="pf-card-rank">{tr.e} {tr.v}</div>
         </div>
       </div>
 
@@ -257,7 +256,7 @@ const ProfilPage = () => {
     const name = [p.prenom, p.pseudo && `« ${p.pseudo} »`].filter(Boolean).join(" ");
     L.push(`${tr.e} ${name || "—"} — carte TTC`);
     if (p.ville) L.push(`📍 ${p.ville}`);
-    L.push(`Niveau meute : ${tr.v} (Niv ${tr.lvl})`);
+    L.push(`Totem de meute : ${tr.v}`);
     if (p.distances.length) L.push(`Distances : ${p.distances.join(", ")}`);
     if (p.terrains.length) L.push(`Terrains : ${p.terrains.join(", ")}`);
     if (p.jours.length || p.moments.length) L.push(`Dispos : ${[...p.jours, ...p.moments].join(", ")}`);
@@ -287,9 +286,9 @@ const ProfilPage = () => {
           <h1>Ta carte de <span className="marker">coureur</span>.</h1>
           <div className="adh-hero-grid">
             <p className="adh-hero-lede">
-              Qui tu es, ton <strong>niveau dans l'aventure de la meute</strong>, tes distances, ton grade
-              Trail to Techno. Ton <strong>totem</strong> découle de ton niveau. Remplis à gauche, ta carte
-              se construit à droite et te suit à l'écran — puis tu l'enregistres.
+              Qui tu es, ton <strong>totem de meute</strong>, tes distances, ton style Trail to Techno.
+              Choisis l'animal qui te ressemble — c'est ton <strong>totem</strong>. Remplis à gauche, ta carte
+              se construit à droite et te suit à l'écran, puis tu l'enregistres.
             </p>
           </div>
         </div>
@@ -333,7 +332,7 @@ const ProfilPage = () => {
               </div>
 
               <div className="pf-group">
-                <h3 className="pf-group-h">02 · Ton niveau trail <em className="pf-hint">l'aventure de la meute · ton totem en découle</em></h3>
+                <h3 className="pf-group-h">02 · Ton totem de meute <em className="pf-hint">choisis ton animal — c'est ton totem sur la carte</em></h3>
                 <RankGrid ranks={TRAIL_RANKS} value={p.niveau} onPick={pickTrail} />
                 <Field label="Distances préférées"><ChipToggle options={DISTANCES} value={p.distances} onToggle={(v) => toggle("distances", v)} /></Field>
                 <Field label="Terrains de jeu"><ChipToggle options={TERRAINS} value={p.terrains} onToggle={(v) => toggle("terrains", v)} /></Field>
