@@ -60,8 +60,17 @@ const EMPTY = {
   strava: "", insta: "", techno: "Petit tapeur de pied", adhesion: "Adhérent",
 };
 
-// Le totem découle toujours du niveau trail.
-function normalize(p) { p.avatar = trailRank(p.niveau).e; return p; }
+// Le totem découle toujours du niveau trail. On nettoie aussi les rôles :
+// migration d'anciens noms + dédoublonnage + on ne garde que les rôles valides.
+function normalize(p) {
+  p.avatar = trailRank(p.niveau).e;
+  if (Array.isArray(p.tags)) {
+    const valid = AFFINITES.map((a) => a.role);
+    const migrate = { "Teuffeur": "Teufeur" };
+    p.tags = [...new Set(p.tags.map((t) => migrate[t] || t).filter((t) => valid.includes(t)))];
+  }
+  return p;
+}
 
 const loadProfile = () => {
   try {
@@ -140,7 +149,7 @@ const RankGrid = ({ ranks, value, onPick }) => (
 );
 
 // ---- Aperçu : la carte de coureur ----------------------------------------
-const RunnerCard = ({ p }) => {
+const RunnerCard = ({ p, collapsed }) => {
   const name = p.prenom || p.pseudo || "Ton prénom";
   const handle = p.pseudo && p.prenom ? `« ${p.pseudo} »` : null;
   const tr = trailRank(p.niveau), mr = musicRank(p.techno);
@@ -166,6 +175,7 @@ const RunnerCard = ({ p }) => {
         <div className="pf-stat"><div className="pf-stat-k">Trail to Techno</div><div className="pf-stat-v pf-stat-sm">{mr.e} {mr.v}</div></div>
       </div>
 
+      {!collapsed && <React.Fragment>
       {p.tags.length > 0 && (
         <div className="pf-card-block">
           <div className="pf-card-bk">Rôles / affinités</div>
@@ -211,6 +221,7 @@ const RunnerCard = ({ p }) => {
           {p.insta && <a href={p.insta} target="_blank" rel="noopener" className="chip muted">Instagram ↗</a>}
         </div>
       )}
+      </React.Fragment>}
     </div>
   );
 };

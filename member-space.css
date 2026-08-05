@@ -825,15 +825,11 @@ select.pf-input { cursor: pointer; }
   border: 1px solid rgba(255,94,26,.3); border-radius: 999px; padding: 3px 10px; }
 
 /* Meute : cartes repliables (compact ↔ carte complète) */
-.ms-mcard-wrap { position: relative; }
-.ms-mcard-wrap:not(.open) { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 18px; }
-.ms-mcard-wrap.me:not(.open) { border-color: var(--green-3); box-shadow: 0 0 0 1px var(--green-3) inset; }
-.ms-mini { display: flex; flex-direction: column; gap: 12px; }
-.ms-mini-top { display: flex; gap: 12px; align-items: center; }
-.ms-see { align-self: flex-start; }
+.ms-mcard-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; }
+.ms-mcard-wrap .pf-card { width: 100%; }
+.ms-mcard-wrap.me .pf-card { border-color: var(--green-3); box-shadow: 0 0 0 1px var(--green-3) inset; }
+.ms-see { align-self: center; }
 .ms-mcard-wrap.open { grid-column: 1 / -1; max-width: 440px; margin: 0 auto; }
-.ms-full { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-.ms-full .ms-see { align-self: center; }
 
 /* Carte : les 2 totems côte à côte */
 .pf-card-totems { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }

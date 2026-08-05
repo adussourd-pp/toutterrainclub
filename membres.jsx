@@ -22,37 +22,11 @@ function toCard(m, live) {
 const MeuteCard = ({ m, me, live }) => {
   const p = toCard(m, live);
   const [open, setOpen] = React.useState(false);
-  const trE = p.avatar || "🐗";
-  const muE = MUSIC_EMOJI[p.techno] || "🎶";
-  const tags = Array.isArray(p.tags) ? p.tags : [];
   return (
     <div className={`ms-mcard-wrap ${me ? "me" : ""} ${open ? "open" : ""}`}>
       {me && <span className="ms-mcard-you">C'est toi</span>}
-      {!open ? (
-        <div className="ms-mini">
-          {p.role && <div className="ms-mcard-role">★ {p.role}</div>}
-          <div className="ms-mini-top">
-            {p.photo
-              ? <span className="ms-mcard-av ms-mcard-photo"><img src={p.photo} alt="" /><i>{trE}</i></span>
-              : <span className="ms-mcard-av">{trE}</span>}
-            <div>
-              <div className="ms-mcard-name">{p.prenom || p.pseudo || "Coureur"}{p.pseudo && p.prenom ? ` · ${p.pseudo}` : ""}</div>
-              <div className="ms-mcard-sub">📍 {p.ville || "—"}</div>
-            </div>
-          </div>
-          <div className="ms-mcard-totems">
-            <div className="ms-totem-line"><span className="ms-totem-k">Totem trail</span><span className="ms-totem-v">{trE} {p.niveau || "—"}</span></div>
-            <div className="ms-totem-line"><span className="ms-totem-k">Trail to Techno</span><span className="ms-totem-v">{muE} {p.techno || "—"}</span></div>
-          </div>
-          {tags.length > 0 && <div className="ms-mcard-tags">{tags.slice(0, 4).map((t) => <span key={t} className="ms-role-chip">{t}</span>)}</div>}
-          <button type="button" className="btn btn-sm ms-see" onClick={() => setOpen(true)}>Voir la carte ▾</button>
-        </div>
-      ) : (
-        <div className="ms-full">
-          <window.PROFIL.RunnerCard p={p} />
-          <button type="button" className="btn btn-sm ms-see" onClick={() => setOpen(false)}>Réduire ▴</button>
-        </div>
-      )}
+      <window.PROFIL.RunnerCard p={p} collapsed={!open} />
+      <button type="button" className="btn btn-sm ms-see" onClick={() => setOpen((v) => !v)}>{open ? "Voir moins ▴" : "Voir plus ▾"}</button>
     </div>
   );
 };
