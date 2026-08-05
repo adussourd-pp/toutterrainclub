@@ -62,6 +62,9 @@ const MemberGate = ({ children }) => {
 const MemberSubnav = ({ active }) => (
   <div className="wrap">
     <nav className="ms-subnav">
+      <a href="calendrier.html" className={active === "calendrier" ? "active" : ""}>◆ Calendrier de la meute</a>
+      <a href="profil.html" className={active === "profil" ? "active" : ""}>◆ Ma carte de coureur</a>
+      <span className="ms-subnav-sep" aria-hidden="true" />
       <a href="espace-membre.html" className={active === "analyse" ? "active" : ""}>◆ Analyse du sondage</a>
       <a href="strategie-buzz.html" className={active === "strategie" ? "active" : ""}>◆ Stratégie · buzz &amp; QG</a>
     </nav>
