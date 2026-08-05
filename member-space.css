@@ -960,3 +960,30 @@ select.pf-input { cursor: pointer; }
   box-shadow: 0 12px 30px rgba(0,0,0,.18); max-height: 240px; overflow-y: auto; }
 .ms-loc-item { padding: 8px 10px; border-radius: 7px; font-size: 13.5px; line-height: 1.35; cursor: pointer; }
 .ms-loc-item:hover, .ms-loc-item.active { background: var(--green-tint); color: var(--green-3); }
+
+/* Distance : association / upload d'une trace GPX */
+.ms-dist-block { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.ms-distgpx { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-left: 2px; }
+.ms-distgpx-btn { font-family: var(--f-mono); font-size: 11.5px; font-weight: 600; color: var(--green-3);
+  background: var(--green-tint); border: 1px solid var(--green-3); border-radius: 999px; padding: 4px 10px;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+.ms-distgpx-btn:hover { background: var(--green-3); color: #fff; }
+.ms-distgpx .pf-input { width: auto; flex: 1 1 200px; }
+.ms-distgpx-tag { font-family: var(--f-mono); font-size: 12px; color: var(--ink); background: var(--paper-2);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 4px 10px; }
+.ms-distgpx-x { border: none; background: none; color: var(--muted); cursor: pointer; font-size: 15px; line-height: 1; padding: 2px 4px; }
+.ms-distgpx-x:hover { color: var(--fire); }
+.ms-distgpx-busy { font-size: 12px; color: var(--muted); }
+.ms-distgpx-err { font-size: 12px; color: var(--fire); }
+
+/* Carte de course : traces GPX liées */
+.ms-race-traces { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 20px;
+  border-top: 1px solid var(--rule); background: var(--paper-2); }
+.ms-race-traces-h { font-family: var(--f-mono); font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--green-3); }
+.ms-race-trace { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 6px 4px 12px; }
+.ms-race-trace b { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); font-weight: 600; }
+.ms-trace-dl, .ms-trace-link { border: none; background: none; cursor: pointer; text-decoration: none;
+  font-size: 14px; line-height: 1; color: var(--green-3); padding: 2px 4px; border-radius: 6px; }
+.ms-trace-dl:hover, .ms-trace-link:hover { background: var(--green-tint); }
