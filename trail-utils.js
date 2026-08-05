@@ -30,8 +30,8 @@ window.TTC_TRAIL = (function () {
     const s = Math.sin(dp / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dl / 2) ** 2;
     return 2 * R * Math.asin(Math.sqrt(s));
   }
-  // Parse un fichier GPX (texte) → {km, dplus, eleMin, eleMax, profile:[{d,e}]}
-  function parseGPX(text) {
+  // Extrait les points d'un GPX (texte) → [{lat, lon, ele}]
+  function extractPts(text) {
     const doc = new DOMParser().parseFromString(text, "application/xml");
     const nodes = doc.getElementsByTagName("trkpt");
     const pts = [];
@@ -43,6 +43,43 @@ window.TTC_TRAIL = (function () {
       const ele = eleN ? parseFloat(eleN.textContent) : null;
       if (isFinite(lat) && isFinite(lon)) pts.push({ lat, lon, ele });
     }
+    return pts;
+  }
+  // Reconstruit un GPX minimal (lat/lon/altitude seuls) sous une taille cible.
+  // On jette time + extensions (hr/cad/power/atemp…) — ~85 % du poids d'un
+  // export Strava — et on échantillonne uniformément si besoin. Le tracé reste
+  // un .gpx valide, chargeable dans une montre ; les stats (km, D+, profil)
+  // sont, elles, calculées sur le fichier complet en amont.
+  function slimGPX(text, name, targetBytes) {
+    const budget = targetBytes || 1.8 * 1024 * 1024;
+    const pts = extractPts(text);
+    if (pts.length < 2) throw new Error("gpx-vide");
+    // ~68 octets par point une fois minifié → nombre de points qui tient.
+    const overhead = 400;
+    let keep = pts.length;
+    const maxPts = Math.floor((budget - overhead) / 68);
+    let step = 1;
+    if (keep > maxPts && maxPts > 1) step = Math.ceil(keep / maxPts);
+    const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+    const parts = [
+      '<?xml version="1.0" encoding="UTF-8"?>\n',
+      '<gpx version="1.1" creator="Tout Terrain Club" xmlns="http://www.topografix.com/GPX/1/1">\n',
+      " <trk>\n  <name>" + esc(name || "trace") + "</name>\n  <trkseg>\n",
+    ];
+    const push = (p) => {
+      let s = '   <trkpt lat="' + p.lat.toFixed(6) + '" lon="' + p.lon.toFixed(6) + '">';
+      if (p.ele != null && isFinite(p.ele)) s += "<ele>" + p.ele.toFixed(1) + "</ele>";
+      parts.push(s + "</trkpt>\n");
+    };
+    for (let i = 0; i < pts.length; i += step) push(pts[i]);
+    // toujours garder le dernier point pour ne pas tronquer le tracé
+    if ((pts.length - 1) % step !== 0) push(pts[pts.length - 1]);
+    parts.push("  </trkseg>\n </trk>\n</gpx>\n");
+    return parts.join("");
+  }
+  // Parse un fichier GPX (texte) → {km, dplus, eleMin, eleMax, profile:[{d,e}]}
+  function parseGPX(text) {
+    const pts = extractPts(text);
     if (pts.length < 2) throw new Error("gpx-vide");
     let dist = 0, prev = null;
     const cum = [], eles = [];
@@ -76,5 +113,5 @@ window.TTC_TRAIL = (function () {
       profile: prof,
     };
   }
-  return { kmEffort, utmbCategory, difficulty, parseGPX };
+  return { kmEffort, utmbCategory, difficulty, parseGPX, slimGPX };
 })();

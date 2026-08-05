@@ -653,6 +653,7 @@ select.pf-input { cursor: pointer; }
 .ms-gpx-preview { border: 1px solid var(--rule); border-radius: var(--radius); padding: 14px 16px; margin-top: 14px; background: var(--paper); }
 .ms-gpx-stats { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
 .ms-gpx-stats b { color: var(--ink); font-size: 15px; }
+.ms-gpx-note { margin-top: 10px; font-family: var(--f-mono); font-size: 12px; line-height: 1.5; color: var(--green-3); background: var(--green-tint); border-radius: var(--radius); padding: 8px 10px; }
 
 /* cartes GPX */
 .ms-gpx-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }

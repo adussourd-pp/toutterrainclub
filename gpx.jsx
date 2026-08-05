@@ -66,15 +66,21 @@ const GpxForm = ({ onAdd, onClose }) => {
   const onFile = (e) => {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
-    if (file.size > 3 * 1024 * 1024) { setErr("Fichier trop lourd (max 3 Mo)."); return; }
+    // Le fichier brut peut être lourd (exports Strava avec fréquence cardiaque,
+    // cadence, puissance…) : on le lit, puis on n'en garde qu'une trace allégée.
+    if (file.size > 60 * 1024 * 1024) { setErr("Fichier trop lourd (max 60 Mo)."); return; }
     setBusy(true); setErr("");
+    const guessName = file.name.replace(/\.gpx$/i, "").replace(/[_-]+/g, " ");
     const reader = new FileReader();
     reader.onload = () => {
       try {
         const text = String(reader.result);
         const r = T().parseGPX(text);
-        setParsed({ ...r, gpx: text });
-        setF((s) => ({ ...s, name: s.name || file.name.replace(/\.gpx$/i, "").replace(/[_-]+/g, " ") }));
+        // On reconstruit un GPX minimal (lat/lon/altitude) sous ~1,8 Mo, en
+        // repartant du fichier complet : le tracé reste valide pour une montre.
+        const slim = T().slimGPX(text, f.name.trim() || guessName);
+        setParsed({ ...r, gpx: slim, srcBytes: text.length, outBytes: slim.length });
+        setF((s) => ({ ...s, name: s.name || guessName }));
       } catch (x) { setErr("Fichier GPX illisible."); }
       setBusy(false);
     };
@@ -110,6 +116,9 @@ const GpxForm = ({ onAdd, onClose }) => {
             <Diff km={parsed.km} dplus={parsed.dplus} />
           </div>
           <ElevProfile profile={parsed.profile} eleMin={parsed.eleMin} eleMax={parsed.eleMax} />
+          {parsed.srcBytes && parsed.srcBytes > parsed.outBytes * 1.2 && (
+            <div className="ms-gpx-note">Trace allégée : {(parsed.srcBytes / 1048576).toFixed(1)} Mo → {(parsed.outBytes / 1048576).toFixed(1)} Mo (extensions et horodatage retirés, tracé et altitude conservés).</div>
+          )}
         </div>
       )}
 
