@@ -22,6 +22,7 @@ membre du site (connexion par code, courses, inscriptions, GPX, membres).
 | POST | `/api/gpx/:id/done` | Toggle « je l'ai fait » + emoji d'humeur (1 par membre/trace) — `{done:true,emoji}` ou `{done:false}` |
 | POST | `/api/gpx/:id/comment` | Ajouter un commentaire lié à son profil — `{text}` |
 | POST | `/api/gpx/:id/comment/:cid/delete` | Supprimer son propre commentaire (ou orga) |
+| POST | `/api/gpx/:id/delete` | Supprimer une trace + ses réactions/commentaires — tout membre connecté |
 
 > **Tables auto-créées.** `gpx_done` et `gpx_comments` sont créées automatiquement
 > au premier appel (`CREATE TABLE IF NOT EXISTS`), aucune migration manuelle à

@@ -225,6 +225,15 @@ export default {
         await env.DB.prepare("DELETE FROM gpx_comments WHERE id=?").bind(mg[2]).run();
         return json({ ok: true }, 200, origin);
       }
+      // ---- Supprimer une trace + ses réactions/commentaires (tout membre connecté)
+      mg = path.match(/^\/api\/gpx\/([^/]+)\/delete$/);
+      if (mg && write) {
+        if (!meId && !adminAuthed(req, env)) return json({ error: "unauthorized" }, 401, origin);
+        await env.DB.prepare("DELETE FROM gpx_done WHERE gpx_id=?").bind(mg[1]).run();
+        await env.DB.prepare("DELETE FROM gpx_comments WHERE gpx_id=?").bind(mg[1]).run();
+        await env.DB.prepare("DELETE FROM gpx WHERE id=?").bind(mg[1]).run();
+        return json({ ok: true }, 200, origin);
+      }
 
       return json({ error: "not found", path }, 404, origin);
     } catch (e) { return json({ error: "server", detail: String(e && e.message || e) }, 500, origin); }
