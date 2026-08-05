@@ -343,8 +343,11 @@ select.pf-input { cursor: pointer; }
 .pf-tk-e { font-size: 15px; }
 
 /* — Aperçu collant — */
-.pf-aside-sticky { position: sticky; top: 84px; }
-@media (max-width: 900px) { .pf-aside-sticky { position: static; top: auto; } }
+.pf-aside { position: sticky; top: 84px; align-self: start; }
+.pf-aside-sticky { position: static; }
+@media (max-width: 900px) { .pf-aside { position: static; top: auto; } }
+/* box totems : contenu centré → boîtes bien alignées */
+.pf-card-totems .pf-stat { display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .pf-aside-lab { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
 .pf-card {
   border: 1px solid var(--green-3); border-radius: var(--radius-lg);
