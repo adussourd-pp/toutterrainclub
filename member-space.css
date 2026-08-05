@@ -485,3 +485,104 @@ select.pf-input { cursor: pointer; }
   .cal-pf-grid { grid-template-columns: 1fr; }
   .pf-card-stats { grid-template-columns: 1fr 1fr; }
 }
+
+/* ============================================================
+   ESPACE MEMBRE v2 — hub, courses, GPX, membres (Phase 1)
+   ============================================================ */
+.ms-subnav-sep { flex-basis: 100%; height: 0; }
+
+/* mode démo / info */
+.ms-demo { border: 1px solid var(--amber-line, #e8c98e); background: var(--amber-tint, #f8ecd6);
+  color: var(--ink); border-radius: var(--radius); padding: 12px 16px; font-size: 13.5px; line-height: 1.5; margin-bottom: 20px; }
+.ms-demo b { color: var(--ink); }
+.ms-demo code { font-family: var(--f-mono); font-size: .9em; background: var(--paper); padding: 1px 5px; border-radius: 4px; }
+
+/* hub : cartes d'outils */
+.ms-hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ms-hub-card { position: relative; display: flex; flex-direction: column; gap: 8px; text-decoration: none;
+  border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 24px 22px;
+  color: var(--ink); transition: border-color .18s ease, transform .18s ease; }
+.ms-hub-card:hover { border-color: var(--ink); transform: translateY(-3px); }
+.ms-hub-card.hot { border-color: var(--green-3); background: var(--green-tint); }
+.ms-hub-card .em { font-size: 30px; line-height: 1; }
+.ms-hub-card .t { font-family: var(--f-display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; }
+.ms-hub-card .d { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+.ms-hub-badge { position: absolute; top: 14px; right: 14px; font-family: var(--f-mono); font-size: 10px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--green-3); }
+
+/* prochains events */
+.ms-events { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ms-event { display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: var(--ink);
+  border: 1px solid var(--rule); border-left: 3px solid var(--green-3); border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  background: var(--paper); padding: 18px 20px; transition: transform .18s ease; }
+.ms-event:hover { transform: translateY(-2px); }
+.ms-event-tag { align-self: flex-start; font-family: var(--f-mono); font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--green-3); background: var(--green-tint); padding: 4px 9px; border-radius: 999px; }
+.ms-event-t { font-family: var(--f-display); font-weight: 700; font-size: 17px; letter-spacing: -.01em; }
+.ms-event-meta { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+
+/* codes promo */
+.ms-promos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.ms-promo { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 18px 20px; }
+.ms-promo-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.ms-promo-name { font-family: var(--f-display); font-weight: 700; font-size: 18px; }
+.ms-promo-link { font-family: var(--f-mono); font-size: 12px; color: var(--green-3); text-decoration: none; }
+.ms-promo-role { font-size: 12.5px; color: var(--muted); margin: 2px 0 12px; }
+.ms-promo-code { font-family: var(--f-mono); font-weight: 600; font-size: 15px; letter-spacing: .04em;
+  border: 1px dashed var(--green-3); color: var(--green-3); border-radius: var(--radius); padding: 8px 12px; text-align: center; background: var(--green-tint); }
+
+.ms-agenda { border: 1px solid var(--rule); border-radius: var(--radius-lg); overflow: hidden; background: var(--paper); }
+
+/* formulaires (créer course / gpx) */
+.ms-form { border: 1px solid var(--green-3); border-radius: var(--radius-lg); background: var(--paper); padding: 22px; margin-bottom: 20px; }
+.ms-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ms-form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+
+/* courses */
+.ms-races { display: flex; flex-direction: column; gap: 14px; }
+.ms-race { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); overflow: hidden; }
+.ms-race-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 18px 20px; }
+.ms-race-name { font-family: var(--f-display); font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
+.ms-race-meta { font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.ms-race-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.ms-dist-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.ms-dist-chip { font-family: var(--f-mono); font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--paper-2); color: var(--ink); border: 1px solid var(--rule); }
+.ms-race-parts { border-top: 1px solid var(--rule); background: var(--paper-2); padding: 14px 20px; }
+.ms-race-parts-h { display: flex; justify-content: space-between; align-items: center; font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+.ms-join { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+.ms-join .pf-input { width: auto; flex: 1 1 130px; }
+.ms-part-table { width: 100%; border-collapse: collapse; }
+.ms-part-table td { padding: 7px 8px; border-bottom: 1px solid var(--rule); font-size: 13.5px; vertical-align: middle; }
+.ms-part-table tr:last-child td { border-bottom: none; }
+.ms-part-name { font-weight: 600; }
+.ms-part-dist { font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); }
+.ms-part-status { font-family: var(--f-mono); font-size: 11px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.ms-part-status.inscrit { background: var(--green-tint); color: var(--green-3); }
+.ms-part-status.chaud { background: var(--amber-tint, #f8ecd6); color: var(--amber, #c9821b); }
+.ms-part-soc a { text-decoration: none; margin-right: 4px; }
+.ms-part-x button { border: none; background: none; color: var(--muted); cursor: pointer; font-size: 16px; line-height: 1; }
+.ms-part-x button:hover { color: var(--fire); }
+
+.ms-empty { border: 1px dashed var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 26px; text-align: center; color: var(--muted); font-size: 14.5px; }
+.ms-gpx-toolbar { margin-bottom: 16px; }
+.ms-gpx-toolbar .pf-input { max-width: 340px; }
+.ms-gpx-table td { font-size: 13.5px; }
+
+/* membres */
+.ms-members { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ms-mcard { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.ms-mcard-top { display: flex; gap: 12px; align-items: center; }
+.ms-mcard-av { font-size: 34px; line-height: 1; }
+.ms-mcard-name { font-family: var(--f-display); font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
+.ms-mcard-sub { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.ms-mcard-obj { font-size: 13.5px; color: var(--ink); }
+.ms-mcard-soc { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-family: var(--f-mono); font-size: 12px; }
+.ms-mcard-soc a { color: var(--green-3); text-decoration: none; }
+
+@media (max-width: 860px) {
+  .ms-hub-grid, .ms-events, .ms-promos, .ms-members { grid-template-columns: 1fr; }
+  .ms-form-grid { grid-template-columns: 1fr; }
+  .ms-race-top { flex-direction: column; }
+  .ms-race-right { align-items: flex-start; }
+  .ms-dist-chips { justify-content: flex-start; }
+}

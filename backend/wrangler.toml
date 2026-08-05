@@ -1,0 +1,17 @@
+# Cloudflare Worker — API de l'espace membre TTC (courses, GPX, membres).
+# Déploiement : voir backend/DEPLOY.md
+name = "ttc-espace-membre"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Base D1 (créée via `wrangler d1 create ttc-membre` — colle l'id renvoyé ici)
+[[d1_databases]]
+binding = "DB"
+database_name = "ttc-membre"
+database_id = "À_REMPLIR_APRES_wrangler_d1_create"
+
+# Le mot de passe membre est stocké en secret, pas ici :
+#   wrangler secret put MEMBER_PASS   (réponds : T2Tfestival)
+# Origines autorisées à appeler l'API (CORS). Ajoute/retire au besoin.
+[vars]
+ALLOWED_ORIGINS = "https://toutterrainclub.com,https://www.toutterrainclub.com,http://localhost:8000,http://localhost:8095"

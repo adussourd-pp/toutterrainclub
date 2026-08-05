@@ -1,0 +1,123 @@
+// Espace membre — le hub (accueil des adhérents).
+// Cartes vers les outils + sections statiques (events, codes promo, agenda, sisyf).
+
+const HUB_TOOLS = [
+  { em: "🪪", t: "Ma carte de coureur", d: "Crée / mets à jour ta carte : niveau, objectifs, réseaux.", href: "profil.html" },
+  { em: "🐺", t: "Les membres", d: "Découvre la meute : qui court quoi, à quel niveau.", href: "membres.html" },
+  { em: "🏁", t: "Courses — qui fait quoi", d: "Crée une course ou inscris-toi. On se retrouve sur les dossards.", href: "courses.html", hot: true },
+  { em: "🗺️", t: "Traces GPX", d: "Partage et retrouve les parcours du club.", href: "gpx.html" },
+  { em: "📅", t: "Calendrier partagé", d: "L'agenda des sorties et temps forts (Google Agenda).", href: "calendrier.html" },
+  { em: "🧰", t: "Préparer une course", d: "L'outil de prépa (bientôt maison — Noah). Pour l'instant : Sisyf.", href: "https://app.sisyf.com/", ext: true },
+];
+
+// Éditable : nos prochains week-ends & events.
+const NEXT_EVENTS = [
+  { tag: "Expé", t: "Prom' Gelas — de la mer au sommet", when: "Été 2026", where: "Mercantour", href: "expedition-gelas.html" },
+  { tag: "Trail to Techno", t: "Édition Mercantour", when: "8–9 août 2026", where: "Vallée de la Gordolasque", href: "edition-mercantour.html" },
+  { tag: "Week-end", t: "Sortie longue montagne (à caler)", when: "Automne 2026", where: "Arrière-pays niçois", href: "" },
+];
+
+// Éditable : codes promo partenaires (remplace les codes par les vrais).
+const PROMOS = [
+  { name: "Näak", role: "Nutrition officielle", code: "TTC-NAAK", url: "https://www.naak.com/fr" },
+  { name: "Chalet Albarea", role: "Refuge · Peira Cava", code: "Sur demande", url: "https://www.albarea.com/" },
+  { name: "Relais des Merveilles", role: "Refuge · Mercantour", code: "Sur demande", url: "https://relaisdesmerveilles.com/" },
+];
+
+const MemberHub = () => (
+  <React.Fragment>
+    <window.MS.MSSubnav active="hub" />
+
+    <section className="adh-hero">
+      <HeroWaves />
+      <div className="wrap">
+        <span className="adh-hero-eyebrow">★ Espace membre · adhérents</span>
+        <h1>Ton espace,<br/>la <span className="marker">meute</span>.</h1>
+        <div className="adh-hero-grid">
+          <p className="adh-hero-lede">
+            Tout au même endroit : ta carte de coureur, les membres du club, les courses
+            où l'on se retrouve, les traces GPX et l'agenda partagé. Les runs hebdo, eux,
+            restent sur WhatsApp.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section className="adh-sec">
+      <div className="wrap">
+        <div className="ms-hub-grid">
+          {HUB_TOOLS.map((c, i) => (
+            <a key={i} className={`ms-hub-card ${c.hot ? "hot" : ""}`} href={c.href || "#"}
+               target={c.ext ? "_blank" : undefined} rel={c.ext ? "noopener" : undefined}>
+              <span className="em">{c.em}</span>
+              <span className="t">{c.t}{c.ext ? " ↗" : ""}</span>
+              <span className="d">{c.d}</span>
+              {c.hot && <span className="ms-hub-badge">★ le nouveau</span>}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section className="adh-sec ms-sec-alt">
+      <div className="wrap">
+        <div className="adh-sec-head">
+          <h2 className="adh-h2">Nos prochains<br/><span className="g">week-ends & events</span>.</h2>
+          <p className="ms-sec-lede">Les temps forts du club. Les courses « qui fait quoi », c'est l'onglet Courses.</p>
+        </div>
+        <div className="ms-events">
+          {NEXT_EVENTS.map((e, i) => (
+            <a key={i} className="ms-event" href={e.href || "#"}>
+              <span className="ms-event-tag">{e.tag}</span>
+              <span className="ms-event-t">{e.t}</span>
+              <span className="ms-event-meta">{e.when} · {e.where}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section className="adh-sec">
+      <div className="wrap">
+        <div className="adh-sec-head">
+          <h2 className="adh-h2">Codes promo<br/><span className="g">partenaires</span>.</h2>
+          <p className="ms-sec-lede">Réservés aux adhérents. Présente ta carte de coureur.</p>
+        </div>
+        <div className="ms-promos">
+          {PROMOS.map((p, i) => (
+            <div key={i} className="ms-promo">
+              <div className="ms-promo-head">
+                <span className="ms-promo-name">{p.name}</span>
+                <a className="ms-promo-link" href={p.url} target="_blank" rel="noopener">site ↗</a>
+              </div>
+              <div className="ms-promo-role">{p.role}</div>
+              <div className="ms-promo-code">{p.code}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section className="adh-sec ms-sec-alt">
+      <div className="wrap">
+        <div className="adh-sec-head">
+          <h2 className="adh-h2">Le calendrier<br/><span className="g">partagé</span>.</h2>
+          <p className="ms-sec-lede">L'agenda Google du club — sorties, week-ends, events.</p>
+        </div>
+        {window.TTC_AGENDA_EMBED ? (
+          <div className="ms-agenda">
+            <iframe title="Agenda TTC" src={window.TTC_AGENDA_EMBED} style={{ border: 0, width: "100%", height: 620 }} />
+          </div>
+        ) : (
+          <div className="ms-demo">
+            <b>Agenda à brancher.</b> Colle l'URL d'intégration de ton Google Agenda public dans
+            <code> member-config.js</code> (variable <code>TTC_AGENDA_EMBED</code>). En attendant, la page
+            <a href="calendrier.html"> Calendrier</a> reste dispo.
+          </div>
+        )}
+      </div>
+    </section>
+  </React.Fragment>
+);
+
+window.HUB = { MemberHub };
