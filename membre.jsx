@@ -12,9 +12,8 @@ const HUB_TOOLS = [
 
 // Éditable : nos prochains week-ends & events.
 const NEXT_EVENTS = [
-  { tag: "Expé", t: "Prom' Gelas — de la mer au sommet", when: "Été 2026", where: "Mercantour", href: "expedition-gelas.html" },
   { tag: "Trail to Techno", t: "Édition Mercantour", when: "8–9 août 2026", where: "Vallée de la Gordolasque", href: "edition-mercantour.html" },
-  { tag: "Week-end", t: "Sortie longue montagne (à caler)", when: "Automne 2026", where: "Arrière-pays niçois", href: "" },
+  { tag: "À venir", t: "Édition Raclette · Volume 2", when: "Fin janvier 2027", where: "Montagne", href: "edition-raclette.html" },
 ];
 
 // Éditable : codes promo partenaires (remplace les codes par les vrais).
