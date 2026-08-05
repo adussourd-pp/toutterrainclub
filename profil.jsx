@@ -71,61 +71,6 @@ function fromServer(m) {
   };
 }
 
-// ---- Compte (session) -----------------------------------------------------
-function getAuth() { try { return JSON.parse(localStorage.getItem("ttc_auth") || "null"); } catch (e) { return null; } }
-function setAuth(a) { try { localStorage.setItem("ttc_auth", JSON.stringify(a)); localStorage.setItem("ttc_member_id", a.id); } catch (e) {} }
-function logoutAuth() { try { localStorage.removeItem("ttc_auth"); } catch (e) {} }
-
-const AuthGate = ({ onAuth }) => {
-  const [mode, setMode] = React.useState("login");
-  const [email, setEmail] = React.useState("");
-  const [pw, setPw] = React.useState("");
-  const [err, setErr] = React.useState("");
-  const [busy, setBusy] = React.useState(false);
-  const submit = async (e) => {
-    e.preventDefault();
-    if (!window.ttcConfigured || !window.ttcConfigured()) { setErr("Backend non configuré."); return; }
-    setBusy(true); setErr("");
-    try {
-      const d = await window.ttcApi("/api/auth", { method: "POST", body: { email: email.trim(), password: pw, mode } });
-      setAuth({ token: d.token, id: d.id, email: d.email });
-      onAuth();
-    } catch (x) {
-      const s = String((x && x.message) || "");
-      if (mode === "signup" && s.indexOf("409") >= 0) setErr("Un compte existe déjà — connecte-toi.");
-      else if (mode === "login" && s.indexOf("401") >= 0) setErr("E-mail ou mot de passe incorrect.");
-      else if (s.indexOf("400") >= 0) setErr("E-mail invalide ou mot de passe trop court (4 caractères min).");
-      else setErr("Comptes pas encore activés côté serveur (mise à jour Cloudflare requise).");
-    }
-    setBusy(false);
-  };
-  return (
-    <section className="adh-hero ms-lock">
-      <HeroWaves />
-      <div className="wrap">
-        <span className="adh-hero-eyebrow">★ Ma carte · mon compte</span>
-        <h1>{mode === "login" ? <span>Connecte-<span className="marker">toi</span>.</span> : <span>Crée ton <span className="marker">compte</span>.</span>}</h1>
-        <div className="ms-lock-grid">
-          <p className="adh-hero-lede">Ton compte relie ta carte de coureur à toi. Tu la retrouves et la modifies depuis <strong>n'importe quel appareil</strong>, et elle se met à jour pour toute la meute.</p>
-          <form className="ms-lock-card" onSubmit={submit}>
-            <label className="ms-lock-label" htmlFor="au-mail">E-mail</label>
-            <input id="au-mail" type="email" className="pf-input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="prenom@email.fr" autoFocus />
-            <label className="ms-lock-label" htmlFor="au-pw" style={{ marginTop: 4 }}>Mot de passe</label>
-            <input id="au-pw" type="password" className="pf-input" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="••••••••" />
-            {err && <div className="ms-lock-err">{err}</div>}
-            <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? "…" : mode === "login" ? "Se connecter →" : "Créer mon compte →"}</button>
-            <div className="ms-lock-hint">
-              {mode === "login"
-                ? <span>Pas encore de compte ? <a href="#" onClick={(e) => { e.preventDefault(); setMode("signup"); setErr(""); }}>Créer un compte</a></span>
-                : <span>Déjà un compte ? <a href="#" onClick={(e) => { e.preventDefault(); setMode("login"); setErr(""); }}>Se connecter</a></span>}
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 // Redimensionne une image (max 320px) → data URI léger pour la stocker.
 function resizeImage(file, cb) {
   const rd = new FileReader();
@@ -246,7 +191,7 @@ const RunnerCard = ({ p }) => {
 
 // ---- La page --------------------------------------------------------------
 const ProfilPage = () => {
-  const [auth, setAuthState] = React.useState(getAuth);
+  const auth = window.ttcAuth.get(); // garanti par MSGate (porte unique = le compte)
   const [p, setP] = React.useState(loadProfile);
   const [saved, setSaved] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
@@ -263,8 +208,7 @@ const ProfilPage = () => {
 
   React.useEffect(() => { if (auth) loadMine(auth); /* eslint-disable-next-line */ }, []);
 
-  const onAuth = () => { const a = getAuth(); setAuthState(a); loadMine(a); };
-  const logout = () => { logoutAuth(); setAuthState(null); setP({ ...EMPTY }); try { localStorage.removeItem(PF_KEY); } catch (e) {} };
+  const logout = () => { window.ttcAuth.logout(); try { localStorage.removeItem(PF_KEY); } catch (e) {} window.location.reload(); };
 
   const set = (k, v) => { setP((s) => ({ ...s, [k]: v })); setSaved(false); };
   const toggle = (k, v) => setP((s) => {
@@ -328,7 +272,7 @@ const ProfilPage = () => {
     }
   };
 
-  if (!auth) return <AuthGate onAuth={onAuth} />;
+  if (!auth) return null; // MSGate garantit déjà la connexion
 
   return (
     <React.Fragment>

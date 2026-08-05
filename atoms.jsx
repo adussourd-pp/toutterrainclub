@@ -20,7 +20,11 @@ const HeaderPublic = ({ active = "Accueil" }) => {
   // l'espace membre : ses pages apparaissent directement dans le bandeau.
   const [member, setMember] = React.useState(false);
   React.useEffect(() => {
-    try { setMember(sessionStorage.getItem("ttc_member_ok") === "1"); } catch (e) {}
+    try {
+      // Connecté = compte présent (localStorage) OU session déverrouillée.
+      const logged = (window.ttcAuth && window.ttcAuth.get()) || sessionStorage.getItem("ttc_member_ok") === "1";
+      setMember(!!logged);
+    } catch (e) {}
   }, []);
   const publicItems = [
     { label: "Accueil", href: "index.html" },

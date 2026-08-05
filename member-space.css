@@ -33,6 +33,16 @@
 .ms-lock-err { font-size: 13px; color: var(--fire); font-family: var(--f-mono); }
 .ms-lock-card .btn { justify-content: center; margin-top: 4px; }
 .ms-lock-hint { font-size: 12.5px; color: var(--muted); }
+.ms-lock-hint a { color: var(--green-3); font-weight: 600; text-decoration: none; border-bottom: 1px solid currentColor; }
+/* E-mail / code : lecture naturelle (le gros letter-spacing est fait pour un mdp). */
+.ms-lock-card input[type="email"], .ms-lock-card input[type="text"] { letter-spacing: normal; font-size: 15px; }
+/* Onglets Se connecter / Créer un compte */
+.ms-auth-tabs { display: flex; gap: 6px; background: var(--paper-2, rgba(20,18,10,.05)); border: 1px solid var(--rule); border-radius: 999px; padding: 4px; margin-bottom: 4px; }
+.ms-auth-tabs button {
+  flex: 1; border: 0; background: transparent; cursor: pointer; padding: 9px 12px; border-radius: 999px;
+  font-family: var(--f-display); font-weight: 600; font-size: 14px; color: var(--muted); transition: background .15s ease, color .15s ease;
+}
+.ms-auth-tabs button.on { background: var(--ink); color: var(--paper); }
 
 /* — Hero stats — */
 .ms-x { font-family: var(--f-display); font-weight: 400; color: var(--green-3); }

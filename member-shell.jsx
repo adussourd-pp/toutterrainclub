@@ -2,47 +2,83 @@
 // Porte d'accès (mémorise le mot de passe pour les écritures API) + sous-nav +
 // petits utilitaires. Réutilisée par membre.html, courses.html, gpx.html, membres.html.
 
-const MEMBER_PW = "T2Tfestival";
-
+// Porte unique de l'espace membre = TON COMPTE.
+// • Se connecter : e-mail + mot de passe.
+// • Créer un compte : + le code du club (invitation, demandé une seule fois).
+// Une fois entré, tout l'espace est ouvert — plus jamais de second mot de passe.
 const MSGate = ({ children }) => {
-  const [ok, setOk] = React.useState(() => {
-    try { return sessionStorage.getItem("ttc_member_ok") === "1"; } catch (e) { return false; }
-  });
-  const [val, setVal] = React.useState("");
-  const [err, setErr] = React.useState(false);
+  const [auth, setAuth] = React.useState(() => window.ttcAuth.get());
+  if (auth) return children;
+  return <MSAuth onDone={(a) => setAuth(a)} />;
+};
 
-  const submit = (e) => {
+const MSAuth = ({ onDone }) => {
+  const [mode, setMode] = React.useState("login"); // "login" | "signup"
+  const [email, setEmail] = React.useState("");
+  const [pw, setPw] = React.useState("");
+  const [code, setCode] = React.useState("");
+  const [err, setErr] = React.useState("");
+  const [busy, setBusy] = React.useState(false);
+  const signup = mode === "signup";
+
+  const submit = async (e) => {
     e.preventDefault();
-    if (val.trim() === MEMBER_PW) {
-      try {
-        sessionStorage.setItem("ttc_member_ok", "1");
-        sessionStorage.setItem("ttc_pass", val.trim()); // pour les écritures API
-      } catch (e) {}
-      setOk(true);
-    } else { setErr(true); }
+    setErr("");
+    if (!window.ttcConfigured || !window.ttcConfigured()) { setErr("Espace en cours de préparation — réessaie bientôt."); return; }
+    if (!email.trim() || pw.length < 4) { setErr("E-mail + mot de passe (4 caractères min)."); return; }
+    if (signup && code.trim() !== (window.TTC_CLUB_CODE || "")) { setErr("Code du club incorrect — demande-le sur le groupe WhatsApp."); return; }
+    setBusy(true);
+    try {
+      const d = await window.ttcApi("/api/auth", { method: "POST", body: { email: email.trim(), password: pw, mode } });
+      window.ttcAuth.set({ token: d.token, id: d.id, email: d.email });
+      onDone(window.ttcAuth.get());
+    } catch (x) {
+      const s = String((x && x.message) || "");
+      if (signup && s.indexOf("409") >= 0) { setErr("Un compte existe déjà avec cet e-mail — connecte-toi."); setMode("login"); }
+      else if (!signup && s.indexOf("401") >= 0) setErr("E-mail ou mot de passe incorrect.");
+      else if (s.indexOf("400") >= 0) setErr("E-mail invalide ou mot de passe trop court.");
+      else setErr("Connexion au serveur impossible — réessaie dans un instant.");
+    }
+    setBusy(false);
   };
-
-  if (ok) return children;
 
   return (
     <section className="adh-hero ms-lock">
       <HeroWaves />
       <div className="wrap">
-        <span className="adh-hero-eyebrow">★ Espace membre · accès réservé</span>
-        <h1>La <span className="marker">meute</span>,<br/>ton espace.</h1>
+        <span className="adh-hero-eyebrow">★ Espace membre · la meute</span>
+        <h1>{signup ? <span>Rejoins la <span className="marker">meute</span>.</span> : <span>Content de te <span className="marker">revoir</span>.</span>}</h1>
         <div className="ms-lock-grid">
           <p className="adh-hero-lede">
-            L'espace des adhérents : ta carte de coureur, les membres, les courses du club,
-            le partage de traces. Entre le mot de passe partagé sur le groupe.
+            {signup
+              ? <span>Un compte, et c'est tout : ta carte de coureur, les membres, le calendrier des courses, les traces GPX. Tu le retrouves sur <strong>tous tes appareils</strong>.</span>
+              : <span>Entre avec ton compte. Tu retrouves ta carte et tout l'espace, <strong>où que tu sois</strong>.</span>}
           </p>
           <form className="ms-lock-card" onSubmit={submit}>
-            <label className="ms-lock-label" htmlFor="ms-pw">Mot de passe</label>
-            <input id="ms-pw" type="password" className={`ms-lock-input ${err ? "err" : ""}`}
-              value={val} autoComplete="off" autoFocus placeholder="••••••••••"
-              onChange={(e) => { setVal(e.target.value); setErr(false); }} />
-            {err && <div className="ms-lock-err">Mot de passe incorrect — redemande-le sur le groupe.</div>}
-            <button type="submit" className="btn btn-primary">Entrer dans l'espace →</button>
-            <div className="ms-lock-hint">Pas encore membre ? La commu et les runs restent gratuits.</div>
+            <div className="ms-auth-tabs">
+              <button type="button" className={!signup ? "on" : ""} onClick={() => { setMode("login"); setErr(""); }}>Se connecter</button>
+              <button type="button" className={signup ? "on" : ""} onClick={() => { setMode("signup"); setErr(""); }}>Créer un compte</button>
+            </div>
+            <label className="ms-lock-label" htmlFor="ms-email">E-mail</label>
+            <input id="ms-email" type="email" className="ms-lock-input" value={email} autoComplete="email" autoFocus
+              placeholder="prenom@email.fr" onChange={(e) => { setEmail(e.target.value); setErr(""); }} />
+            <label className="ms-lock-label" htmlFor="ms-pw" style={{ marginTop: 10 }}>Mot de passe</label>
+            <input id="ms-pw" type="password" className="ms-lock-input" value={pw} autoComplete={signup ? "new-password" : "current-password"}
+              placeholder="••••••••" onChange={(e) => { setPw(e.target.value); setErr(""); }} />
+            {signup && (
+              <React.Fragment>
+                <label className="ms-lock-label" htmlFor="ms-code" style={{ marginTop: 10 }}>Code du club <em className="pf-hint">· une seule fois</em></label>
+                <input id="ms-code" type="text" className="ms-lock-input" value={code} autoComplete="off"
+                  placeholder="Le code partagé sur le groupe" onChange={(e) => { setCode(e.target.value); setErr(""); }} />
+              </React.Fragment>
+            )}
+            {err && <div className="ms-lock-err">{err}</div>}
+            <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? "…" : signup ? "Créer mon compte →" : "Entrer dans l'espace →"}</button>
+            <div className="ms-lock-hint">
+              {signup
+                ? <span>Déjà un compte ? <a href="#" onClick={(e) => { e.preventDefault(); setMode("login"); setErr(""); }}>Se connecter</a></span>
+                : <span>Pas encore de compte ? <a href="#" onClick={(e) => { e.preventDefault(); setMode("signup"); setErr(""); }}>En créer un</a></span>}
+            </div>
           </form>
         </div>
       </div>
