@@ -85,7 +85,91 @@ const LocationInput = ({ value, onChange, placeholder }) => {
   );
 };
 
-const RaceForm = ({ initial, onSubmit, onClose }) => {
+// Télécharge le .gpx d'une trace de la banque (par id) — même logique que la page GPX.
+async function downloadGpxById(gpxList, id) {
+  const g = (gpxList || []).find((x) => x.id === id);
+  if (!g) return;
+  let data = {}; try { data = JSON.parse(g.url || "{}"); } catch (e) { data = { link: g.url }; }
+  let text = data.gpx;
+  if (!text && data.gpxz) { try { text = await window.TTC_TRAIL.gunzipFromB64(data.gpxz); } catch (e) { text = ""; } }
+  if (!text) { if (data.link) window.open(data.link, "_blank", "noopener"); return; }
+  const blob = new Blob([text], { type: "application/gpx+xml" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = (g.name || "trace").replace(/[^\w\-]+/g, "_") + ".gpx";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+// Contrôle par distance : associer une trace de la banque OU en uploader une.
+// L'upload crée la trace dans la banque GPX (marquée « course officielle ») via
+// l'endpoint /api/gpx existant — donc elle apparaît toute seule dans les Traces.
+const DistGpxControl = ({ dist, raceName, gpxList, onSet, onUpload }) => {
+  const [mode, setMode] = React.useState("");
+  const [busy, setBusy] = React.useState(false);
+  const [err, setErr] = React.useState("");
+  const current = dist.gpx_id ? (dist.gpx_name || ((gpxList || []).find((g) => g.id === dist.gpx_id) || {}).name || "trace") : "";
+
+  const onFile = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (file.size > 100 * 1024 * 1024) { setErr("Fichier trop lourd (max 100 Mo)."); return; }
+    setBusy(true); setErr("");
+    const guess = file.name.replace(/\.gpx$/i, "").replace(/[_-]+/g, " ");
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const text = String(reader.result);
+        const r = window.TTC_TRAIL.parseGPX(text);
+        const packed = await window.TTC_TRAIL.packGPX(text, guess);
+        const name = (raceName ? raceName + " — " : "") + (dist.km ? dist.km + " km" : guess);
+        const payload = {
+          name, region: "", start_point: "", type: "Point à point",
+          distance_km: r.km, denivele_m: r.dplus,
+          url: JSON.stringify({ gpxz: packed.gpxz, gpx: packed.gpxz ? undefined : packed.gpx, profile: r.profile, eleMin: r.eleMin, eleMax: r.eleMax, link: "", official: true, notes: "", place: null, race: raceName || "" }),
+        };
+        const id = onUpload ? await onUpload(payload) : null;
+        if (id) { onSet({ gpx_id: id, gpx_name: name }); setMode(""); }
+        else setErr("Envoi impossible (reconnecte-toi ?).");
+      } catch (x) { setErr("Fichier GPX illisible."); }
+      setBusy(false);
+    };
+    reader.readAsText(file);
+  };
+
+  if (current) {
+    return (
+      <div className="ms-distgpx has">
+        <span className="ms-distgpx-tag">⛰️ {current}</span>
+        <button type="button" className="ms-distgpx-x" title="Retirer la trace" onClick={() => onSet({ gpx_id: "", gpx_name: "" })}>×</button>
+      </div>
+    );
+  }
+  return (
+    <div className="ms-distgpx">
+      {mode === "" && (
+        <React.Fragment>
+          {(gpxList || []).length > 0 && <button type="button" className="ms-distgpx-btn" onClick={() => setMode("pick")}>⛰️ Associer une trace</button>}
+          <label className="ms-distgpx-btn">⬆ Uploader un GPX
+            <input type="file" accept=".gpx,application/gpx+xml" onChange={onFile} style={{ display: "none" }} /></label>
+        </React.Fragment>
+      )}
+      {mode === "pick" && (
+        <React.Fragment>
+          <select className="pf-input" defaultValue="" onChange={(e) => { const g = (gpxList || []).find((x) => x.id === e.target.value); if (g) { onSet({ gpx_id: g.id, gpx_name: g.name }); setMode(""); } }}>
+            <option value="" disabled>Choisir dans la banque…</option>
+            {(gpxList || []).map((g) => <option key={g.id} value={g.id}>{g.name} · {g.distance_km} km</option>)}
+          </select>
+          <button type="button" className="ms-distgpx-x" onClick={() => setMode("")}>×</button>
+        </React.Fragment>
+      )}
+      {busy && <span className="ms-distgpx-busy">Lecture du GPX…</span>}
+      {err && <span className="ms-distgpx-err">{err}</span>}
+    </div>
+  );
+};
+
+const RaceForm = ({ initial, gpxList, onUploadGpx, onSubmit, onClose }) => {
   const editing = !!(initial && initial.id);
   const [f, setF] = React.useState({
     name: (initial && initial.name) || "",
@@ -97,7 +181,7 @@ const RaceForm = ({ initial, onSubmit, onClose }) => {
   });
   const [dists, setDists] = React.useState(
     initial && Array.isArray(initial.distances) && initial.distances.length
-      ? initial.distances.map((d) => (typeof d === "string" ? { km: "", dplus: "" } : { km: d.km, dplus: d.dplus }))
+      ? initial.distances.map((d) => (typeof d === "string" ? { km: "", dplus: "" } : { km: d.km, dplus: d.dplus, gpx_id: d.gpx_id || "", gpx_name: d.gpx_name || "" }))
       : [{ km: "", dplus: "" }]
   );
   const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
@@ -109,7 +193,7 @@ const RaceForm = ({ initial, onSubmit, onClose }) => {
     if (!f.name.trim()) return;
     const distances = dists
       .filter((d) => String(d.km).trim() !== "")
-      .map((d) => ({ km: Number(d.km) || 0, dplus: Number(d.dplus) || 0 }));
+      .map((d) => ({ km: Number(d.km) || 0, dplus: Number(d.dplus) || 0, ...(d.gpx_id ? { gpx_id: d.gpx_id, gpx_name: d.gpx_name || "" } : {}) }));
     onSubmit({ ...f, distances });
   };
   return (
@@ -135,11 +219,15 @@ const RaceForm = ({ initial, onSubmit, onClose }) => {
         {dists.map((d, i) => {
           const cat = window.TTC_TRAIL.utmbCategory(d.km, d.dplus);
           return (
-            <div className="ms-dist-row" key={i}>
-              <input type="number" className="pf-input" value={d.km} onChange={(e) => setD(i, "km", e.target.value)} placeholder="km" />
-              <input type="number" className="pf-input" value={d.dplus} onChange={(e) => setD(i, "dplus", e.target.value)} placeholder="D+ (m)" />
-              <span className={`ms-cat ${cat.code === "—" ? "muted" : ""}`} title={cat.full}>{d.km ? cat.code : "—"}</span>
-              {dists.length > 1 && <button type="button" className="ms-dist-rm" onClick={() => rmD(i)}>×</button>}
+            <div className="ms-dist-block" key={i}>
+              <div className="ms-dist-row">
+                <input type="number" className="pf-input" value={d.km} onChange={(e) => setD(i, "km", e.target.value)} placeholder="km" />
+                <input type="number" className="pf-input" value={d.dplus} onChange={(e) => setD(i, "dplus", e.target.value)} placeholder="D+ (m)" />
+                <span className={`ms-cat ${cat.code === "—" ? "muted" : ""}`} title={cat.full}>{d.km ? cat.code : "—"}</span>
+                {dists.length > 1 && <button type="button" className="ms-dist-rm" onClick={() => rmD(i)}>×</button>}
+              </div>
+              <DistGpxControl dist={d} raceName={f.name} gpxList={gpxList} onUpload={onUploadGpx}
+                onSet={(patch) => setDists((a) => a.map((x, j) => (j === i ? { ...x, ...patch } : x)))} />
             </div>
           );
         })}
@@ -191,7 +279,6 @@ function memberExt(m) {
   const o = (t && !Array.isArray(t) && typeof t === "object") ? t : {};
   return { photo: m.photo || o.photo || "", role: m.role || o.role || "" };
 }
-// Mon identifiant membre (pour reconnaître MA carte et proposer de la modifier).
 // Popup : la carte de coureur — EXACTEMENT la même que dans la meute
 // (window.PROFIL.RunnerCard dans le modal me-modal-card). Ouverte au clic sur une bulle.
 const MemberPopup = ({ member, fallback, onClose }) => {
@@ -229,11 +316,12 @@ const MemberPopup = ({ member, fallback, onClose }) => {
   );
 };
 
-const RaceCard = ({ race, members, onJoin, onLeave, onEdit, onDelete }) => {
+const RaceCard = ({ race, members, gpxList, onUploadGpx, onJoin, onLeave, onEdit, onDelete }) => {
   const [open, setOpen] = React.useState(false);
   const [cardOf, setCardOf] = React.useState(null);
   const [editing, setEditing] = React.useState(false);
   const parts = race.participants || [];
+  const traces = (race.distances || []).filter((d) => d && typeof d === "object" && d.gpx_id);
   return (
     <div className="ms-race">
       <div className="ms-race-top">
@@ -253,10 +341,23 @@ const RaceCard = ({ race, members, onJoin, onLeave, onEdit, onDelete }) => {
         </div>
       </div>
 
+      {traces.length > 0 && (
+        <div className="ms-race-traces">
+          <span className="ms-race-traces-h">⛰️ Parcours</span>
+          {traces.map((d, i) => (
+            <span className="ms-race-trace" key={i}>
+              {d.gpx_name || "Trace"} <b>{d.km} km</b>
+              <button type="button" className="ms-trace-dl" title="Télécharger le GPX" onClick={() => downloadGpxById(gpxList, d.gpx_id)}>⬇</button>
+              <a className="ms-trace-link" href="gpx.html" title="Voir dans les traces GPX">↗</a>
+            </span>
+          ))}
+        </div>
+      )}
+
       {editing && (
         <div className="ms-race-edit-wrap">
           <div className="ms-race-edit-h">Modifier « {race.name} »</div>
-          <RaceForm initial={race} onClose={() => setEditing(false)} onSubmit={(data) => { onEdit(race, data); setEditing(false); }} />
+          <RaceForm initial={race} gpxList={gpxList} onUploadGpx={onUploadGpx} onClose={() => setEditing(false)} onSubmit={(data) => { onEdit(race, data); setEditing(false); }} />
         </div>
       )}
 
@@ -304,8 +405,16 @@ function fmtDate(a, b) {
 const CoursesPage = () => {
   const { items: races, setItems, state, reload, saveLocal } = window.MS.useCollection("/api/races", "ttc_races_demo");
   const { items: members } = window.MS.useCollection("/api/members", "ttc_members_demo_unused");
+  const { items: gpxList, reload: reloadGpx } = window.MS.useCollection("/api/gpx", "ttc_gpx_demo");
   const [adding, setAdding] = React.useState(false);
   const live = window.ttcConfigured();
+
+  // Upload d'un GPX depuis une course → crée la trace dans la banque et renvoie son id.
+  const uploadGpx = async (payload) => {
+    if (!live) return null;
+    try { const r = await window.ttcApi("/api/gpx", { method: "POST", body: payload }); await reloadGpx(); return r && r.id; }
+    catch (e) { console.error("upload gpx:", e); return null; }
+  };
 
   const addRace = async (r) => {
     if (live) { try { await window.ttcApi("/api/races", { method: "POST", body: r }); await reload(); } catch (e) { alert("Erreur (droits ?). Reconnecte-toi."); } }
@@ -353,13 +462,13 @@ const CoursesPage = () => {
       <section className="adh-sec">
         <div className="wrap">
           {!live && <window.MS.MSDemo what="Le suivi des courses" />}
-          {adding && <RaceForm onSubmit={addRace} onClose={() => setAdding(false)} />}
+          {adding && <RaceForm gpxList={gpxList} onUploadGpx={uploadGpx} onSubmit={addRace} onClose={() => setAdding(false)} />}
           {state === "loading" && <p className="ms-note-muted">Chargement…</p>}
           {races.length === 0 && state !== "loading" && (
             <div className="ms-empty">Aucune course pour l'instant. <button className="btn btn-sm btn-primary" onClick={() => setAdding(true)}>Ajoute la première →</button></div>
           )}
           <div className="ms-races">
-            {races.map((r) => <RaceCard key={r.id} race={r} members={members} onJoin={joinRace} onLeave={leaveRace} onEdit={editRace} onDelete={deleteRace} />)}
+            {races.map((r) => <RaceCard key={r.id} race={r} members={members} gpxList={gpxList} onUploadGpx={uploadGpx} onJoin={joinRace} onLeave={leaveRace} onEdit={editRace} onDelete={deleteRace} />)}
           </div>
         </div>
       </section>
