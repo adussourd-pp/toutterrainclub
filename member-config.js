@@ -2,7 +2,7 @@
 // ⬇️ Après avoir déployé le Worker Cloudflare (voir backend/DEPLOY.md),
 //    colle son URL ici, commit + push. Les pages Courses / GPX / Membres
 //    deviennent alors live. Tant que c'est vide, elles affichent un mode démo.
-window.TTC_API = "";
+window.TTC_API = "https://ttc-espace-membre.toutterrainclub.workers.dev";
 
 // URL d'intégration de ton Google Agenda public (Agenda → Paramètres → Intégrer →
 // « Code d'intégration » → l'URL dans src="..."). Vide = section agenda en attente.
