@@ -134,51 +134,38 @@ function memberExt(m) {
   return { photo: m.photo || o.photo || "", role: m.role || o.role || "" };
 }
 // Mon identifiant membre (pour reconnaître MA carte et proposer de la modifier).
-function myMemberId() { try { return localStorage.getItem("ttc_member_id") || ""; } catch (e) { return ""; } }
-
-// Popup : la carte de coureur, ouverte au clic sur la bulle d'un participant.
+// Popup : la carte de coureur — EXACTEMENT la même que dans la meute
+// (window.PROFIL.RunnerCard dans le modal me-modal-card). Ouverte au clic sur une bulle.
 const MemberPopup = ({ member, fallback, onClose }) => {
   React.useEffect(() => {
-    const onKey = (e) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    const k = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", k);
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", k); document.body.style.overflow = ""; };
   }, [onClose]);
-  const m = member;
-  const e = m ? memberExt(m) : { photo: "", role: "" };
-  const dists = m && Array.isArray(m.distances) ? m.distances : [];
-  const strava = (m && m.strava) || (fallback && fallback.strava) || "";
-  const insta = (m && m.insta) || (fallback && fallback.insta) || "";
-  const name = (m && (m.prenom || m.pseudo)) || (fallback && fallback.member) || "Coureur";
-  const isMe = !!(m && m.id && m.id === myMemberId());
+  let p = null;
+  if (member) {
+    try { p = (window.PROFIL && window.PROFIL.fromServer) ? window.PROFIL.fromServer(member) : member; }
+    catch (e) { p = member; }
+  }
+  const hasCard = !!(p && window.PROFIL && window.PROFIL.RunnerCard);
   return (
-    <div className="ms-cpop-overlay" onClick={onClose}>
-      <div className="ms-cpop" onClick={(ev) => ev.stopPropagation()}>
-        <button className="ms-cpop-close" onClick={onClose} title="Fermer">×</button>
-        <div className="ms-mcard">
-          {m && e.role && <div className="ms-mcard-role">★ {e.role}</div>}
-          <div className="ms-mcard-top">
-            {e.photo
-              ? <span className="ms-mcard-av ms-mcard-photo"><img src={e.photo} alt="" /><i>{(m && m.avatar) || "🐗"}</i></span>
-              : <span className="ms-mcard-av">{(m && m.avatar) || "🐗"}</span>}
-            <div>
-              <div className="ms-mcard-name">{name}{m && m.pseudo && m.prenom ? ` · ${m.pseudo}` : ""}</div>
-              <div className="ms-mcard-sub">{m ? ([m.ville, m.niveau].filter(Boolean).join(" · ") || "Coureur de la meute") : "Pas encore de carte de coureur"}</div>
+    <div className="me-backdrop" onClick={onClose}>
+      <div className="me-modal me-modal-card" onClick={(ev) => ev.stopPropagation()}>
+        <button type="button" className="me-close" onClick={onClose} aria-label="Fermer">×</button>
+        {hasCard
+          ? <window.PROFIL.RunnerCard p={p} />
+          : (
+            <div className="ms-mcard">
+              <div className="ms-mcard-top">
+                <span className="ms-mcard-av">🐗</span>
+                <div>
+                  <div className="ms-mcard-name">{(fallback && fallback.member) || "Coureur"}</div>
+                  <div className="ms-mcard-sub">Pas encore de carte de coureur</div>
+                </div>
+              </div>
             </div>
-          </div>
-          {m && m.objectif && <div className="ms-mcard-obj">🎯 {m.objectif}</div>}
-          {dists.length > 0 && <div className="ms-dist-chips">{dists.map((d, i) => <span key={i} className="ms-dist-chip">{typeof d === "string" ? d : (d.km + " km")}</span>)}</div>}
-          {(m && m.adhesion) || strava || insta ? (
-            <div className="ms-mcard-soc">
-              {m && m.adhesion && <span className="ms-chip">{m.adhesion}</span>}
-              {strava && <a href={strava} target="_blank" rel="noopener">🟠 Strava</a>}
-              {insta && <a href={insta} target="_blank" rel="noopener">📸 Insta</a>}
-            </div>
-          ) : null}
-          <div className="ms-cpop-actions">
-            {isMe && <a className="btn btn-sm btn-primary" href="profil.html">✏️ Modifier ma carte</a>}
-            <a className="btn btn-sm" href="membres.html">Voir toute la meute →</a>
-          </div>
-        </div>
+          )}
       </div>
     </div>
   );
