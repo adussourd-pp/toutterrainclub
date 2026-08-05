@@ -69,15 +69,10 @@ const MS_LINKS = [
   { key: "gpx", label: "Traces GPX", href: "gpx.html" },
 ];
 
-const MSSubnav = ({ active }) => (
-  <div className="wrap">
-    <nav className="ms-subnav">
-      {MS_LINKS.map((l) => (
-        <a key={l.key} href={l.href} className={active === l.key ? "active" : ""}>◆ {l.label}</a>
-      ))}
-    </nav>
-  </div>
-);
+// La navigation membre vit désormais dans le bandeau du haut (HeaderPublic).
+// On garde le composant (les pages l'appellent) mais il n'affiche plus rien,
+// pour éviter le doublon de menu.
+const MSSubnav = () => null;
 
 // Bandeau affiché quand le backend n'est pas encore branché (mode démo).
 const MSDemo = ({ what }) => (
