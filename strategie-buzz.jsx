@@ -150,7 +150,7 @@ const StratPlan = () => (
         <div className="ms-lane mid">
           <div className="ms-lane-head"><span className="t">Moyen terme</span><span className="when">3–9 mois</span></div>
           <ul>
-            <li><b>Activer les 11 bénévoles</b> « com / contenu » sortis du sondage : une mini-équipe média, une cadence tenue.
+            <li><b>Activer les 13 bénévoles</b> « com / contenu » sortis du sondage : une mini-équipe média, une cadence tenue.
               <span className="adn"><b>ADN safe</b> — l'implication est déjà demandée.</span></li>
             <li><b>Collabs micro d'abord</b> : faire monter les partenaires actuels (refuges, Näak) et viser des marques trail (On, HOKA, Salomon). Pitch = commu engagée + UGC + Trail to Techno.
               <span className="adn"><b>ADN safe</b> — partenaires alignés, longs, pas transactionnels.</span></li>

@@ -111,16 +111,16 @@ const MemberHero = () => (
       <div className="adh-hero-grid">
         <p className="adh-hero-lede">
           Ce que le passage en asso prévoit, confronté ligne à ligne à ce que
-          <strong> 35 membres</strong> viennent de répondre. Là où ça colle, là où ça frotte,
+          <strong> 45 membres</strong> viennent de répondre. Là où ça colle, là où ça frotte,
           et ce qu'on n'avait pas vu venir.
         </p>
       </div>
       <div className="hero-stats ms-stats">
         {[
-          { n: "35", l: "réponses complètes" },
-          { n: "~50 %", l: "des 70 vues du form" },
-          { n: "~11 %", l: "de la commu (300+)" },
-          { n: "97 %", l: "favorables à l'asso" },
+          { n: "45", l: "réponses complètes" },
+          { n: "+10", l: "depuis la 1ʳᵉ vague" },
+          { n: "~15 %", l: "de la commu (300+)" },
+          { n: "95 %", l: "favorables à l'asso" },
           { n: "82 %", l: "prêts à adhérer" },
         ].map((s, i) => (
           <div key={i} className="stat ms-stat">
@@ -130,11 +130,11 @@ const MemberHero = () => (
         ))}
       </div>
       <div className="ms-caveat">
-        <b>À lire avec ça en tête.</b> 35 retours = un premier signal fort, pas un référendum.
-        L'échantillon penche vers les <b>plus engagés</b> : 65 % viennent au moins 2–3×/mois,
-        74 % se classent « Performance » ou « Ultra ». Les membres occasionnels et débutants
-        sont sous-représentés — donc les freins <b>prix</b> et <b>« deux catégories »</b> sont
-        probablement <b>sous-estimés</b> ici, pas surestimés.
+        <b>À lire avec ça en tête.</b> 45 retours (+10 depuis la 1ʳᵉ vague) = un signal solide, pas un référendum.
+        L'échantillon reste orienté <b>engagés</b> : 56 % viennent au moins 2–3×/mois,
+        71 % se classent « Performance » ou « Ultra » — un peu moins qu'avant, la 2ᵉ vague a fait
+        remonter les occasionnels. Les freins <b>prix</b> et <b>« deux catégories »</b> restent
+        donc plutôt <b>sous-estimés</b> ici que surestimés.
       </div>
     </div>
   </section>
@@ -152,19 +152,19 @@ const MemberVerdict = () => (
           <span className="ms-vtag">✓ Feu vert</span>
           <h3>Le cap est le bon</h3>
           <ul>
-            <li><b>97 %</b> favorables au passage en asso</li>
+            <li><b>95 %</b> favorables au passage en asso</li>
             <li><b>82 %</b> adhèrent (dont 51 % sans hésiter)</li>
-            <li><b>60 %</b> veulent une licence FFA — la formule « en réflexion » est en fait attendue</li>
-            <li>Un <b>vivier de 31 %</b> prêts à s'impliquer activement</li>
+            <li><b>53 %</b> veulent une licence FFA — la formule « en réflexion » est en fait attendue</li>
+            <li>Un <b>vivier de 13 membres</b> (29 %) prêts à s'impliquer activement</li>
           </ul>
         </div>
         <div className="ms-vcard warn">
           <span className="ms-vtag">▲ Ça frotte</span>
           <h3>Trois points à border</h3>
           <ul>
-            <li><b>Prix 60 €</b> (valeur dans le code) : 43 % le jugeraient déjà trop cher</li>
-            <li><b>Discord</b> : 46 % disent non, 54 % trouvent WhatsApp « parfait »</li>
-            <li>Le <b>« deux catégories de membres »</b> = 1ᵉʳ frein hors prix (17 %)</li>
+            <li><b>Prix 60 €</b> (valeur dans le code) : 40 % le jugeraient déjà trop cher</li>
+            <li><b>Discord</b> : 44 % disent non, 64 % trouvent WhatsApp « parfait »</li>
+            <li>Le <b>prix</b> devient le 1ᵉʳ frein concret (20 %), devant le « deux catégories » (13 %)</li>
           </ul>
         </div>
         <div className="ms-vcard gap">
@@ -173,7 +173,7 @@ const MemberVerdict = () => (
           <ul>
             <li>Un <b>QG / lieu de retrouvailles</b> avec tarifs partenaires</li>
             <li>Des <b>stages multi-jours</b> dans d'autres massifs</li>
-            <li><b>Structurer l'info</b> : 46 % se perdent dans le fil</li>
+            <li><b>Structurer l'info</b> : 36 % se perdent dans le fil</li>
             <li>Une <b>envie d'expansion géo</b> (arrière-pays, Vence…)</li>
           </ul>
         </div>
@@ -187,7 +187,7 @@ const MemberConfront = () => (
     <div className="wrap">
       <div className="adh-sec-head">
         <h2 className="adh-h2">La confrontation,<br/>point par <span className="g">point</span>.</h2>
-        <p className="ms-sec-lede">Gauche : ce que la page adhésion / le code prévoient. Droite : ce que disent les 35.</p>
+        <p className="ms-sec-lede">Gauche : ce que la page adhésion / le code prévoient. Droite : ce que disent les 45.</p>
       </div>
 
       <div className="ms-conf">
@@ -196,21 +196,21 @@ const MemberConfront = () => (
           realLabel="Ce que dit la meute"
           takeaway="Aucune opposition. Le mandat est là — on peut avancer sans tester le terrain plus longtemps.">
           <div className="ms-bars">
-            <Bar label="Très positif" pct={71} />
-            <Bar label="Plutôt positif" pct={26} />
-            <Bar label="Neutre" pct={3} tone="dim" />
+            <Bar label="Très positif" pct={64} />
+            <Bar label="Plutôt positif" pct={31} />
+            <Bar label="Neutre" pct={4} tone="dim" />
           </div>
         </Row>
 
         <Row topic="Une adhésion payante" status="ok" statusLabel="Validé"
           plan={<p>Une adhésion annuelle, welcome pack aux couleurs TTC, tout en gardant les runs gratuits.</p>}
           realLabel="« Si l'adhésion existait, tu… »"
-          takeaway={<span>82 % de oui. Les 14 % « j'attends de voir » se convertissent avec des avantages <b>concrets et lisibles</b> — un enjeu de présentation, pas d'appétence.</span>}>
+          takeaway={<span>82 % de oui, stable malgré +10 réponses. Les 13 % « j'attends de voir » se convertissent avec des avantages <b>concrets et lisibles</b> — un enjeu de présentation, pas d'appétence.</span>}>
           <div className="ms-bars">
             <Bar label="J'adhère sans hésiter" pct={51} />
             <Bar label="J'adhère probablement" pct={31} />
-            <Bar label="J'attends de voir le contenu" pct={14} tone="warn" />
-            <Bar label="Probablement pas" pct={3} tone="dim" />
+            <Bar label="J'attends de voir le contenu" pct={13} tone="warn" />
+            <Bar label="Non / probablement pas" pct={4} tone="dim" />
           </div>
         </Row>
 
@@ -222,48 +222,48 @@ const MemberConfront = () => (
           realLabel="Seuil de « trop cher »"
           takeaway={<span>Viser <b>40–50 €</b> pour le socle « Adhérent », et faire porter la valeur perçue par le welcome pack + les réducs events. Réserver 60 €+ à la formule Licence FFA, où le prix « n'est pas le sujet » pour les compétiteurs.</span>}>
           <div className="ms-split">
-            <span className="s-no" style={{ flex: 6 }}>30 € · 17%</span>
-            <span className="s-mid" style={{ flex: 9 }}>50 € · 26%</span>
-            <span className="s-ok" style={{ flex: 8 }}>70 € · 23%</span>
-            <span className="s-ok" style={{ flex: 5 }}>90 € · 14%</span>
-            <span className="s-ok" style={{ flex: 7 }}>peu importe · 20%</span>
+            <span className="s-no" style={{ flex: 16 }}>30 € · 16%</span>
+            <span className="s-mid" style={{ flex: 24 }}>50 € · 24%</span>
+            <span className="s-ok" style={{ flex: 27 }}>70 € · 27%</span>
+            <span className="s-ok" style={{ flex: 11 }}>90 € · 11%</span>
+            <span className="s-ok" style={{ flex: 22 }}>peu importe · 22%</span>
           </div>
           <div className="ms-split-key">
             <span><i className="k-no" />60 € = trop cher</span>
             <span><i className="k-ok" />60 € = ok</span>
           </div>
-          <p className="ms-note-strong">À <b>60 €</b>, <b>43 %</b> décrochent. À <b>~40–50 €</b>, seuls 17 % décrochent.</p>
+          <p className="ms-note-strong">À <b>60 €</b>, <b>40 %</b> décrochent. À <b>~40–50 €</b>, seuls 16 % décrochent.</p>
         </Row>
 
         <Row topic="La formule Licence FFA" status="ok" statusLabel="Validé — à confirmer"
           plan={<p>Formule « Adhérent + Licence FFA » marquée <b>« en réflexion, selon vos retours »</b> — la plus incertaine des trois.</p>}
           realLabel="Intérêt pour une licence via le club"
-          takeaway={<span>60 % d'intéressés + « une équipe TTC sur les courses » demandée par 54 %. Cette formule n'est pas un pari : on peut la <b>sortir du conditionnel</b>. Les 20 % « en savoir plus » veulent juste comprendre ce que la licence change.</span>}>
+          takeaway={<span>53 % d'intéressés + « une équipe TTC sur les courses » demandée par 51 %, et 24 % de plus veulent juste « en savoir plus » : à peine 22 % de vrais « non ». Cette formule n'est pas un pari — on peut la <b>sortir du conditionnel</b>, en expliquant ce que la licence change.</span>}>
           <div className="ms-bars">
-            <Bar label="Oui · Compétition" pct={57} />
-            <Bar label="Je veux en savoir plus" pct={20} tone="warn" />
-            <Bar label="Non, pas besoin" pct={20} tone="gap" />
-            <Bar label="Oui · Running (loisir)" pct={3} tone="dim" />
+            <Bar label="Oui · Compétition" pct={51} />
+            <Bar label="Je veux en savoir plus" pct={24} tone="warn" />
+            <Bar label="Non, pas besoin" pct={22} tone="gap" />
+            <Bar label="Oui · Running (loisir)" pct={2} tone="dim" />
           </div>
         </Row>
 
         <Row topic="Migrer WhatsApp → Discord" status="warn" statusLabel="Friction" takeLabel="Reco"
           plan={<p>Le code lie l'affichage des niveaux gamifiés à un passage sur Discord (flag <code className="ms-code">showLevels</code> ↔ plateforme commu).</p>}
           realLabel="Vécu WhatsApp aujourd'hui"
-          takeaway={<span>46 % de blocage + un canal jugé « parfait » par la majorité : une bascule sèche est risquée. Mais 46 % se perdent → le vrai besoin est de <b>structurer l'info</b> (canaux clairs, annonces séparées du bavardage). Faisable sans quitter WhatsApp, ou via un Discord <b>en plus</b> et non « à la place ». Les niveaux réels (débutant→ultra) n'ont pas besoin de Discord.</span>}>
+          takeaway={<span>44 % de blocage + un canal jugé « parfait » par 64 % (en hausse) : une bascule sèche est risquée. Le vrai besoin des 36 % qui se perdent, c'est de <b>structurer l'info</b> (canaux clairs, annonces séparées du bavardage). Faisable sans quitter WhatsApp, ou via un Discord <b>en plus</b> et non « à la place ». Les niveaux réels (débutant→ultra) n'ont pas besoin de Discord.</span>}>
           <div className="ms-bars">
-            <Bar label="« C'est parfait comme ça »" pct={54} tone="gap" />
-            <Bar label="« Parfois je m'y perds »" pct={26} tone="warn" />
-            <Bar label="« Souvent le chaos »" pct={20} tone="warn" />
+            <Bar label="« C'est parfait comme ça »" pct={64} tone="gap" />
+            <Bar label="« Parfois je m'y perds »" pct={20} tone="warn" />
+            <Bar label="« Souvent le chaos »" pct={16} tone="warn" />
           </div>
-          <p className="ms-note-strong">Prêts à basculer sur Discord : <b>oui 51 % / non 46 %</b> — un quasi 50/50.</p>
+          <p className="ms-note-strong">Prêts à basculer sur Discord : <b>oui 53 % / non 44 %</b> — un quasi 50/50.</p>
         </Row>
 
         <Row topic="Les niveaux « façon jeu »" status="warn" statusLabel="Signal faible" takeLabel="Reco"
           plan={<p>Deux échelles gamifiées sur la page : niveau trail (🌱→🏔️) <b>et</b> un « style Trail to Techno » (🎧 Curieux → 👑 Résident).</p>}
           realLabel="Demande réelle"
           takeaway={<span>Garder les 4 niveaux trail comme <b>repères utiles</b> (orienter débutants/confirmés), mais pas comme système de points. Ranger l'échelle « style techno » : jolie idée, aucun signal, et elle nourrit la peur du « deux catégories ».</span>}>
-          <p className="ms-real-p">Personne ne réclame de gamification. « Des groupes de niveaux sur les runs » n'est demandé que par <b>17 %</b> — et plusieurs verbatims défendent au contraire le <b>mix des niveaux</b> pour l'aspect social run.</p>
+          <p className="ms-real-p">Personne ne réclame de gamification. « Des groupes de niveaux sur les runs » n'est demandé que par <b>22 %</b> — et plusieurs verbatims défendent au contraire le <b>mix des niveaux</b> pour l'aspect social run.</p>
           <p className="ms-real-p">Le « style techno » gamifié : <b>zéro mention</b> spontanée.</p>
         </Row>
 
@@ -272,21 +272,21 @@ const MemberConfront = () => (
           realLabel="Top de ce qu'ils veulent « en plus »"
           takeaway={<span>Les 4 demandes phares sont exactement le cœur de la formule « Adhérent ». L'offre est <b>alignée</b> — reste à la rendre lisible dès la page.</span>}>
           <div className="ms-bars">
-            <Bar label="Week-ends & stages trail" pct={57} />
-            <Bar label="Équipe TTC sur les courses" pct={54} />
-            <Bar label="Événements sociaux (after-run…)" pct={51} />
-            <Bar label="Sorties montagne engagées" pct={51} />
+            <Bar label="Week-ends & stages trail" pct={58} />
+            <Bar label="Équipe TTC sur les courses" pct={51} />
+            <Bar label="Événements sociaux (after-run…)" pct={44} />
+            <Bar label="Sorties montagne engagées" pct={44} />
           </div>
         </Row>
 
-        <Row topic="La peur du « deux catégories »" status="gap" statusLabel="Vigilance" takeLabel="Reco"
+        <Row topic="Les freins à l'adhésion" status="gap" statusLabel="Vigilance" takeLabel="Reco"
           plan={<p>Un modèle « base gratuite pour tous + extras payants » — déjà le discours central de la page adhésion.</p>}
           realLabel="Freins cités (hors « rien »)"
-          takeaway={<span>Le maintien des <b>runs 100 % gratuits</b> et du <b>mix des niveaux</b> doit rester un engagement écrit, répété. C'est l'ADN cité (« convivial », « accessible à tous », « social run ») — l'adhésion doit être vécue comme un <b>soutien</b>, pas un péage.</span>}>
+          takeaway={<span>Le <b>prix</b> passe n°1 des freins concrets (20 %) → conforte le tarif 40–50 €. La <b>peur du « deux catégories »</b> reflue (13 %) mais reste à désamorcer : garder les <b>runs 100 % gratuits</b> et le <b>mix des niveaux</b> comme engagement écrit. C'est l'ADN cité (« convivial », « accessible à tous », « social run ») — l'adhésion = un <b>soutien</b>, pas un péage.</span>}>
           <div className="ms-bars">
-            <Bar label="Peur de 2 catégories de membres" pct={17} scale={34} tone="gap" />
-            <Bar label="Le prix" pct={17} scale={34} tone="warn" />
-            <Bar label="« Rien, je suis partant » (rappel)" pct={46} scale={92} />
+            <Bar label="« Rien, je suis partant »" pct={42} scale={100} />
+            <Bar label="Le prix" pct={20} scale={48} tone="warn" />
+            <Bar label="Peur de 2 catégories de membres" pct={13} scale={31} tone="gap" />
           </div>
           <p className="ms-note-muted">Barres à l'échelle du frein max pour la lisibilité.</p>
         </Row>
@@ -300,48 +300,48 @@ const MemberProfile = () => (
     <div className="wrap">
       <div className="adh-sec-head">
         <h2 className="adh-h2">Qui a <span className="g">parlé</span>.</h2>
-        <p className="ms-sec-lede">Le profil des 35 — pour lire les chiffres au bon niveau.</p>
+        <p className="ms-sec-lede">Le profil des 45 — pour lire les chiffres au bon niveau.</p>
       </div>
       <div className="ms-grid2">
         <div className="ms-panel">
-          <h3>Un noyau très actif</h3>
+          <h3>Un noyau actif</h3>
           <div className="ms-panel-sub">Fréquence de participation</div>
           <div className="ms-bars">
-            <Bar label="Toutes les semaines" pct={34} />
-            <Bar label="2 à 3× / mois" pct={31} />
-            <Bar label="1× / mois" pct={14} tone="dim" />
-            <Bar label="Quelques fois / an" pct={14} tone="dim" />
-            <Bar label="Jamais encore" pct={6} tone="dim" />
+            <Bar label="Toutes les semaines" pct={29} />
+            <Bar label="2 à 3× / mois" pct={27} />
+            <Bar label="1× / mois" pct={20} tone="dim" />
+            <Bar label="Quelques fois / an" pct={18} tone="dim" />
+            <Bar label="Jamais encore" pct={7} tone="dim" />
           </div>
         </div>
         <div className="ms-panel">
           <h3>Plutôt costauds</h3>
           <div className="ms-panel-sub">Niveau trail auto-déclaré</div>
           <div className="ms-bars">
-            <Bar label="Performance" pct={43} />
-            <Bar label="Ultra" pct={31} />
-            <Bar label="Progression" pct={20} tone="dim" />
-            <Bar label="Découverte" pct={6} tone="dim" />
+            <Bar label="Performance" pct={42} />
+            <Bar label="Ultra" pct={29} />
+            <Bar label="Progression" pct={24} tone="dim" />
+            <Bar label="Découverte" pct={4} tone="dim" />
           </div>
         </div>
         <div className="ms-panel">
           <h3>Le bouche-à-oreille domine</h3>
           <div className="ms-panel-sub">Comment ils ont connu TTC</div>
           <div className="ms-bars">
-            <Bar label="Par un(e) ami(e)" pct={49} />
-            <Bar label="Instagram" pct={29} />
-            <Bar label="Strava" pct={17} tone="dim" />
-            <Bar label="Autre" pct={6} tone="dim" />
+            <Bar label="Par un(e) ami(e)" pct={44} />
+            <Bar label="Instagram" pct={27} />
+            <Bar label="Strava" pct={18} tone="dim" />
+            <Bar label="Autre" pct={11} tone="dim" />
           </div>
         </div>
         <div className="ms-panel">
           <h3>Une commu jeune</h3>
           <div className="ms-panel-sub">Depuis combien de temps avec TTC</div>
           <div className="ms-bars">
-            <Bar label="6 à 12 mois" pct={37} />
-            <Bar label="Plus d'un an" pct={26} />
+            <Bar label="6 à 12 mois" pct={33} />
+            <Bar label="Plus d'un an" pct={27} />
             <Bar label="Moins de 6 mois" pct={20} tone="dim" />
-            <Bar label="Depuis les débuts" pct={11} tone="dim" />
+            <Bar label="Depuis les débuts" pct={13} tone="dim" />
           </div>
         </div>
       </div>
@@ -350,10 +350,10 @@ const MemberProfile = () => (
 );
 
 const CLOUD = [
-  ["convivial", 1], ["partage", 2], ["ambiance", 2], ["amitié", 3], ["motivation", 3],
-  ["fun", 3], ["social", 3], ["du kiff", 3], ["bienveillance", 4], ["rencontre", 4],
-  ["aventure", 4], ["happy", 4], ["sanglier", 4], ["équipe", 4], ["accueillant", 5],
-  ["solidarité", 5], ["dépassement", 5], ["good vibes", 5], ["déconnexion", 5],
+  ["convivial", 1], ["partage", 2], ["fun", 3], ["ambiance", 3], ["motivation", 3],
+  ["amitié", 3], ["du kiff", 4], ["trail", 4], ["social", 4], ["cool", 4],
+  ["happy", 4], ["bienveillance", 5], ["détente", 5], ["sanglier", 5], ["rencontre", 5],
+  ["solidarité", 5], ["sport", 5], ["adrénaline", 5], ["aventure", 5],
 ];
 
 const MemberDna = () => (
@@ -381,7 +381,7 @@ const QUOTES = [
   { t: "warn", q: "Continuer de mixer les niveaux pour l'aspect « social run ». · Accessible à tous.", c: "plusieurs, sur la peur des catégories" },
   { t: "gap", q: "Avoir un QG avec des prix préférentiels : after-run, after sorties longues, point de retrouvailles…", c: "angle mort : un lieu à soi" },
   { t: "gap", q: "Si le TTC veut s'exporter dans le bassin Roquefort / La Colle / Vence, ce sera plus simple pour moi de participer.", c: "Mathieu, sur l'expansion géo" },
-  { t: "green", q: "Je suis chaud d'aider sur à peu près tous les sujets, et aussi pour organiser une course.", c: "l'un des 11 volontaires actifs" },
+  { t: "green", q: "Je suis chaud d'aider sur à peu près tous les sujets, et aussi pour organiser une course.", c: "l'un des 13 volontaires actifs" },
 ];
 
 const MemberQuotes = () => (
@@ -412,25 +412,25 @@ const MemberVolunteers = () => (
       </div>
       <div className="ms-grid2">
         <div className="ms-panel">
-          <h3>80 % ouverts à aider</h3>
+          <h3>71 % ouverts à aider</h3>
           <div className="ms-panel-sub">Envie de s'impliquer</div>
           <div className="ms-bars">
-            <Bar label="Oui, activement" pct={31} />
-            <Bar label="Peut-être, selon mon temps" pct={49} tone="warn" />
-            <Bar label="Non / pas maintenant" pct={20} tone="dim" />
+            <Bar label="Oui, activement" pct={29} />
+            <Bar label="Peut-être, selon mon temps" pct={42} tone="warn" />
+            <Bar label="Non / pas maintenant" pct={29} tone="dim" />
           </div>
         </div>
         <div className="ms-panel">
           <h3>Sur quoi ils veulent aider</h3>
-          <div className="ms-panel-sub">Domaines (sur les 24 intéressés)</div>
+          <div className="ms-panel-sub">Domaines (sur les 27 intéressés)</div>
           <div className="ms-bars">
-            <Bar label="Organiser les sorties hebdo" pct={37} scale={54} />
-            <Bar label="Développer les week-ends" pct={34} scale={50} />
-            <Bar label="Créer une course officielle" pct={31} scale={46} />
-            <Bar label="Développer les Pauses" pct={26} scale={38} tone="dim" />
-            <Bar label="Partenariats marques / shop" pct={20} scale={29} tone="dim" />
+            <Bar label="Organiser les sorties hebdo" pct={31} scale={100} />
+            <Bar label="Développer les week-ends" pct={31} scale={100} />
+            <Bar label="Créer une course officielle" pct={27} scale={87} />
+            <Bar label="Développer les Pauses" pct={22} scale={71} tone="dim" />
+            <Bar label="Partenariats marques / shop" pct={20} scale={65} tone="dim" />
           </div>
-          <p className="ms-note-muted">% sur les 35 · barres à l'échelle du domaine max.</p>
+          <p className="ms-note-muted">% sur les 45 · barres à l'échelle du domaine max.</p>
         </div>
       </div>
       <p className="ms-dna-note">
@@ -443,11 +443,11 @@ const MemberVolunteers = () => (
 );
 
 const STEPS = [
-  { t: "Lancer l'asso — sans hésiter", d: "97 % favorables, 82 % prêts à adhérer. Le mandat est acquis, on passe à l'exécution.", pri: "Cap confirmé", now: false },
-  { t: "Caler le socle « Adhérent » à 40–50 €", d: "À 60 €, 43 % décrochent ; à 45 €, seuls 17 %. Faire porter la valeur par le welcome pack et les réducs events.", pri: "À trancher", now: true },
-  { t: "Sortir la Licence FFA du conditionnel", d: "60 % d'intéressés + équipe sur les courses (54 %). Ajouter un mini-explicatif « ce que la licence change ».", pri: "À trancher", now: true },
-  { t: "Ne pas imposer Discord — structurer l'info", d: "46 % contre, WhatsApp jugé « parfait » par 54 %. Le vrai besoin : séparer annonces et bavardage. Discord « en plus », jamais « à la place ».", pri: "À arbitrer", now: true },
-  { t: "Graver « runs gratuits + mix des niveaux »", d: "Désamorce le frein n°1 hors prix. Ranger la gamification « style techno » (zéro signal). Activer les 11 volontaires actifs dès la constitution du bureau.", pri: "Garde-fou", now: false },
+  { t: "Lancer l'asso — sans hésiter", d: "95 % favorables, 82 % prêts à adhérer (stable sur 45 réponses). Le mandat est acquis, on passe à l'exécution.", pri: "Cap confirmé", now: false },
+  { t: "Caler le socle « Adhérent » à 40–50 €", d: "À 60 €, 40 % décrochent ; à 45 €, seuls 16 %. Le prix est désormais le 1ᵉʳ frein — faire porter la valeur par le welcome pack et les réducs events.", pri: "À trancher", now: true },
+  { t: "Sortir la Licence FFA du conditionnel", d: "53 % d'intéressés + équipe sur les courses (51 %), et à peine 22 % de « non ». Ajouter un mini-explicatif « ce que la licence change ».", pri: "À trancher", now: true },
+  { t: "Ne pas imposer Discord — structurer l'info", d: "44 % contre, WhatsApp jugé « parfait » par 64 %. Le vrai besoin : séparer annonces et bavardage. Discord « en plus », jamais « à la place ».", pri: "À arbitrer", now: true },
+  { t: "Graver « runs gratuits + mix des niveaux »", d: "Désamorce la peur du « deux catégories ». Ranger la gamification « style techno » (zéro signal). Activer les 13 volontaires actifs dès la constitution du bureau.", pri: "Garde-fou", now: false },
 ];
 
 const MemberReco = () => (
@@ -455,7 +455,7 @@ const MemberReco = () => (
     <div className="wrap">
       <div className="adh-sec-head">
         <h2 className="adh-h2">Ce que je ferais<br/><span className="g">maintenant</span>.</h2>
-        <p className="ms-sec-lede">Cinq décisions, tirées directement des 35 retours.</p>
+        <p className="ms-sec-lede">Cinq décisions, tirées directement des 45 retours.</p>
       </div>
       <div className="ms-reco">
         {STEPS.map((s, i) => (
@@ -470,7 +470,7 @@ const MemberReco = () => (
         ))}
       </div>
       <p className="ms-foot-note">
-        Analyse à visée interne · 35 réponses au 4 août 2026 · verbatims anonymisés, contacts non inclus.
+        Analyse à visée interne · 45 réponses (2ᵉ vague, août 2026) · verbatims anonymisés, contacts non inclus.
         Chiffres arrondis ; questions à choix multiples, total &gt; 100 %.
       </p>
     </div>
