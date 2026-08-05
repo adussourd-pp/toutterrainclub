@@ -356,8 +356,8 @@ const T2TTeaser = () => (
       <div className="t2t-teaser-cta">
         <a href="trail-to-techno.html" className="btn btn-uv">Découvrir le concept →</a>
         <a href="edition-mercantour.html" className="btn btn-line-light">Voir l'édition Mercantour</a>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".08em", color: "var(--acid)", textTransform: "uppercase", marginLeft: "auto", border: "1px solid color-mix(in oklab, var(--acid) 45%, transparent)", borderRadius: "var(--radius-pill)", padding: "6px 12px", alignSelf: "center" }}>
-          ● Inscriptions ouvertes
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "var(--f-mono)", fontSize: 11, letterSpacing: ".08em", color: "var(--muted)", textTransform: "uppercase", marginLeft: "auto", border: "1px solid color-mix(in oklab, var(--muted) 45%, transparent)", borderRadius: "var(--radius-pill)", padding: "6px 12px", alignSelf: "center" }}>
+          ● Inscriptions fermées
         </span>
       </div>
     </div>
