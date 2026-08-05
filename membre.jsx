@@ -18,10 +18,12 @@ const NEXT_EVENTS = [
 ];
 
 // Éditable : codes promo partenaires (remplace les codes par les vrais).
+// Remplace les codes par les vrais quand tu les as (placeholders pour l'instant).
 const PROMOS = [
-  { name: "Näak", role: "Nutrition officielle", code: "TTC-NAAK", url: "https://www.naak.com/fr" },
-  { name: "Chalet Albarea", role: "Refuge · Peira Cava", code: "Sur demande", url: "https://www.albarea.com/" },
-  { name: "Relais des Merveilles", role: "Refuge · Mercantour", code: "Sur demande", url: "https://relaisdesmerveilles.com/" },
+  { name: "Näak", role: "Nutrition trail", code: "TTC-NAAK", url: "https://www.naak.com/fr" },
+  { name: "Nutripure", role: "Compléments & nutrition", code: "TTC-NUTRIPURE", url: "https://www.nutripure.fr/" },
+  { name: "RunMotion", role: "Coaching running & trail", code: "TTC-RUNMOTION", url: "https://runmotioncoach.com/" },
+  { name: "Strava", role: "Suivi & club TTC", code: "Sur demande", url: "https://www.strava.com/clubs/toutterrainclub" },
 ];
 
 const MemberHub = () => (
