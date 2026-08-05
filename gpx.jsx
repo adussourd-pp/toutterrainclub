@@ -397,13 +397,19 @@ const GpxPage = () => {
   }, [live]);
 
   const add = async (g) => {
-    if (live) { try { await window.ttcApi("/api/gpx", { method: "POST", body: g }); await reload(); } catch (e) { alert("Erreur (droits ?). Reconnecte-toi."); } }
+    if (live) { try { await window.ttcApi("/api/gpx", { method: "POST", body: g }); await reload(); } catch (e) { alert(apiErr(e)); } }
     else { const next = [{ ...g, id: "loc" + Date.now(), created_at: new Date().toISOString() }, ...items]; setItems(next); saveLocal(next); }
     setAdding(false);
   };
 
   // Actions sociales — live via l'API, sinon mutation locale (mode démo).
-  const post = async (path, body) => { try { await window.ttcApi(path, { method: "POST", body: body || {} }); await reload(); } catch (e) { alert("Action impossible (droits ?). Reconnecte-toi."); } };
+  const apiErr = (e) => {
+    const code = e && e.message ? e.message : "inconnu";
+    if (code.indexOf("404") >= 0) return "Action impossible — le serveur n'est pas encore à jour.\nLe Worker Cloudflare doit être redéployé (colle backend/src/index.js dans le dashboard → Deploy).";
+    if (code.indexOf("401") >= 0) return "Session expirée — reconnecte-toi.";
+    return "Action impossible — code : " + code;
+  };
+  const post = async (path, body) => { try { await window.ttcApi(path, { method: "POST", body: body || {} }); await reload(); } catch (e) { alert(apiErr(e)); } };
   const mutate = (id, fn) => { const next = items.map((g) => (g.id === id ? fn({ ...g }) : g)); setItems(next); saveLocal(next); };
 
   const onEdit = (id, patch) => live ? post("/api/gpx/" + id + "/edit", patch) : mutate(id, (g) => {
@@ -423,7 +429,7 @@ const GpxPage = () => {
   const onDeleteComment = (id, cid) => live ? post("/api/gpx/" + id + "/comment/" + cid + "/delete", {}) : mutate(id, (g) => ({ ...g, comments: (g.comments || []).filter((c) => c.id !== cid) }));
   const onDelete = async (g) => {
     if (!window.confirm(`Supprimer la trace « ${g.name} » ? C'est définitif.`)) return;
-    if (live) { try { await window.ttcApi("/api/gpx/" + g.id + "/delete", { method: "POST", body: {} }); await reload(); } catch (e) { alert("Suppression impossible (droits ?). Reconnecte-toi."); } }
+    if (live) { try { await window.ttcApi("/api/gpx/" + g.id + "/delete", { method: "POST", body: {} }); await reload(); } catch (e) { alert(apiErr(e)); } }
     else { const next = items.filter((x) => x.id !== g.id); setItems(next); saveLocal(next); }
   };
 
