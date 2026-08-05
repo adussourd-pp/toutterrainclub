@@ -6,7 +6,7 @@ window.TTC_API = "https://ttc-espace-membre.toutterrainclub.workers.dev";
 
 // URL d'intégration de ton Google Agenda public (Agenda → Paramètres → Intégrer →
 // « Code d'intégration » → l'URL dans src="..."). Vide = section agenda en attente.
-window.TTC_AGENDA_EMBED = "";
+window.TTC_AGENDA_EMBED = "https://calendar.google.com/calendar/embed?src=toutterrainclub%40gmail.com&ctz=Europe%2FParis";
 
 // --- Helpers API (plain JS, chargés avant les pages) -----------------------
 window.ttcPass = function () {
