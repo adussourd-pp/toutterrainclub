@@ -638,3 +638,6 @@ select.pf-input { cursor: pointer; }
   .ms-gpx-grid { grid-template-columns: 1fr; }
   .ms-dist-row { grid-template-columns: 1fr 1fr auto; }
 }
+
+.ms-hub-card.soon { opacity: .62; cursor: default; }
+.ms-hub-card.soon:hover { border-color: var(--rule); transform: none; }

@@ -6,7 +6,8 @@ const HUB_TOOLS = [
   { em: "🐺", t: "Les membres", d: "Découvre la meute : qui court quoi, à quel niveau.", href: "membres.html" },
   { em: "📅", t: "Calendrier & courses", d: "L'agenda du club + les courses : crée-en une, inscris-toi. On se retrouve sur les dossards.", href: "calendrier.html", hot: true },
   { em: "🗺️", t: "Traces GPX", d: "Partage et retrouve les parcours du club.", href: "gpx.html" },
-  { em: "🧰", t: "Préparer une course", d: "L'outil de prépa (bientôt maison — Noah). Pour l'instant : Sisyf.", href: "https://app.sisyf.com/", ext: true },
+  { em: "👕", t: "Le merch", d: "La boutique TTC — tenues & goodies aux couleurs du club.", href: "https://toutterrainclub.sumupstore.com/", ext: true },
+  { em: "🧰", t: "Préparer une course", d: "L'outil de prépa maison arrive (Noah).", soon: true },
 ];
 
 // Éditable : nos prochains week-ends & events.
@@ -46,12 +47,14 @@ const MemberHub = () => (
       <div className="wrap">
         <div className="ms-hub-grid">
           {HUB_TOOLS.map((c, i) => (
-            <a key={i} className={`ms-hub-card ${c.hot ? "hot" : ""}`} href={c.href || "#"}
-               target={c.ext ? "_blank" : undefined} rel={c.ext ? "noopener" : undefined}>
+            <a key={i} className={`ms-hub-card ${c.hot ? "hot" : ""} ${c.soon ? "soon" : ""}`} href={c.href || "#"}
+               target={c.ext ? "_blank" : undefined} rel={c.ext ? "noopener" : undefined}
+               onClick={c.soon ? (e) => e.preventDefault() : undefined}>
               <span className="em">{c.em}</span>
               <span className="t">{c.t}{c.ext ? " ↗" : ""}</span>
               <span className="d">{c.d}</span>
               {c.hot && <span className="ms-hub-badge">★ le nouveau</span>}
+              {c.soon && <span className="ms-hub-badge" style={{ color: "var(--muted)" }}>bientôt</span>}
             </a>
           ))}
         </div>
