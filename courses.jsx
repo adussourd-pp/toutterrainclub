@@ -36,7 +36,7 @@ const Chips = ({ items, gpxList, onGpx }) => (
     return (
       <span key={i} className={`ms-dist-chip ${g ? "has-gpx" : ""}`}>
         {distLabel(d)}{c && c !== "—" ? <b className="ms-dist-cat"> {c}</b> : null}
-        {g && onGpx && <button type="button" className="ms-dist-gpx" title="Profil & téléchargement du GPX" onClick={() => onGpx(g)}>⛰️</button>}
+        {g && onGpx && <button type="button" className="ms-dist-gpx" title="Profil & téléchargement du GPX" onClick={() => onGpx(g)}>🗺️</button>}
       </span>
     );
   })}</span>
