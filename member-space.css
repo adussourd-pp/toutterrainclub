@@ -586,3 +586,9 @@ select.pf-input { cursor: pointer; }
   .ms-race-right { align-items: flex-start; }
   .ms-dist-chips { justify-content: flex-start; }
 }
+
+/* — Lien discret vers l'espace orga (bas du hub membre) — */
+.ms-orga-foot { border-top: 1px solid var(--rule); margin-top: 10px; padding: 26px 0 8px; display: flex; flex-direction: column; gap: 3px; align-items: center; text-align: center; }
+.ms-orga-foot a { font-family: var(--f-mono); font-size: 13px; color: var(--muted); text-decoration: none; letter-spacing: .03em; }
+.ms-orga-foot a:hover { color: var(--green-3); }
+.ms-orga-foot span { font-family: var(--f-mono); font-size: 11px; color: var(--muted-2, #9b9a90); }
