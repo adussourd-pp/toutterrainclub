@@ -106,7 +106,7 @@ const JoinForm = ({ race, onJoin, onClose }) => {
   );
 };
 
-const RaceCard = ({ race, onJoin, onLeave }) => {
+const RaceCard = ({ race, onJoin, onLeave, onDelete }) => {
   const [open, setOpen] = React.useState(false);
   const parts = race.participants || [];
   return (
@@ -121,6 +121,7 @@ const RaceCard = ({ race, onJoin, onLeave }) => {
         <div className="ms-race-right">
           <Chips items={race.distances} />
           {race.site_url && <a className="ms-promo-link" href={race.site_url} target="_blank" rel="noopener">site ↗</a>}
+          {onDelete && <button className="ms-race-del" title="Supprimer la course" onClick={() => onDelete(race)}>🗑</button>}
         </div>
       </div>
 
@@ -177,6 +178,11 @@ const CoursesPage = () => {
     if (live) { try { await window.ttcApi(`/api/races/${race.id}/leave`, { method: "POST", body: { participation_id: p.id, member: p.member } }); await reload(); } catch (e) {} }
     else { const next = races.map((r) => r.id === race.id ? { ...r, participants: (r.participants || []).filter((x) => x !== p) } : r); setItems(next); saveLocal(next); }
   };
+  const deleteRace = async (race) => {
+    if (!window.confirm(`Supprimer la course « ${race.name} » ? C'est définitif.`)) return;
+    if (live) { try { await window.ttcApi(`/api/races/${race.id}/delete`, { method: "POST", body: {} }); await reload(); } catch (e) { alert("Suppression impossible (mets à jour le Worker Cloudflare)."); } }
+    else { const next = races.filter((r) => r.id !== race.id); setItems(next); saveLocal(next); }
+  };
 
   return (
     <React.Fragment>
@@ -207,7 +213,7 @@ const CoursesPage = () => {
             <div className="ms-empty">Aucune course pour l'instant. <button className="btn btn-sm btn-primary" onClick={() => setAdding(true)}>Ajoute la première →</button></div>
           )}
           <div className="ms-races">
-            {races.map((r) => <RaceCard key={r.id} race={r} onJoin={joinRace} onLeave={leaveRace} />)}
+            {races.map((r) => <RaceCard key={r.id} race={r} onJoin={joinRace} onLeave={leaveRace} onDelete={deleteRace} />)}
           </div>
         </div>
       </section>
