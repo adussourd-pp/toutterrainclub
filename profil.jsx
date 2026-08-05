@@ -161,15 +161,9 @@ const RunnerCard = ({ p }) => {
 
       {p.bio && <p className="pf-card-bio">« {p.bio} »</p>}
 
-      <div className="pf-card-stats">
-        <div className="pf-stat">
-          <div className="pf-stat-k">Totem de meute</div>
-          <div className="pf-stat-v pf-stat-sm">{tr.e} {tr.v}</div>
-        </div>
-        <div className="pf-stat">
-          <div className="pf-stat-k">Trail to Techno</div>
-          <div className="pf-stat-v pf-stat-sm">{mr.e} {mr.v}</div>
-        </div>
+      <div className="pf-card-totems">
+        <div className="ms-totem-line"><span className="ms-totem-k">Totem trail</span><span className="ms-totem-v">{tr.e} {tr.v}</span></div>
+        <div className="ms-totem-line"><span className="ms-totem-k">Trail to Techno</span><span className="ms-totem-v">{mr.e} {mr.v}</span></div>
       </div>
 
       {p.tags.length > 0 && (

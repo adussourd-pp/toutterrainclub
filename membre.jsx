@@ -25,8 +25,19 @@ const PROMOS = [
   { name: "Strava", role: "Suivi & club TTC", code: "Sur demande", url: "https://www.strava.com/clubs/toutterrainclub" },
 ];
 
+const MUSIC_EMOJI = {
+  "Petit tapeur de pied": "👟", "Danseur de buffet": "🕺", "Amateur de BPM": "🎧",
+  "Chasseur de caissons": "🔊", "Maxi Teufeur": "🔥", "Briseur de semelles": "🔨",
+  "Machine à Techno": "🔋", "Chaman des platines": "🧙", "Légende de l'After": "🌅", "Dieu de la Rave": "👑",
+};
+
 function myProfile() {
-  try { const p = JSON.parse(localStorage.getItem("ttc_profile_v1") || "null"); return p && (p.prenom || p.pseudo) ? p : null; } catch (e) { return null; }
+  try {
+    const raw = JSON.parse(localStorage.getItem("ttc_profile_v1") || "null");
+    if (!raw || !(raw.prenom || raw.pseudo)) return null;
+    // même forme que la carte (tableaux garantis) pour réutiliser RunnerCard.
+    return Object.assign({ distances: [], terrains: [], tags: [], activites: [], formats: [], niveau: "", techno: "", avatar: "🐗" }, raw);
+  } catch (e) { return null; }
 }
 
 const MeBadge = () => {
@@ -38,13 +49,10 @@ const MeBadge = () => {
     </div>
   );
   return (
-    <div className="ms-mebadge">
-      {p.photo ? <span className="ms-mebadge-av"><img src={p.photo} alt="" /></span> : <span className="ms-mebadge-av emoji">{p.avatar || "🐗"}</span>}
-      <div className="ms-mebadge-id">
-        <div className="ms-mebadge-name">Connecté·e : <b>{p.prenom || p.pseudo}</b>{p.role ? <span className="ms-mebadge-role"> · ★ {p.role}</span> : null}</div>
-        <div className="ms-mebadge-sub">{[p.ville, p.niveau].filter(Boolean).join(" · ")}</div>
-      </div>
-      <a className="btn btn-sm" href="profil.html">Ma carte</a>
+    <div className="ms-mecard">
+      <div className="ms-mecard-hi">Salut <b>{p.prenom || p.pseudo}</b> 👋 — voici ta carte</div>
+      <window.PROFIL.RunnerCard p={p} />
+      <a className="btn btn-sm btn-primary ms-mecard-edit" href="profil.html">Modifier ma carte →</a>
     </div>
   );
 };

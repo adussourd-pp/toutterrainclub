@@ -834,3 +834,11 @@ select.pf-input { cursor: pointer; }
 .ms-mcard-wrap.open { grid-column: 1 / -1; max-width: 440px; margin: 0 auto; }
 .ms-full { display: flex; flex-direction: column; gap: 12px; align-items: center; }
 .ms-full .ms-see { align-self: center; }
+
+/* Carte : totems en lignes labellisées (cohérent partout) */
+.pf-card-totems { display: flex; flex-direction: column; gap: 6px; margin: 14px 0; }
+/* Hub : la carte du membre (même RunnerCard) */
+.ms-mecard { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.ms-mecard .pf-card { width: 100%; max-width: 420px; }
+.ms-mecard-hi { align-self: flex-start; font-size: 14px; color: var(--muted); }
+.ms-mecard-hi b { color: var(--ink); }
