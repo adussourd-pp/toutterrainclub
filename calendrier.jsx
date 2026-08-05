@@ -88,8 +88,9 @@ const buildEvents = () => {
       title: "After-run · apéro de la meute", place: "QG à confirmer · Nice",
       dist: "0 km, 100 % social", detail: "On se pose après le run du jeudi. Point de retrouvailles, tarifs partenaires en test.", base: 28 },
     { id: "team-course", date: "2026-09-13", time: "09:00", type: "course",
-      title: "Team TTC · course locale", place: "Objectif commun · dossards groupés",
-      dist: "10 km / semi", detail: "On aligne une équipe aux couleurs du club. Inscriptions et co-voiturage coordonnés sur le groupe.", base: 17 },
+      title: "Team TTC · course objectif", place: "Objectif commun · dossards groupés · Alpes-Maritimes",
+      dist: "10 km / semi", detail: "On aligne une équipe aux couleurs du club. Inscriptions et co-voiturage coordonnés sur le groupe. (Exemple — ajoute la tienne ci-dessous.)",
+      link: "https://www.betrail.run/calendrier-trail/france", base: 17 },
   ];
   FIXED.forEach((e) => events.push(e));
 
@@ -129,7 +130,9 @@ const downloadICS = (e) => {
 
 const waShare = (e) => {
   const f = fmtDay(e.date);
-  const txt = `🏃 ${e.title}\n📅 ${f.wd} ${f.num} ${MONTHS[parseISO(e.date).getMonth()]} · ${e.time}\n📍 ${e.place}\n${e.dist ? "📏 " + e.dist + "\n" : ""}${e.detail}\n\nQui vient ? (via le calendrier TTC)`;
+  const emoji = e.type === "course" ? "🏁" : "🏃";
+  const line = e.type === "course" ? "Une team TTC dessus ?" : "Qui vient ?";
+  const txt = `${emoji} ${e.title}\n📅 ${f.wd} ${f.num} ${MONTHS[parseISO(e.date).getMonth()]} · ${e.time}\n📍 ${e.place}\n${e.dist ? "📏 " + e.dist + "\n" : ""}${e.detail || ""}${e.link ? "\n🔗 " + e.link : ""}\n\n${line} (via le calendrier TTC)`;
   window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank", "noopener");
 };
 
@@ -182,6 +185,9 @@ const EventCard = ({ e, mine, onRsvp }) => {
             </button>
             <button type="button" className="cal-ico" title="Ajouter à mon agenda" onClick={() => downloadICS(e)}>Agenda</button>
             <button type="button" className="cal-ico" title="Partager sur WhatsApp" onClick={() => waShare(e)}>WhatsApp</button>
+            {e.type === "course" && e.link && (
+              <a className="cal-ico cal-signup" href={e.link} target="_blank" rel="noopener" title="S'inscrire / infos course">S'inscrire ↗</a>
+            )}
           </div>
         </div>
       </div>
@@ -232,53 +238,101 @@ const MonthGrid = ({ monthDate, byDay, selected, onSelect }) => {
   );
 };
 
-// ---- Formulaire "proposer une sortie" ------------------------------------
+// ---- Ajouter au calendrier : sortie OU course ----------------------------
+// Lien de référence Betrail (calendrier des trails, France) — la source la plus
+// exhaustive pour retrouver une course et son lien d'inscription.
+const BETRAIL_URL = "https://www.betrail.run/calendrier-trail/france";
+
+const EMPTY_SORTIE = { title: "", date: "", time: "19:00", place: "", dist: "", type: "longue", detail: "", link: "" };
+const EMPTY_COURSE = { title: "", date: "", time: "08:00", place: "", dist: "", type: "course", detail: "", link: "" };
+
 const ProposeForm = ({ onAdd }) => {
   const [open, setOpen] = React.useState(false);
-  const [f, setF] = React.useState({ title: "", date: "", time: "19:00", place: "", dist: "", type: "longue", detail: "" });
+  const [mode, setMode] = React.useState("sortie");   // "sortie" | "course"
+  const [f, setF] = React.useState(EMPTY_SORTIE);
   const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
+
+  const switchMode = (m) => { setMode(m); setF(m === "course" ? EMPTY_COURSE : EMPTY_SORTIE); };
+
   const submit = (e) => {
     e.preventDefault();
     if (!f.title || !f.date) return;
-    onAdd({ ...f, id: `prop-${f.date}-${f.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 20)}`, base: 0, propBy: true });
-    setF({ title: "", date: "", time: "19:00", place: "", dist: "", type: "longue", detail: "" });
+    const type = mode === "course" ? "course" : f.type;
+    onAdd({ ...f, type, id: `prop-${f.date}-${f.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 20)}`, base: 0, propBy: true });
+    setF(mode === "course" ? EMPTY_COURSE : EMPTY_SORTIE);
     setOpen(false);
   };
+
   if (!open) {
     return (
       <div className="cal-propose-cta">
         <div>
-          <h3>Une envie de sortie ?</h3>
-          <p>Propose une date, un lieu, une distance. On l'ajoute au calendrier et tu la balances sur le groupe en un clic.</p>
+          <h3>Une sortie à lancer ? Une course à partager ?</h3>
+          <p>
+            Ajoute une <b>sortie</b> (date, lieu, distance) ou une <b>course</b> avec son
+            lien d'inscription. On la pose sur le calendrier, on rallie une team, et tu la
+            balances sur le groupe en un clic.
+          </p>
         </div>
-        <button type="button" className="btn btn-primary" onClick={() => setOpen(true)}>+ Proposer une sortie</button>
+        <div className="cal-cta-btns">
+          <button type="button" className="btn btn-primary" onClick={() => { switchMode("sortie"); setOpen(true); }}>+ Sortie</button>
+          <button type="button" className="btn" onClick={() => { switchMode("course"); setOpen(true); }}>+ Course</button>
+        </div>
       </div>
     );
   }
+
+  const isCourse = mode === "course";
   return (
     <form className="cal-propose-form" onSubmit={submit}>
-      <div className="cal-pf-head"><h3>Proposer une sortie</h3><button type="button" className="cal-pf-x" onClick={() => setOpen(false)}>✕</button></div>
+      <div className="cal-pf-head">
+        <div className="cal-pf-tabs">
+          <button type="button" className={mode === "sortie" ? "on" : ""} onClick={() => switchMode("sortie")}>Sortie</button>
+          <button type="button" className={mode === "course" ? "on" : ""} onClick={() => switchMode("course")}>Course</button>
+        </div>
+        <button type="button" className="cal-pf-x" onClick={() => setOpen(false)}>✕</button>
+      </div>
+
+      {isCourse && (
+        <p className="cal-pf-betrail">
+          Tu cherches une course et son lien d'inscription ?
+          <a href={BETRAIL_URL} target="_blank" rel="noopener"> Parcourir le calendrier Betrail ↗</a>
+          <span> — copie le nom, la date et le lien, colle-les ici.</span>
+        </p>
+      )}
+
       <div className="cal-pf-grid">
-        <label className="pf-field cal-pf-wide"><span className="pf-label">Titre</span>
-          <input className="pf-input" value={f.title} onChange={(e) => set("title", e.target.value)} placeholder="Sortie longue Peille, fractionné piste…" required /></label>
+        <label className="pf-field cal-pf-wide"><span className="pf-label">{isCourse ? "Nom de la course" : "Titre"}</span>
+          <input className="pf-input" value={f.title} onChange={(e) => set("title", e.target.value)} placeholder={isCourse ? "Trail des Merveilles, Nicextreme 30K…" : "Sortie longue Peille, fractionné piste…"} required /></label>
         <label className="pf-field"><span className="pf-label">Date</span>
           <input type="date" className="pf-input" value={f.date} onChange={(e) => set("date", e.target.value)} required /></label>
-        <label className="pf-field"><span className="pf-label">Heure</span>
+        <label className="pf-field"><span className="pf-label">{isCourse ? "Départ" : "Heure"}</span>
           <input type="time" className="pf-input" value={f.time} onChange={(e) => set("time", e.target.value)} /></label>
-        <label className="pf-field"><span className="pf-label">Type</span>
-          <select className="pf-input" value={f.type} onChange={(e) => set("type", e.target.value)}>
-            {Object.keys(TYPES).map((k) => <option key={k} value={k}>{TYPES[k].label}</option>)}
-          </select></label>
-        <label className="pf-field"><span className="pf-label">Distance / D+</span>
-          <input className="pf-input" value={f.dist} onChange={(e) => set("dist", e.target.value)} placeholder="≈ 20 km · 800 D+" /></label>
-        <label className="pf-field cal-pf-wide"><span className="pf-label">Lieu / RDV</span>
-          <input className="pf-input" value={f.place} onChange={(e) => set("place", e.target.value)} placeholder="RDV Colline du Château, 8h45" /></label>
+        {isCourse ? (
+          <label className="pf-field"><span className="pf-label">Format</span>
+            <input className="pf-input" value={f.dist} onChange={(e) => set("dist", e.target.value)} placeholder="30 km · 2000 D+" /></label>
+        ) : (
+          <React.Fragment>
+            <label className="pf-field"><span className="pf-label">Type</span>
+              <select className="pf-input" value={f.type} onChange={(e) => set("type", e.target.value)}>
+                {Object.keys(TYPES).filter((k) => k !== "course").map((k) => <option key={k} value={k}>{TYPES[k].label}</option>)}
+              </select></label>
+            <label className="pf-field"><span className="pf-label">Distance / D+</span>
+              <input className="pf-input" value={f.dist} onChange={(e) => set("dist", e.target.value)} placeholder="≈ 20 km · 800 D+" /></label>
+          </React.Fragment>
+        )}
+        <label className="pf-field cal-pf-wide"><span className="pf-label">{isCourse ? "Lieu / région" : "Lieu / RDV"}</span>
+          <input className="pf-input" value={f.place} onChange={(e) => set("place", e.target.value)} placeholder={isCourse ? "Sospel · Alpes-Maritimes" : "RDV Colline du Château, 8h45"} /></label>
+        {isCourse && (
+          <label className="pf-field cal-pf-wide"><span className="pf-label">Lien d'inscription / infos</span>
+            <input type="url" className="pf-input" value={f.link} onChange={(e) => set("link", e.target.value)} placeholder="https://…" /></label>
+        )}
         <label className="pf-field cal-pf-wide"><span className="pf-label">Détail</span>
-          <input className="pf-input" value={f.detail} onChange={(e) => set("detail", e.target.value)} placeholder="Rythme, ambiance, ce qu'il faut prévoir…" /></label>
+          <input className="pf-input" value={f.detail} onChange={(e) => set("detail", e.target.value)} placeholder={isCourse ? "Pourquoi celle-là, objectif team, co-voiturage…" : "Rythme, ambiance, ce qu'il faut prévoir…"} /></label>
       </div>
       <div className="cal-pf-actions">
-        <button type="submit" className="btn btn-primary">Ajouter au calendrier</button>
-        <span className="pf-note" style={{ margin: 0 }}>Enregistré sur cet appareil · pense à la partager sur WhatsApp depuis sa carte.</span>
+        <button type="submit" className="btn btn-primary">{isCourse ? "Ajouter la course" : "Ajouter au calendrier"}</button>
+        <span className="pf-note" style={{ margin: 0 }}>Enregistré sur cet appareil · partage-la ensuite sur WhatsApp depuis sa carte.</span>
       </div>
     </form>
   );
