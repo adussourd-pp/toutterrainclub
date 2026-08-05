@@ -947,3 +947,11 @@ select.pf-input { cursor: pointer; }
   .ms-cpop-overlay { animation: none; }
   .ms-part-bubble:hover { transform: none; }
 }
+
+/* Champ « Lieu » : autocomplétion d'adresse (OpenStreetMap / Photon) */
+.ms-loc { position: relative; }
+.ms-loc-list { position: absolute; z-index: 40; top: calc(100% + 4px); left: 0; right: 0; margin: 0; padding: 4px;
+  list-style: none; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18); max-height: 240px; overflow-y: auto; }
+.ms-loc-item { padding: 8px 10px; border-radius: 7px; font-size: 13.5px; line-height: 1.35; cursor: pointer; }
+.ms-loc-item:hover, .ms-loc-item.active { background: var(--green-tint); color: var(--green-3); }

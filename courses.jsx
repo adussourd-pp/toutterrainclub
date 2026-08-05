@@ -27,6 +27,64 @@ const Chips = ({ items }) => (
   })}</span>
 );
 
+// Champ « Lieu » avec autocomplétion d'adresse via OpenStreetMap (Photon).
+// Gratuit, sans clé. On tape ≥ 3 lettres → suggestions ; on clique pour choisir.
+function fmtPlace(p) {
+  const parts = [p.name, [p.postcode, p.city].filter(Boolean).join(" "), p.state, p.country].filter(Boolean);
+  return parts.filter((x, i) => parts.indexOf(x) === i).join(", ");
+}
+const LocationInput = ({ value, onChange, placeholder }) => {
+  const [q, setQ] = React.useState(value || "");
+  const [sugg, setSugg] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [active, setActive] = React.useState(-1);
+  const boxRef = React.useRef(null);
+  const tRef = React.useRef(null);
+  React.useEffect(() => { setQ(value || ""); }, [value]);
+  React.useEffect(() => {
+    const onDoc = (e) => { if (boxRef.current && !boxRef.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, []);
+  const search = (text) => {
+    if (tRef.current) clearTimeout(tRef.current);
+    if (!text || text.trim().length < 3) { setSugg([]); setOpen(false); return; }
+    tRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch("https://photon.komoot.io/api/?lang=fr&limit=5&q=" + encodeURIComponent(text));
+        const data = await res.json();
+        const items = (data.features || []).map((ft) => fmtPlace(ft.properties || {})).filter(Boolean);
+        const uniq = items.filter((v, i) => items.indexOf(v) === i);
+        setSugg(uniq); setOpen(uniq.length > 0); setActive(-1);
+      } catch (e) { setSugg([]); setOpen(false); }
+    }, 250);
+  };
+  const pick = (s) => { setQ(s); onChange(s); setOpen(false); setSugg([]); };
+  const onKey = (e) => {
+    if (!open) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); setActive((a) => Math.min(a + 1, sugg.length - 1)); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); setActive((a) => Math.max(a - 1, 0)); }
+    else if (e.key === "Enter") { e.preventDefault(); if (active >= 0) pick(sugg[active]); }
+    else if (e.key === "Escape") { setOpen(false); }
+  };
+  return (
+    <div className="ms-loc" ref={boxRef}>
+      <input className="pf-input" value={q} placeholder={placeholder} autoComplete="off"
+        onChange={(e) => { const v = e.target.value; setQ(v); onChange(v); search(v); }}
+        onFocus={() => { if (sugg.length) setOpen(true); }} onKeyDown={onKey} />
+      {open && (
+        <ul className="ms-loc-list">
+          {sugg.map((s, i) => (
+            <li key={i} className={`ms-loc-item ${i === active ? "active" : ""}`}
+                onMouseDown={(e) => { e.preventDefault(); pick(s); }}
+                onMouseEnter={() => setActive(i)}>📍 {s}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
 const RaceForm = ({ initial, onSubmit, onClose }) => {
   const editing = !!(initial && initial.id);
   const [f, setF] = React.useState({
@@ -64,7 +122,7 @@ const RaceForm = ({ initial, onSubmit, onClose }) => {
         <label className="pf-field"><span className="pf-label">Date (fin, option)</span>
           <input type="date" className="pf-input" value={f.date_end} onChange={(e) => set("date_end", e.target.value)} /></label>
         <label className="pf-field"><span className="pf-label">Lieu</span>
-          <input className="pf-input" value={f.location} onChange={(e) => set("location", e.target.value)} placeholder="Nice, Alpes-Maritimes" /></label>
+          <LocationInput value={f.location} onChange={(v) => set("location", v)} placeholder="Tape une ville / lieu…" /></label>
         <label className="pf-field"><span className="pf-label">Type</span>
           <select className="pf-input" value={f.type} onChange={(e) => set("type", e.target.value)}>
             {RACE_TYPES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select></label>
