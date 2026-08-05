@@ -344,19 +344,7 @@ const ProfilPage = () => {
               </div>
 
               <div className="pf-group">
-                <h3 className="pf-group-h">02 · Ton totem de meute <em className="pf-hint">choisis ton animal — c'est ton totem sur la carte</em></h3>
-                <RankGrid ranks={TRAIL_RANKS} value={p.niveau} onPick={pickTrail} />
-                <Field label="Distances préférées"><ChipToggle options={DISTANCES} value={p.distances} onToggle={(v) => toggle("distances", v)} /></Field>
-                <Field label="Terrains de jeu"><ChipToggle options={TERRAINS} value={p.terrains} onToggle={(v) => toggle("terrains", v)} /></Field>
-              </div>
-
-              <div className="pf-group">
-                <h3 className="pf-group-h">03 · Ton style Trail to Techno <em className="pf-hint">côté soirée</em></h3>
-                <RankGrid ranks={MUSIC_RANKS} value={p.techno} onPick={(r) => set("techno", r.v)} />
-              </div>
-
-              <div className="pf-group">
-                <h3 className="pf-group-h">04 · Tes affinités <em className="pf-hint">réponds — ça t'attribue tes rôles</em></h3>
+                <h3 className="pf-group-h">02 · Tes affinités <em className="pf-hint">réponds — ça t'attribue tes rôles</em></h3>
                 <div className="pf-qs">
                   {AFFINITES.map((a) => {
                     const on = p.tags.includes(a.role);
@@ -370,6 +358,18 @@ const ProfilPage = () => {
                   })}
                 </div>
                 <Field label="Ce que tu veux partager avec la meute"><ChipToggle options={ACTIVITES} value={p.activites} onToggle={(v) => toggle("activites", v)} /></Field>
+              </div>
+
+              <div className="pf-group">
+                <h3 className="pf-group-h">03 · Ton totem de meute <em className="pf-hint">choisis ton animal — c'est ton totem sur la carte</em></h3>
+                <RankGrid ranks={TRAIL_RANKS} value={p.niveau} onPick={pickTrail} />
+                <Field label="Distances préférées"><ChipToggle options={DISTANCES} value={p.distances} onToggle={(v) => toggle("distances", v)} /></Field>
+                <Field label="Terrains de jeu"><ChipToggle options={TERRAINS} value={p.terrains} onToggle={(v) => toggle("terrains", v)} /></Field>
+              </div>
+
+              <div className="pf-group">
+                <h3 className="pf-group-h">04 · Ton style Trail to Techno <em className="pf-hint">côté soirée</em></h3>
+                <RankGrid ranks={MUSIC_RANKS} value={p.techno} onPick={(r) => set("techno", r.v)} />
               </div>
 
               <div className="pf-group">
