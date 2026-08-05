@@ -263,7 +263,7 @@ const GpxEdit = ({ g, data, onSave, onCancel }) => {
   );
 };
 
-const GpxCard = ({ g, me, live, onEdit, onDone, onComment, onDeleteComment }) => {
+const GpxCard = ({ g, me, live, onEdit, onDone, onComment, onDeleteComment, onDelete }) => {
   const data = unpack(g);
   const [open, setOpen] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
@@ -287,7 +287,13 @@ const GpxCard = ({ g, me, live, onEdit, onDone, onComment, onDeleteComment }) =>
           <div className="ms-gpx-name">{data.official && <span className="ms-official">🏁 Course officielle</span>}{g.name}</div>
           <div className="ms-gpx-meta">{[g.region, g.start_point, g.type].filter(Boolean).join(" · ")}</div>
         </div>
-        <Diff km={g.distance_km} dplus={g.denivele_m} />
+        <div className="ms-gpx-right">
+          <Diff km={g.distance_km} dplus={g.denivele_m} />
+          <div className="ms-race-actions">
+            <button className="ms-race-edit" title="Modifier la trace" onClick={() => { setOpen(true); setEditing((v) => !v); }}>✏️</button>
+            {onDelete && <button className="ms-race-del" title="Supprimer la trace" onClick={() => onDelete(g)}>🗑</button>}
+          </div>
+        </div>
       </div>
       <ElevProfile profile={data.profile} eleMin={data.eleMin} eleMax={data.eleMax} />
       <div className="ms-gpx-card-f">
@@ -319,7 +325,6 @@ const GpxCard = ({ g, me, live, onEdit, onDone, onComment, onDeleteComment }) =>
         <div className="ms-social-links">
           {maps && <a className="ms-social-link" href={maps} target="_blank" rel="noopener">📍 Maps</a>}
           <button className="ms-social-link" onClick={() => setOpen((v) => !v)}>💬 {comments.length || ""} {open ? "▲" : "▼"}</button>
-          <button className="ms-social-link" onClick={() => { setOpen(true); setEditing((v) => !v); }}>✏️ Modifier</button>
         </div>
       </div>
 
@@ -408,6 +413,11 @@ const GpxPage = () => {
   });
   const onComment = (id, text) => live ? post("/api/gpx/" + id + "/comment", { text }) : mutate(id, (g) => ({ ...g, comments: [...(g.comments || []), { id: "lc" + Date.now(), member_id: me.id, text, created_at: new Date().toISOString(), name: me.name, avatar: me.avatar, mine: true }] }));
   const onDeleteComment = (id, cid) => live ? post("/api/gpx/" + id + "/comment/" + cid + "/delete", {}) : mutate(id, (g) => ({ ...g, comments: (g.comments || []).filter((c) => c.id !== cid) }));
+  const onDelete = async (g) => {
+    if (!window.confirm(`Supprimer la trace « ${g.name} » ? C'est définitif.`)) return;
+    if (live) { try { await window.ttcApi("/api/gpx/" + g.id + "/delete", { method: "POST", body: {} }); await reload(); } catch (e) { alert("Suppression impossible (droits ?). Reconnecte-toi."); } }
+    else { const next = items.filter((x) => x.id !== g.id); setItems(next); saveLocal(next); }
+  };
 
   const regions = [...new Set(items.map((g) => (g.region || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr"));
   const filtered = items.filter((g) => {
@@ -459,7 +469,7 @@ const GpxPage = () => {
           {(anyFilter || filtered.length > 0) && <div className="ms-gpx-count">{filtered.length} trace{filtered.length > 1 ? "s" : ""}{anyFilter ? " · filtré" : ""}</div>}
           {filtered.length === 0 && state !== "loading" && <div className="ms-empty">Aucune trace {anyFilter ? "ne correspond aux filtres" : "pour l'instant"}. {anyFilter ? <button className="btn btn-sm" onClick={clearFilters}>Réinitialiser</button> : <button className="btn btn-sm btn-primary" onClick={() => setAdding(true)}>Ajoute la première →</button>}</div>}
           <div className="ms-gpx-grid">
-            {filtered.map((g, i) => <GpxCard key={g.id || i} g={g} me={me} live={live} onEdit={onEdit} onDone={onDone} onComment={onComment} onDeleteComment={onDeleteComment} />)}
+            {filtered.map((g, i) => <GpxCard key={g.id || i} g={g} me={me} live={live} onEdit={onEdit} onDone={onDone} onComment={onComment} onDeleteComment={onDeleteComment} onDelete={onDelete} />)}
           </div>
         </div>
       </section>
