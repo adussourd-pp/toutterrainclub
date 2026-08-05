@@ -16,7 +16,7 @@ membre du site (connexion par code, courses, inscriptions, GPX, membres).
 | GET/POST | `/api/invites`, `/api/invites/revoke` | Gestion des codes (orga, en-tête `x-ttc-admin`) |
 | GET/POST | `/api/members` | Fiches membres (lecture connecté, écriture = sa fiche) |
 | GET/POST | `/api/races` | Liste / création de courses |
-| POST | `/api/races/:id/join` · `/leave` · `/delete` | S'inscrire · se retirer · **supprimer la course** |
+| POST | `/api/races/:id/join` · `/leave` · `/delete` · `/update` | S'inscrire · se retirer · **supprimer** · **modifier la course** |
 | GET/POST | `/api/gpx` | Parcours GPX partagés |
 
 ## Déployer une mise à jour
