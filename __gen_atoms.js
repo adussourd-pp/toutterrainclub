@@ -34,23 +34,105 @@ const Brand = ({
     fontWeight: 800
   }
 }, "tout terrain club")));
+
+// Lit compte + carte (forme sûre pour RunnerCard) depuis le navigateur.
+function readMe() {
+  let auth = null,
+    raw = null;
+  try {
+    auth = JSON.parse(localStorage.getItem("ttc_auth") || "null");
+  } catch (e) {}
+  try {
+    raw = JSON.parse(localStorage.getItem("ttc_profile_v1") || "null");
+  } catch (e) {}
+  const card = raw ? Object.assign({
+    distances: [],
+    terrains: [],
+    tags: [],
+    activites: [],
+    formats: [],
+    niveau: "",
+    techno: "",
+    avatar: "🐗"
+  }, raw) : null;
+  return {
+    auth,
+    card
+  };
+}
+
+// Ta carte en popup (ouverte depuis l'avatar du header, espace membre).
+const HeaderCardModal = ({
+  card,
+  onClose
+}) => {
+  React.useEffect(() => {
+    const k = e => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", k);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", k);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+  const hasCard = card && (card.prenom || card.pseudo);
+  const logout = () => {
+    try {
+      localStorage.removeItem("ttc_auth");
+      sessionStorage.removeItem("ttc_member_ok");
+    } catch (e) {}
+    window.location.href = "index.html";
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "me-backdrop",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "me-modal me-modal-card",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "me-close",
+    onClick: onClose,
+    "aria-label": "Fermer"
+  }, "×"), hasCard && window.PROFIL && window.PROFIL.RunnerCard ? /*#__PURE__*/React.createElement(window.PROFIL.RunnerCard, {
+    p: card
+  }) : /*#__PURE__*/React.createElement("div", {
+    className: "pf-card",
+    style: {
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("p", null, "Tu n'as pas encore rempli ta carte de coureur.")), /*#__PURE__*/React.createElement("div", {
+    className: "me-modal-actions"
+  }, /*#__PURE__*/React.createElement("a", {
+    className: "btn btn-sm btn-primary",
+    href: "profil.html"
+  }, hasCard ? "Modifier ma carte →" : "Créer ma carte →"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn btn-sm",
+    onClick: logout
+  }, "Déconnexion"))));
+};
 const HeaderPublic = ({
   active = "Accueil"
 }) => {
-  // Quand le membre est connecté (porte déverrouillée), le menu bascule sur
-  // l'espace membre : ses pages apparaissent directement dans le bandeau.
-  const [member, setMember] = React.useState(false);
-  React.useEffect(() => {
-    try {
-      setMember(sessionStorage.getItem("ttc_member_ok") === "1");
-    } catch (e) {}
-  }, []);
+  // Le menu « espace membre » n'apparaît QUE sur les pages de l'espace membre
+  // (celles qui chargent member-shell → window.MS). Le site public garde
+  // toujours son menu public, connecté ou pas.
+  const member = !!(typeof window !== "undefined" && window.MS);
   const publicItems = [{
     label: "Accueil",
     href: "index.html"
   }, {
     label: "Trail to Techno",
     href: "trail-to-techno.html"
+  }, {
+    label: "Saison 2027",
+    href: "adhesion-2027.html"
+  }, {
+    label: "Espace membre",
+    href: "membre.html"
   }, {
     label: "Contact",
     href: "mailto:toutterrainclub@gmail.com"
@@ -62,7 +144,7 @@ const HeaderPublic = ({
     label: "Ma carte",
     href: "profil.html"
   }, {
-    label: "Membres",
+    label: "La meute",
     href: "membres.html"
   }, {
     label: "Calendrier & courses",
@@ -72,6 +154,8 @@ const HeaderPublic = ({
     href: "gpx.html"
   }];
   const items = member ? memberItems : publicItems;
+  const me = readMe();
+  const [meOpen, setMeOpen] = React.useState(false);
   return /*#__PURE__*/React.createElement("header", {
     className: "header"
   }, /*#__PURE__*/React.createElement("div", {
@@ -87,16 +171,24 @@ const HeaderPublic = ({
   }, member ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("a", {
     href: "index.html",
     className: "btn btn-sm"
-  }, "← Site"), /*#__PURE__*/React.createElement("a", {
-    href: "membre.html",
-    className: "btn btn-sm btn-primary"
-  }, "Mon espace")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("a", {
+  }, "← Revenir au site"), me.auth && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "hdr-ava",
+    onClick: () => setMeOpen(true),
+    title: "Ma carte"
+  }, me.card && me.card.photo ? /*#__PURE__*/React.createElement("img", {
+    src: me.card.photo,
+    alt: "Ma carte"
+  }) : /*#__PURE__*/React.createElement("span", null, me.card && me.card.avatar || "🐗"))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("a", {
     href: "adhesion-2027.html",
     className: "btn btn-sm btn-primary"
   }, "Saison 2027 →"), /*#__PURE__*/React.createElement("a", {
     href: "membre.html",
     className: "btn btn-sm"
-  }, "Espace membre")))));
+  }, "Espace membre")))), meOpen && /*#__PURE__*/React.createElement(HeaderCardModal, {
+    card: me.card,
+    onClose: () => setMeOpen(false)
+  }));
 };
 const PromoStrip = () => /*#__PURE__*/React.createElement("div", {
   className: "promo-strip"
@@ -305,10 +397,7 @@ const FooterPublic = () => /*#__PURE__*/React.createElement("footer", {
 }, /*#__PURE__*/React.createElement("div", {
   className: "wrap"
 }, /*#__PURE__*/React.createElement("div", {
-  className: "footer-grid",
-  style: {
-    gridTemplateColumns: "1.6fr 1fr"
-  }
+  className: "footer-grid"
 }, /*#__PURE__*/React.createElement("div", {
   className: "footer-col"
 }, /*#__PURE__*/React.createElement(Brand, null), /*#__PURE__*/React.createElement("p", {
@@ -336,21 +425,36 @@ const FooterPublic = () => /*#__PURE__*/React.createElement("footer", {
   className: "chip muted"
 }, "Instagram"), /*#__PURE__*/React.createElement("span", {
   className: "chip muted"
-}, "Communauté"))), /*#__PURE__*/React.createElement("div", {
+}, "Communauté")), /*#__PURE__*/React.createElement("a", {
+  href: "mailto:toutterrainclub@gmail.com",
+  style: {
+    display: "inline-block",
+    marginTop: 22,
+    color: "var(--muted)"
+  }
+}, "toutterrainclub@gmail.com")), /*#__PURE__*/React.createElement("div", {
   className: "footer-col"
 }, /*#__PURE__*/React.createElement("h4", null, "Le club"), /*#__PURE__*/React.createElement("a", {
   href: "charte-des-valeurs.html"
 }, "Charte des valeurs"), /*#__PURE__*/React.createElement("a", {
+  href: "espace-membre.html"
+}, "Espace orga")), /*#__PURE__*/React.createElement("div", {
+  className: "footer-col"
+}, /*#__PURE__*/React.createElement("h4", null, "Légal"), /*#__PURE__*/React.createElement("a", {
   href: "mentions-legales.html"
 }, "Mentions légales"), /*#__PURE__*/React.createElement("a", {
   href: "confidentialite.html"
-}, "Confidentialité · RGPD"), /*#__PURE__*/React.createElement("a", {
-  href: "espace-membre.html"
-}, "Espace orga"), /*#__PURE__*/React.createElement("a", {
-  href: "mailto:toutterrainclub@gmail.com"
-}, "toutterrainclub@gmail.com"))), /*#__PURE__*/React.createElement("div", {
+}, "Confidentialité · RGPD")), /*#__PURE__*/React.createElement("div", {
+  className: "footer-col"
+}, /*#__PURE__*/React.createElement("h4", null, "Plan du site"), /*#__PURE__*/React.createElement("a", {
+  href: "index.html"
+}, "Accueil"), /*#__PURE__*/React.createElement("a", {
+  href: "trail-to-techno.html"
+}, "Trail to Techno"), /*#__PURE__*/React.createElement("a", {
+  href: "membre.html"
+}, "Espace membre"))), /*#__PURE__*/React.createElement("div", {
   className: "footer-base"
-}, /*#__PURE__*/React.createElement("span", null, "© 2026 Tout Terrain Club · Nice · Côte d'Azur"), /*#__PURE__*/React.createElement("span", null, "Saison 2026 · Mise à jour 12.05.2026 · 04:42"))));
+}, /*#__PURE__*/React.createElement("span", null, "© 2026 Tout Terrain Club · Nice · Côte d'Azur"))));
 Object.assign(window, {
   TtcLogo,
   Brand,

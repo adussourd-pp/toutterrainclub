@@ -226,7 +226,7 @@ const PartnersBand = () => (
 const FooterPublic = () => (
   <footer className="footer">
     <div className="wrap">
-      <div className="footer-grid" style={{ gridTemplateColumns: "1.6fr 1fr" }}>
+      <div className="footer-grid">
         <div className="footer-col">
           <Brand />
           <p style={{ color: "var(--muted)", maxWidth: "32ch", marginTop: 14, lineHeight: 1.55 }}>
@@ -237,19 +237,27 @@ const FooterPublic = () => (
             <a href="https://www.instagram.com/toutterrainclub/" target="_blank" rel="noopener" className="chip muted">Instagram</a>
             <span className="chip muted">Communauté</span>
           </div>
+          <a href="mailto:toutterrainclub@gmail.com" style={{ display: "inline-block", marginTop: 22, color: "var(--muted)" }}>toutterrainclub@gmail.com</a>
         </div>
         <div className="footer-col">
           <h4>Le club</h4>
           <a href="charte-des-valeurs.html">Charte des valeurs</a>
+          <a href="espace-membre.html">Espace orga</a>
+        </div>
+        <div className="footer-col">
+          <h4>Légal</h4>
           <a href="mentions-legales.html">Mentions légales</a>
           <a href="confidentialite.html">Confidentialité · RGPD</a>
-          <a href="espace-membre.html">Espace orga</a>
-          <a href="mailto:toutterrainclub@gmail.com">toutterrainclub@gmail.com</a>
+        </div>
+        <div className="footer-col">
+          <h4>Plan du site</h4>
+          <a href="index.html">Accueil</a>
+          <a href="trail-to-techno.html">Trail to Techno</a>
+          <a href="membre.html">Espace membre</a>
         </div>
       </div>
       <div className="footer-base">
         <span>© 2026 Tout Terrain Club · Nice · Côte d'Azur</span>
-        <span>Saison 2026 · Mise à jour 12.05.2026 · 04:42</span>
       </div>
     </div>
   </footer>
