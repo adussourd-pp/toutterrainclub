@@ -91,7 +91,6 @@ GEL.Hero = () => (
           temps de passage, ravitos, traces GPX, assistance.
         </p>
         <div className="t2t-hero-cta" style={{ flexDirection: "row", justifyContent: "flex-end", flexWrap: "wrap" }}>
-          <a href="https://wa.me/33668681188" target="_blank" rel="noopener" className="btn btn-uv">Candidater à l'expé →</a>
           <a href="edition-mercantour.html" className="btn btn-line-light">← L'édition Mercantour</a>
         </div>
       </div>
