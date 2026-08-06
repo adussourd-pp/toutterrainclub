@@ -242,6 +242,7 @@ const FooterPublic = () => (
           <h4>Le club</h4>
           <a href="charte-des-valeurs.html">Charte des valeurs</a>
           <a href="mentions-legales.html">Mentions légales</a>
+          <a href="confidentialite.html">Confidentialité · RGPD</a>
           <a href="espace-membre.html">Espace orga</a>
           <a href="mailto:toutterrainclub@gmail.com">toutterrainclub@gmail.com</a>
         </div>

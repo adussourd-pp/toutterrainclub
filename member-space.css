@@ -271,7 +271,7 @@
    PROFIL MEMBRE — ma carte de coureur
    ============================================================ */
 .pf-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 34px; align-items: start; max-width: 1000px; margin: 0 auto; }
-@media (max-width: 900px) { .pf-layout { grid-template-columns: 1fr; gap: 22px; max-width: 620px; } }
+@media (max-width: 900px) { .pf-layout { grid-template-columns: minmax(0, 1fr); gap: 22px; max-width: 620px; } }
 
 /* Grille de niveaux « aventure de la meute » */
 .pf-ranks { display: grid; grid-template-columns: repeat(auto-fill, minmax(126px, 1fr)); gap: 8px; margin-bottom: 16px; }
@@ -289,8 +289,8 @@
 .pf-acct-line b { color: var(--ink); letter-spacing: .06em; }
 
 /* — Formulaire — */
-.pf-form { display: flex; flex-direction: column; gap: 28px; }
-.pf-group { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 24px; }
+.pf-form { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+.pf-group { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 24px; min-width: 0; }
 .pf-group-h { font-family: var(--f-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--green-3); margin: 0 0 18px; }
 .pf-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; position: relative; }
 .pf-field:last-child { margin-bottom: 0; }
@@ -298,7 +298,7 @@
 .pf-hint { font-style: normal; color: var(--muted-2); text-transform: none; letter-spacing: 0; }
 .pf-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .pf-input {
-  font-family: var(--f-display); font-size: 15px; padding: 11px 13px; width: 100%;
+  font-family: var(--f-display); font-size: 15px; padding: 11px 13px; width: 100%; min-width: 0; max-width: 100%;
   border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink);
   outline: none; transition: border-color .15s ease; box-sizing: border-box;
 }
@@ -306,6 +306,7 @@
 select.pf-input { cursor: pointer; }
 .pf-textarea { resize: vertical; min-height: 62px; line-height: 1.5; }
 .pf-count { position: absolute; right: 4px; bottom: -16px; font-family: var(--f-mono); font-size: 10px; color: var(--muted-2); }
+.pf-field-err { font-size: 12px; color: var(--fire); font-family: var(--f-mono); margin-top: 4px; }
 
 /* — Chips à cocher — */
 .pf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -355,8 +356,9 @@ select.pf-input { cursor: pointer; }
   padding: 22px; box-shadow: 0 24px 50px -34px rgba(20,18,10,.5);
 }
 .pf-card-top { display: flex; gap: 14px; align-items: center; }
+.pf-card-id { min-width: 0; }
 .pf-avatar { width: 58px; height: 58px; font-size: 30px; border-radius: 14px; background: var(--paper); border: 1px solid var(--green-3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.pf-card-name { font-family: var(--f-display); font-weight: 800; font-size: 20px; letter-spacing: -.02em; line-height: 1.15; }
+.pf-card-name { font-family: var(--f-display); font-weight: 800; font-size: 20px; letter-spacing: -.02em; line-height: 1.15; overflow-wrap: anywhere; }
 .pf-card-handle { font-family: var(--f-hand); font-weight: 600; font-size: 17px; color: var(--green-3); }
 .pf-card-meta { display: flex; align-items: center; gap: 10px; margin-top: 5px; font-size: 12.5px; color: var(--muted); flex-wrap: wrap; }
 .pf-badge-lvl { font-family: var(--f-mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--green-3); color: #fff; }
@@ -384,6 +386,22 @@ select.pf-input { cursor: pointer; }
 .pf-reset:hover { color: var(--fire); }
 .pf-note { font-size: 12px; color: var(--muted); line-height: 1.55; margin: 14px 0 0; }
 .pf-note b { color: var(--ink); }
+
+/* RGPD — consentement photo */
+.pf-consent { display: flex; align-items: flex-start; gap: 8px; margin-top: 10px;
+  font-size: 12px; line-height: 1.5; color: var(--muted); cursor: pointer; }
+.pf-consent input { margin-top: 2px; flex: none; accent-color: var(--fire); cursor: pointer; }
+.pf-consent strong { color: var(--ink); font-weight: 600; }
+.pf-consent a { color: var(--fire); }
+
+/* RGPD — zone suppression de compte */
+.pf-danger { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--rule); }
+.pf-danger-btn { width: 100%; background: none; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--fire) 55%, transparent);
+  color: var(--fire); font-family: var(--f-mono); font-size: 12px; letter-spacing: .04em;
+  padding: 9px 12px; border-radius: 6px; transition: background .15s; }
+.pf-danger-btn:hover { background: color-mix(in srgb, var(--fire) 10%, transparent); }
+.pf-danger .pf-note a { color: var(--fire); }
 
 /* ============================================================
    CALENDRIER PARTAGÉ
@@ -497,7 +515,7 @@ select.pf-input { cursor: pointer; }
 .cal-signup:hover { background: color-mix(in srgb, var(--fire) 10%, transparent); }
 
 @media (max-width: 980px) {
-  .pf-layout { grid-template-columns: 1fr; }
+  .pf-layout { grid-template-columns: minmax(0, 1fr); }
   .pf-aside-sticky { position: static; }
 }
 @media (max-width: 860px) {
@@ -569,11 +587,20 @@ select.pf-input { cursor: pointer; }
 .ms-form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 
 /* courses */
+.ms-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin: 0 0 16px; padding: 14px 16px; border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper-2); }
+.ms-filters .pf-input { margin: 0; }
+.ms-filters-q { flex: 1 1 220px; min-width: 180px; align-self: stretch; }
+.ms-filters-field { display: flex; flex-direction: column; gap: 4px; }
+.ms-filters-field span { font-family: var(--f-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.ms-filters-field .pf-input { width: auto; }
+.ms-filters-km { width: 76px; }
+.ms-filters-reset { align-self: flex-end; }
 .ms-races { display: flex; flex-direction: column; gap: 14px; }
 .ms-race { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); overflow: hidden; }
 .ms-race-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 18px 20px; }
-.ms-race-name { font-family: var(--f-display); font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
-.ms-race-meta { font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.ms-race-top > div { min-width: 0; }
+.ms-race-name { font-family: var(--f-display); font-weight: 800; font-size: 21px; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.ms-race-meta { font-family: var(--f-mono); font-size: 12.5px; color: var(--muted); margin-top: 4px; overflow-wrap: anywhere; }
 .ms-race-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 .ms-dist-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 .ms-dist-chip { font-family: var(--f-mono); font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--paper-2); color: var(--ink); border: 1px solid var(--rule); }
@@ -659,12 +686,15 @@ select.pf-input { cursor: pointer; }
 .ms-gpx-note { margin-top: 10px; font-family: var(--f-mono); font-size: 12px; line-height: 1.5; color: var(--green-3); background: var(--green-tint); border-radius: var(--radius); padding: 8px 10px; }
 
 /* cartes GPX */
-.ms-gpx-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.ms-gpx-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .ms-gpx-card { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 18px 20px; }
 .ms-gpx-card-h { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+/* Colonne titre : min-width:0 pour qu'un nom sans espaces puisse être coupé
+   au lieu de déborder la carte (cf. overflow-wrap sur .ms-gpx-name). */
+.ms-gpx-card-h > div { min-width: 0; }
 .ms-gpx-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex: 0 0 auto; }
-.ms-gpx-name { font-family: var(--f-display); font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
-.ms-gpx-meta { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin-top: 3px; }
+.ms-gpx-name { font-family: var(--f-display); font-weight: 700; font-size: 18px; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.ms-gpx-meta { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin-top: 3px; overflow-wrap: anywhere; }
 .ms-gpx-card-f { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
 .ms-gpx-actions { display: flex; gap: 10px; align-items: center; }
 
@@ -882,11 +912,24 @@ select.pf-input { cursor: pointer; }
   border: 1px solid rgba(255,94,26,.3); border-radius: 999px; padding: 3px 10px; }
 
 /* Meute : cartes repliables (compact ↔ carte complète) */
-.ms-mcard-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; }
-.ms-mcard-wrap .pf-card { width: 100%; }
+/* Toutes les cartes de la meute font la même taille : lignes de grille égales
+   + la carte remplit sa cellule (contenu aligné en haut). */
+.ms-members { grid-auto-rows: 1fr; }
+.ms-mcard-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; height: 100%; }
+.ms-mcard-wrap .pf-card { width: 100%; height: 100%; display: flex; flex-direction: column; }
 .ms-mcard-wrap.me .pf-card { border-color: var(--green-3); box-shadow: 0 0 0 1px var(--green-3) inset; }
 .ms-see { align-self: center; }
 .ms-mcard-wrap.open { grid-column: 1 / -1; max-width: 440px; margin: 0 auto; }
+
+/* Carte « en attente » : logué mais fiche vide */
+.pf-card-pending { border-style: dashed; background: var(--paper); }
+.pf-card-pending .pf-avatar { border-style: dashed; }
+.pf-pending-badge { font-family: var(--f-mono); font-size: 11px; letter-spacing: .04em; color: var(--muted); background: var(--paper-2); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 9px; }
+.pf-card-pending .pf-card-bio a { color: var(--green-3); font-weight: 600; }
+
+/* Interrupteur « visible dans la meute » sous un champ */
+.pf-visib { display: flex; align-items: center; gap: 7px; margin-top: 6px; font-size: 12.5px; color: var(--muted); cursor: pointer; }
+.pf-visib input { width: 15px; height: 15px; accent-color: var(--green-3); cursor: pointer; }
 
 /* Carte : les 2 totems côte à côte */
 .pf-card-totems { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
@@ -994,7 +1037,7 @@ select.pf-input { cursor: pointer; }
   cursor: pointer; font-size: 12px; line-height: 1; padding: 2px 5px; margin-left: 2px; }
 .ms-dist-gpx:hover { background: var(--green-3); }
 .ms-gpx-pop { max-width: 100%; }
-.ms-gpx-name { font-family: var(--f-display); font-weight: 800; font-size: 18px; margin-bottom: 6px; }
+.ms-gpx-name { font-family: var(--f-display); font-weight: 800; font-size: 18px; margin-bottom: 6px; overflow-wrap: anywhere; }
 .ms-gpx-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 13px; color: var(--muted); margin-bottom: 12px; }
 .ms-gpx-meta b { color: var(--ink); }
 .ms-gpx-pop-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
@@ -1002,10 +1045,76 @@ select.pf-input { cursor: pointer; }
 /* Course : liens (site/whatsapp) + commentaire */
 .ms-race-links { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-top: 4px; }
 .ms-race-wa { font-size: 13px; color: var(--green-3); font-weight: 600; text-decoration: none; }
-.ms-race-comment { margin: 8px 0 0; font-size: 14px; color: #39362e; background: var(--paper-2, #f2f1ea); border-left: 3px solid var(--green); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; }
+.ms-race-comment { margin: 8px 0 0; font-size: 14px; color: #39362e; background: var(--paper-2, #f2f1ea); border-left: 3px solid var(--green); border-radius: 6px; padding: 8px 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 /* GPX : renvoi vers le calendrier */
 .ms-gpx-course { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--green-3); font-weight: 600; text-decoration: none; margin-top: 6px; }
 
 /* Course : ligne Parcours (tags de distances, avec badge GPX) */
 .ms-race-parcours { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 20px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--paper-2, #f2f1ea); }
 .ms-race-traces-h { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Onboarding — tour guidé de la première connexion (voir onboarding.jsx)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Bouton flottant « ? » : relance le guide à tout moment */
+.onb-launch { position: fixed; right: 18px; bottom: 18px; z-index: 900; width: 46px; height: 46px;
+  border-radius: 50%; border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+  font-family: var(--f-display); font-weight: 700; font-size: 22px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  transition: transform .12s ease, border-color .12s ease, color .12s ease; }
+.onb-launch:hover { transform: translateY(-2px) scale(1.06); border-color: var(--green-3); color: var(--green-3); }
+
+/* Écran plein (bloque la page) + voile sombre */
+.onb-catch { position: fixed; inset: 0; z-index: 3000; }
+.onb-dim { background: rgba(18,15,11,.62); backdrop-filter: blur(2px); }
+
+/* Trou lumineux du spotlight (le voile vient du box-shadow géant) */
+.onb-hole { position: fixed; z-index: 3001; border-radius: 16px; pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(18,15,11,.62); outline: 2px solid var(--green-3); outline-offset: 3px;
+  transition: top .28s cubic-bezier(.4,0,.2,1), left .28s cubic-bezier(.4,0,.2,1),
+              width .28s cubic-bezier(.4,0,.2,1), height .28s cubic-bezier(.4,0,.2,1); }
+
+/* Bulle d'explication ancrée à l'élément visé */
+.onb-bubble { position: fixed; z-index: 3002; background: var(--paper); border: 1px solid var(--rule);
+  border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.35); padding: 18px 20px; animation: onb-pop .18s ease-out; }
+.onb-bubble .onb-em { font-size: 26px; line-height: 1; }
+.onb-bubble h3 { font-family: var(--f-display); font-weight: 700; font-size: 18px; letter-spacing: -.02em; margin: 8px 0 6px; }
+.onb-bubble p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0; }
+
+/* Écran centré (bienvenue / fin) */
+.onb-center { position: fixed; inset: 0; z-index: 3002; display: flex; align-items: center;
+  justify-content: center; padding: 20px; pointer-events: none; }
+.onb-card { position: relative; pointer-events: auto; width: 100%; max-width: 440px; background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,.4);
+  padding: 30px 28px; text-align: center; animation: onb-pop .2s ease-out; }
+.onb-card .onb-big { font-size: 46px; line-height: 1; }
+.onb-card h2 { font-family: var(--f-display); font-weight: 800; font-size: 26px; letter-spacing: -.03em; margin: 14px 0 10px; }
+.onb-card p { font-size: 15px; color: var(--muted); line-height: 1.6; margin: 0 auto; max-width: 36ch; }
+.onb-x { top: 12px; right: 14px; }
+
+/* Pied commun : progression + actions */
+.onb-foot { display: flex; align-items: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.onb-center .onb-foot { justify-content: center; }
+.onb-dots { display: flex; gap: 6px; flex: 1; }
+.onb-center .onb-dots { flex: none; }
+.onb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rule); transition: background .2s ease, transform .2s ease; }
+.onb-dot.on { background: var(--green-3); transform: scale(1.3); }
+.onb-skip { background: none; border: 0; padding: 4px 2px; color: var(--muted); font-family: var(--f-display);
+  font-size: 13px; cursor: pointer; }
+.onb-skip:hover { color: var(--ink); text-decoration: underline; }
+.onb-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+@keyframes onb-pop { from { opacity: 0; transform: translateY(6px) scale(.98); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 520px) {
+  .onb-bubble { max-width: calc(100vw - 24px); }
+  .onb-foot { gap: 8px; }
+  .onb-actions { width: 100%; }
+  .onb-actions .btn { flex: 1; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .onb-bubble, .onb-card { animation: none; }
+  .onb-hole { transition: none; }
+  .onb-launch:hover { transform: none; }
+}
