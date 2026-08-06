@@ -77,6 +77,10 @@ html, body {
   font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Filet de sécurité global : un mot / nom / lien très long (souvent une
+     saisie utilisateur) est coupé au lieu de déborder sa boîte, partout sur
+     le site. overflow-wrap est hérité, donc ça s'applique à tout le texte. */
+  overflow-wrap: break-word;
 }
 
 .mode-techno body {
