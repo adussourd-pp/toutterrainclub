@@ -42,7 +42,7 @@ const ONB_STEPS = [
   },
   {
     type: "end",
-    em: "🚀",
+    em: "🐗",
     titre: "C'est parti !",
     texte: "Tu peux revoir ce guide quand tu veux via le bouton « ? » en bas à droite. Bonne course, et à très vite sur les sentiers.",
   },
