@@ -354,6 +354,9 @@ select.pf-input { cursor: pointer; }
   border: 1px solid var(--green-3); border-radius: var(--radius-lg);
   background: linear-gradient(180deg, var(--green-tint), var(--paper) 42%);
   padding: 22px; box-shadow: 0 24px 50px -34px rgba(20,18,10,.5);
+  /* overflow-wrap est hérité : un nom/pseudo/bio sans espaces est coupé
+     partout dans la carte au lieu de déborder et de déformer la tuile. */
+  overflow-wrap: anywhere;
 }
 .pf-card-top { display: flex; gap: 14px; align-items: center; }
 .pf-card-id { min-width: 0; }
@@ -620,7 +623,7 @@ select.pf-input { cursor: pointer; }
 .ms-gpx-table td { font-size: 13.5px; }
 
 /* membres */
-.ms-members { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ms-members { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .ms-mcard { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 .ms-mcard-top { display: flex; gap: 12px; align-items: center; }
 .ms-mcard-av { font-size: 34px; line-height: 1; }
@@ -631,8 +634,8 @@ select.pf-input { cursor: pointer; }
 .ms-mcard-soc a { color: var(--green-3); text-decoration: none; }
 
 @media (max-width: 860px) {
-  .ms-hub-grid, .ms-events, .ms-promos, .ms-members { grid-template-columns: 1fr; }
-  .ms-form-grid { grid-template-columns: 1fr; }
+  .ms-hub-grid, .ms-events, .ms-promos, .ms-members { grid-template-columns: minmax(0, 1fr); }
+  .ms-form-grid { grid-template-columns: minmax(0, 1fr); }
   .ms-race-top { flex-direction: column; }
   .ms-race-right { align-items: flex-start; }
   .ms-dist-chips { justify-content: flex-start; }
@@ -904,7 +907,7 @@ select.pf-input { cursor: pointer; }
   border: 1px solid rgba(255,94,26,.3); border-radius: 999px; padding: 3px 10px; }
 
 /* Meute : cartes repliables (compact ↔ carte complète) */
-.ms-mcard-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; }
+.ms-mcard-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .ms-mcard-wrap .pf-card { width: 100%; }
 .ms-mcard-wrap.me .pf-card { border-color: var(--green-3); box-shadow: 0 0 0 1px var(--green-3) inset; }
 .ms-see { align-self: center; }
