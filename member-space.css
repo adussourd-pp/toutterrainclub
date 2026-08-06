@@ -385,6 +385,22 @@ select.pf-input { cursor: pointer; }
 .pf-note { font-size: 12px; color: var(--muted); line-height: 1.55; margin: 14px 0 0; }
 .pf-note b { color: var(--ink); }
 
+/* RGPD — consentement photo */
+.pf-consent { display: flex; align-items: flex-start; gap: 8px; margin-top: 10px;
+  font-size: 12px; line-height: 1.5; color: var(--muted); cursor: pointer; }
+.pf-consent input { margin-top: 2px; flex: none; accent-color: var(--fire); cursor: pointer; }
+.pf-consent strong { color: var(--ink); font-weight: 600; }
+.pf-consent a { color: var(--fire); }
+
+/* RGPD — zone suppression de compte */
+.pf-danger { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--rule); }
+.pf-danger-btn { width: 100%; background: none; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--fire) 55%, transparent);
+  color: var(--fire); font-family: var(--f-mono); font-size: 12px; letter-spacing: .04em;
+  padding: 9px 12px; border-radius: 6px; transition: background .15s; }
+.pf-danger-btn:hover { background: color-mix(in srgb, var(--fire) 10%, transparent); }
+.pf-danger .pf-note a { color: var(--fire); }
+
 /* ============================================================
    CALENDRIER PARTAGÉ
    ============================================================ */

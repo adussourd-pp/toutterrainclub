@@ -57,7 +57,7 @@ const LegalBody = () => (
           </div>
           <div className="legal-note">
             <h3>Données personnelles</h3>
-            <p>Les informations collectées via les formulaires servent uniquement à la gestion des adhésions et des inscriptions. Vous disposez d'un droit d'accès, de rectification et de suppression en écrivant à <a href="mailto:toutterrainclub@gmail.com">toutterrainclub@gmail.com</a>.</p>
+            <p>L'espace membre collecte certaines données (carte de coureur, photo de profil facultative et soumise à consentement, e-mail, contributions) pour la vie de l'association. La photo n'est enregistrée qu'après consentement explicite et reste retirable à tout moment. Vous disposez d'un droit d'accès, de rectification, d'opposition et de suppression (bouton « Supprimer mon compte » sur votre carte, ou par e-mail). Détails dans notre <a href="confidentialite.html">politique de confidentialité</a>, ou en écrivant à <a href="mailto:toutterrainclub@gmail.com">toutterrainclub@gmail.com</a>.</p>
           </div>
           <p className="legal-source">Sources &amp; mise à jour le 07/07/2026 · Insee</p>
         </div>
