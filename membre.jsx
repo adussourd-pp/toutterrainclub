@@ -157,14 +157,6 @@ const MemberHub = () => (
         )}
       </div>
     </section>
-
-    <div className="wrap">
-      <div className="ms-orga-foot">
-        <a href="charte-benevole.html">📜 Charte bénévole — le cadre de l'implication →</a>
-        <a href="espace-membre.html">🔒 Espace orga (bureau) — analyse &amp; stratégie →</a>
-        <span>accès réservé, mot de passe séparé</span>
-      </div>
-    </div>
   </React.Fragment>
 );
 
