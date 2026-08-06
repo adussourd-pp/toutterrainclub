@@ -1009,3 +1009,36 @@ select.pf-input { cursor: pointer; }
 /* Course : ligne Parcours (tags de distances, avec badge GPX) */
 .ms-race-parcours { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 20px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--paper-2, #f2f1ea); }
 .ms-race-traces-h { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* ============================================================
+   POLISH MOBILE — espace membre (fluidité + lisibilité tactile)
+   ============================================================ */
+@media (max-width: 640px) {
+  /* iOS Safari zoome au focus dès qu'un champ < 16px : on remonte tous
+     les contrôles de saisie de l'espace membre à 16px → plus de zoom
+     intempestif, la saisie reste fluide. */
+  .pf-input, select.pf-input, textarea.pf-input,
+  .ms-lock-input, .ms-lock-card input[type="text"], .ms-lock-card input[type="email"],
+  .ms-join .pf-input, .ms-gpx-toolbar .pf-input, .ms-cmt-form .pf-input,
+  .ms-distgpx .pf-input { font-size: 16px; }
+
+  /* Cibles tactiles plus généreuses sur les boutons pilules pour le pouce. */
+  .cal-join, .cal-ico, .pf-chip, .pf-tk, .ms-chip, .cal-filter, .ms-done-btn,
+  .ms-off-toggle, .cal-views button, .cal-pf-tabs button { min-height: 40px; }
+  .pf-chip, .pf-tk, .ms-chip, .cal-filter { display: inline-flex; align-items: center; }
+
+  /* Boutons d'action principaux : pleine largeur = plus faciles à viser. */
+  .ms-form-actions, .cal-cta-btns { width: 100%; }
+  .ms-form-actions .btn, .cal-cta-btns .btn { flex: 1; justify-content: center; }
+
+  /* Le hero de l'espace membre respire un peu moins haut sur mobile. */
+  .adh-hero { padding-top: calc(46px * var(--density, 1)); padding-bottom: calc(30px * var(--density, 1)); }
+}
+
+/* Titres géants de l'espace membre : bornes resserrées sur petit écran. */
+@media (max-width: 560px) {
+  .ms-cloud .w1 { font-size: 44px; }
+  .ms-cloud .w2 { font-size: 32px; }
+  .cal-ev-actions { flex-wrap: wrap; }
+  .cal-ev-actions .cal-join { flex: 1 1 auto; text-align: center; }
+}
