@@ -259,9 +259,16 @@ const RaceForm = ({ initial, gpxList, onUploadGpx, onSubmit, onClose }) => {
   const setD = (i, k, v) => setDists((a) => a.map((d, j) => (j === i ? { ...d, [k]: v } : d)));
   const addD = () => setDists((a) => [...a, { km: "", dplus: "" }]);
   const rmD = (i) => setDists((a) => a.filter((_, j) => j !== i));
+  const [dateErr, setDateErr] = React.useState("");
   const submit = (e) => {
     e.preventDefault();
     if (!f.name.trim()) return;
+    // La date de fin ne peut pas précéder la date de début (format ISO = tri lexical sûr).
+    if (f.date_start && f.date_end && f.date_end < f.date_start) {
+      setDateErr("La date de fin ne peut pas être antérieure à la date de début.");
+      return;
+    }
+    setDateErr("");
     const distances = dists
       .filter((d) => String(d.km).trim() !== "")
       .map((d) => ({ km: Number(d.km) || 0, dplus: Number(d.dplus) || 0, ...(d.gpx_id ? { gpx_id: d.gpx_id, gpx_name: d.gpx_name || "" } : {}) }));
@@ -274,9 +281,10 @@ const RaceForm = ({ initial, gpxList, onUploadGpx, onSubmit, onClose }) => {
         <label className="pf-field" style={{ gridColumn: "1 / -1" }}><span className="pf-label">Nom de la course</span>
           <input className="pf-input" value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="Ex : Nice by UTMB" autoFocus /></label>
         <label className="pf-field"><span className="pf-label">Date (début)</span>
-          <input type="date" className="pf-input" value={f.date_start} onChange={(e) => set("date_start", e.target.value)} /></label>
+          <input type="date" className="pf-input" value={f.date_start} onChange={(e) => { set("date_start", e.target.value); setDateErr(""); }} /></label>
         <label className="pf-field"><span className="pf-label">Date (fin, option)</span>
-          <input type="date" className="pf-input" value={f.date_end} onChange={(e) => set("date_end", e.target.value)} /></label>
+          <input type="date" className="pf-input" value={f.date_end} min={f.date_start || undefined} onChange={(e) => { set("date_end", e.target.value); setDateErr(""); }} />
+          {dateErr && <span className="pf-field-err">{dateErr}</span>}</label>
         <label className="pf-field"><span className="pf-label">Lieu</span>
           <LocationInput value={f.location} onChange={(v) => set("location", v)} placeholder="Tape une ville / lieu…" /></label>
         <label className="pf-field"><span className="pf-label">Type</span>
@@ -297,8 +305,8 @@ const RaceForm = ({ initial, gpxList, onUploadGpx, onSubmit, onClose }) => {
           return (
             <div className="ms-dist-block" key={i}>
               <div className="ms-dist-row">
-                <input type="number" className="pf-input" value={d.km} onChange={(e) => setD(i, "km", e.target.value)} placeholder="km" />
-                <input type="number" className="pf-input" value={d.dplus} onChange={(e) => setD(i, "dplus", e.target.value)} placeholder="D+ (m)" />
+                <input type="number" min="0" inputMode="decimal" className="pf-input" value={d.km} onChange={(e) => setD(i, "km", e.target.value.replace(/[^\d.]/g, ""))} placeholder="km" />
+                <input type="number" min="0" inputMode="numeric" className="pf-input" value={d.dplus} onChange={(e) => setD(i, "dplus", e.target.value.replace(/[^\d]/g, ""))} placeholder="D+ (m)" />
                 <span className={`ms-cat ${cat.code === "—" ? "muted" : ""}`} title={cat.full}>{d.km ? cat.code : "—"}</span>
                 {dists.length > 1 && <button type="button" className="ms-dist-rm" onClick={() => rmD(i)}>×</button>}
               </div>
