@@ -20,7 +20,6 @@ const RacHero = () => (
       <div className="t2t-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "end", marginTop: 32 }}>
         <p className="t2t-hero-lede" style={{ fontSize: 17 }}>{R().intro}</p>
         <div className="t2t-hero-cta" style={{ flexDirection: "row", justifyContent: "flex-end", flexWrap: "wrap" }}>
-          <a href="edition-mercantour.html" className="btn btn-uv">La prochaine édition →</a>
           <a href="#teams" className="btn btn-line-light">Le récit</a>
         </div>
       </div>
@@ -162,7 +161,6 @@ const RacOutro = () => (
       <div className="sub">Vol. 1 · Raclette · Janvier 2026</div>
       <h2>Un chapitre<br/><span className="uv">de plus</span>.</h2>
       <div className="t2t-final-cta">
-        <a href="edition-mercantour.html" className="btn btn-uv">Cap sur le Mercantour →</a>
         <a href="trail-to-techno.html" className="btn btn-line-light">← Le concept</a>
       </div>
     </div>

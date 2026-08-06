@@ -34,7 +34,6 @@ const MCHero = () => (
         </div>
         <div className="t2t-hero-cta" style={{ flexDirection: "row", justifyContent: "flex-end", flexWrap: "wrap" }}>
           <a href="#video" className="btn btn-uv">▶ Le DJ set & le clip</a>
-          <a href="edition-mercantour.html" className="btn btn-line-light">Aujourd'hui →</a>
         </div>
       </div>
     </div>
@@ -176,7 +175,6 @@ const MCOutro = () => (
       <div className="sub">Édition #00 · Mont Chauve · Octobre 2025</div>
       <h2>Et ce<br/><span className="uv">n'était que</span> le début.</h2>
       <div className="t2t-final-cta">
-        <a href="edition-mercantour.html" className="btn btn-uv">L'édition en cours →</a>
         <a href="trail-to-techno.html" className="btn btn-line-light">← Le concept</a>
       </div>
     </div>
