@@ -30,7 +30,18 @@ function fmtCode(c) { return c && c.length === 8 ? c.slice(0, 4) + "-" + c.slice
 function adminAuthed(req, env) { const s = req.headers.get("x-ttc-admin") || ""; return !!env.ADMIN_SECRET && s === env.ADMIN_SECRET; }
 
 function safe(s) { try { return JSON.parse(s || "[]"); } catch (e) { return []; } }
-function pubMember(r) { let terr = {}; try { terr = JSON.parse(r.terrains || "{}"); } catch (e) {} return { id: r.id, prenom: r.prenom, pseudo: r.pseudo, ville: r.ville, avatar: r.avatar, niveau: r.niveau, objectif: r.objectif, strava: r.strava, insta: r.insta, techno: r.techno, adhesion: r.adhesion, distances: safe(r.distances), terrains: terr }; }
+// `own` = true quand le membre récupère SA propre fiche : on lui renvoie alors
+// tél/mail bruts + leurs interrupteurs de visibilité (pour préremplir l'éditeur).
+// Sinon (la meute), on ne publie tél/mail QUE si le membre les a rendus visibles.
+function pubMember(r, own) {
+  let terr = {}; try { terr = JSON.parse(r.terrains || "{}"); } catch (e) {}
+  const { tel, email, showTel, showEmail, ...pubTerr } = terr; // tél/mail retirés du blob public
+  const contact = own
+    ? { tel: tel || "", email: email || "", showTel: !!showTel, showEmail: !!showEmail }
+    : { tel: (showTel && tel) ? tel : "", email: (showEmail && email) ? email : "" };
+  const incomplete = !(r.prenom || r.pseudo); // logué mais fiche pas encore remplie
+  return { id: r.id, prenom: r.prenom, pseudo: r.pseudo, ville: r.ville, avatar: r.avatar, niveau: r.niveau, objectif: r.objectif, strava: r.strava, insta: r.insta, techno: r.techno, adhesion: r.adhesion, distances: safe(r.distances), terrains: pubTerr, contact, incomplete };
+}
 
 // Tables "sociales" des traces (réactions « fait » + commentaires) créées à la
 // volée : pas de migration manuelle à lancer côté D1. Gardé en mémoire de
@@ -112,9 +123,10 @@ export default {
       if (path === "/api/members") {
         if (req.method === "GET") {
           const one = url.searchParams.get("id");
-          if (one) { const r = (await env.DB.prepare("SELECT * FROM members WHERE id=?").bind(one).all()).results[0]; return json({ member: r ? pubMember(r) : null }, 200, origin); }
+          if (one) { const r = (await env.DB.prepare("SELECT * FROM members WHERE id=?").bind(one).all()).results[0]; return json({ member: r ? pubMember(r, one === meId) : null }, 200, origin); }
           const { results } = await env.DB.prepare("SELECT * FROM members ORDER BY created_at DESC").all();
-          return json({ members: results.filter((r) => r.prenom || r.pseudo).map(pubMember) }, 200, origin);
+          // La meute montre TOUS les membres logués, même fiche vide (marqués `incomplete`).
+          return json({ members: results.map((r) => pubMember(r, r.id === meId)) }, 200, origin);
         }
         if (write) {
           if (!meId) return json({ error: "unauthorized" }, 401, origin); // écrire SA fiche exige le jeton perso
