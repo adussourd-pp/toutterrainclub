@@ -2,10 +2,10 @@
 // Cartes vers les outils + sections statiques (events, codes promo, agenda, sisyf).
 
 const HUB_TOOLS = [
-  { em: "🪪", t: "Ma carte de coureur", d: "Crée / mets à jour ta carte : niveau, objectifs, réseaux.", href: "profil.html" },
-  { em: "🐺", t: "La meute", d: "Découvre la meute : qui court quoi, à quel niveau.", href: "membres.html" },
-  { em: "📅", t: "Calendrier & courses", d: "L'agenda du club + les courses : crée-en une, inscris-toi. On se retrouve sur les dossards.", href: "calendrier.html", hot: true },
-  { em: "🗺️", t: "Traces GPX", d: "Partage et retrouve les parcours du club.", href: "gpx.html" },
+  { em: "🪪", t: "Ma carte de coureur", d: "Crée / mets à jour ta carte : niveau, objectifs, réseaux.", href: "profil.html", tour: "carte" },
+  { em: "🐺", t: "La meute", d: "Découvre la meute : qui court quoi, à quel niveau.", href: "membres.html", tour: "meute" },
+  { em: "📅", t: "Calendrier & courses", d: "L'agenda du club + les courses : crée-en une, inscris-toi. On se retrouve sur les dossards.", href: "calendrier.html", hot: true, tour: "courses" },
+  { em: "🗺️", t: "Traces GPX", d: "Partage et retrouve les parcours du club.", href: "gpx.html", tour: "gpx" },
   { em: "👕", t: "Le merch", d: "La boutique TTC — tenues & goodies aux couleurs du club.", href: "https://toutterrainclub.sumupstore.com/", ext: true },
   { em: "🧰", t: "Préparer une course", d: "L'outil de prépa maison arrive (Noah).", soon: true },
 ];
@@ -85,6 +85,7 @@ const MemberHub = () => (
         <div className="ms-hub-grid">
           {HUB_TOOLS.map((c, i) => (
             <a key={i} className={`ms-hub-card ${c.hot ? "hot" : ""} ${c.soon ? "soon" : ""}`} href={c.href || "#"}
+               data-tour={c.tour || undefined}
                target={c.ext ? "_blank" : undefined} rel={c.ext ? "noopener" : undefined}
                onClick={c.soon ? (e) => e.preventDefault() : undefined}>
               <span className="em">{c.em}</span>
