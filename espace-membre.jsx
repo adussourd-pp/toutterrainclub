@@ -109,7 +109,7 @@ const MemberHero = () => (
     <HeroWaves />
     <div className="wrap">
       <span className="adh-hero-eyebrow">★ Feedback 2026 → saison 2027</span>
-      <h1>Le plan <span className="ms-x">×</span> la <span className="marker">meute</span>.</h1>
+      <h1>TTC <span className="marker">Feedback 2026</span>.</h1>
       <div className="adh-hero-grid">
         <p className="adh-hero-lede">
           Ce que le passage en asso prévoit, confronté ligne à ligne à ce que
