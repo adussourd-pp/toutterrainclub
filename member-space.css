@@ -1009,3 +1009,69 @@ select.pf-input { cursor: pointer; }
 /* Course : ligne Parcours (tags de distances, avec badge GPX) */
 .ms-race-parcours { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 20px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--paper-2, #f2f1ea); }
 .ms-race-traces-h { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Onboarding — tour guidé de la première connexion (voir onboarding.jsx)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Bouton flottant « ? » : relance le guide à tout moment */
+.onb-launch { position: fixed; right: 18px; bottom: 18px; z-index: 900; width: 46px; height: 46px;
+  border-radius: 50%; border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+  font-family: var(--f-display); font-weight: 700; font-size: 22px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  transition: transform .12s ease, border-color .12s ease, color .12s ease; }
+.onb-launch:hover { transform: translateY(-2px) scale(1.06); border-color: var(--green-3); color: var(--green-3); }
+
+/* Écran plein (bloque la page) + voile sombre */
+.onb-catch { position: fixed; inset: 0; z-index: 3000; }
+.onb-dim { background: rgba(18,15,11,.62); backdrop-filter: blur(2px); }
+
+/* Trou lumineux du spotlight (le voile vient du box-shadow géant) */
+.onb-hole { position: fixed; z-index: 3001; border-radius: 16px; pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(18,15,11,.62); outline: 2px solid var(--green-3); outline-offset: 3px;
+  transition: top .28s cubic-bezier(.4,0,.2,1), left .28s cubic-bezier(.4,0,.2,1),
+              width .28s cubic-bezier(.4,0,.2,1), height .28s cubic-bezier(.4,0,.2,1); }
+
+/* Bulle d'explication ancrée à l'élément visé */
+.onb-bubble { position: fixed; z-index: 3002; background: var(--paper); border: 1px solid var(--rule);
+  border-radius: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.35); padding: 18px 20px; animation: onb-pop .18s ease-out; }
+.onb-bubble .onb-em { font-size: 26px; line-height: 1; }
+.onb-bubble h3 { font-family: var(--f-display); font-weight: 700; font-size: 18px; letter-spacing: -.02em; margin: 8px 0 6px; }
+.onb-bubble p { font-size: 14px; color: var(--muted); line-height: 1.55; margin: 0; }
+
+/* Écran centré (bienvenue / fin) */
+.onb-center { position: fixed; inset: 0; z-index: 3002; display: flex; align-items: center;
+  justify-content: center; padding: 20px; pointer-events: none; }
+.onb-card { position: relative; pointer-events: auto; width: 100%; max-width: 440px; background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 20px; box-shadow: 0 30px 80px rgba(0,0,0,.4);
+  padding: 30px 28px; text-align: center; animation: onb-pop .2s ease-out; }
+.onb-card .onb-big { font-size: 46px; line-height: 1; }
+.onb-card h2 { font-family: var(--f-display); font-weight: 800; font-size: 26px; letter-spacing: -.03em; margin: 14px 0 10px; }
+.onb-card p { font-size: 15px; color: var(--muted); line-height: 1.6; margin: 0 auto; max-width: 36ch; }
+.onb-x { top: 12px; right: 14px; }
+
+/* Pied commun : progression + actions */
+.onb-foot { display: flex; align-items: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.onb-center .onb-foot { justify-content: center; }
+.onb-dots { display: flex; gap: 6px; flex: 1; }
+.onb-center .onb-dots { flex: none; }
+.onb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rule); transition: background .2s ease, transform .2s ease; }
+.onb-dot.on { background: var(--green-3); transform: scale(1.3); }
+.onb-skip { background: none; border: 0; padding: 4px 2px; color: var(--muted); font-family: var(--f-display);
+  font-size: 13px; cursor: pointer; }
+.onb-skip:hover { color: var(--ink); text-decoration: underline; }
+.onb-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+@keyframes onb-pop { from { opacity: 0; transform: translateY(6px) scale(.98); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 520px) {
+  .onb-bubble { max-width: calc(100vw - 24px); }
+  .onb-foot { gap: 8px; }
+  .onb-actions { width: 100%; }
+  .onb-actions .btn { flex: 1; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .onb-bubble, .onb-card { animation: none; }
+  .onb-hole { transition: none; }
+  .onb-launch:hover { transform: none; }
+}
