@@ -54,7 +54,8 @@ const MOMENTS = ["Tôt le matin", "Pause midi", "Après le taf", "Week-end"];
 const ADHESION = ["Sympathisant", "Don de soutien", "Adhérent", "Adhérent + Licence FFA"];
 
 const EMPTY = {
-  prenom: "", pseudo: "", ville: "Nice", avatar: "🐣", photo: "", photoConsent: false, role: "", email: "",
+  prenom: "", pseudo: "", ville: "Nice", avatar: "🐣", photo: "", photoConsent: false, role: "", email: "", tel: "",
+  showEmail: false, showTel: false,
   niveau: "Poussin des sentiers", distances: [], terrains: [],
   tags: [], activites: [], formats: [], objectif: "", courses: "", bio: "",
   strava: "", insta: "", techno: "Petit tapeur de pied", adhesion: "Adhérent",
@@ -85,6 +86,9 @@ const isOrga = () => { try { return sessionStorage.getItem("ttc_orga_ok") === "1
 // Reconstruit une carte à partir d'un enregistrement serveur.
 function fromServer(m) {
   const t = (m.terrains && typeof m.terrains === "object" && !Array.isArray(m.terrains)) ? m.terrains : {};
+  // Contact (tél/mail) : envoyé à part par le serveur (present seulement si visible,
+  // ou complet quand c'est ta propre fiche). Les interrupteurs peuvent être absents.
+  const c = (m.contact && typeof m.contact === "object") ? m.contact : {};
   return normalize({
     ...EMPTY,
     prenom: m.prenom || "", pseudo: m.pseudo || "", ville: m.ville || "",
@@ -93,6 +97,9 @@ function fromServer(m) {
     distances: Array.isArray(m.distances) ? m.distances : [],
     terrains: Array.isArray(t.t) ? t.t : [], photo: t.photo || "", photoConsent: !!t.photoConsent, role: t.role || "",
     courses: t.courses || "", bio: t.bio || "",
+    tel: c.tel || "", email: c.email || "",
+    showTel: c.showTel !== undefined ? !!c.showTel : !!c.tel,
+    showEmail: c.showEmail !== undefined ? !!c.showEmail : !!c.email,
     tags: Array.isArray(t.tags) ? t.tags : [], activites: Array.isArray(t.activites) ? t.activites : [], formats: Array.isArray(t.formats) ? t.formats : [],
   });
 }
@@ -153,6 +160,10 @@ const RunnerCard = ({ p, collapsed }) => {
   const name = p.prenom || p.pseudo || "Ton prénom";
   const handle = p.pseudo && p.prenom ? `« ${p.pseudo} »` : null;
   const tr = trailRank(p.niveau), mr = musicRank(p.techno);
+  // Tél/mail : visibles si l'interrupteur est ON (éditeur) ou absent mais valeur
+  // présente (la meute n'envoie déjà que ce qui est public).
+  const telShown = p.tel && (p.showTel === undefined || p.showTel);
+  const emailShown = p.email && (p.showEmail === undefined || p.showEmail);
   return (
     <div className="pf-card">
       {p.role && <div className="pf-card-role">★ {p.role}</div>}
@@ -215,6 +226,16 @@ const RunnerCard = ({ p, collapsed }) => {
         </div>
       )}
 
+      {(telShown || emailShown) && (
+        <div className="pf-card-block">
+          <div className="pf-card-bk">Contact</div>
+          <div className="pf-card-links">
+            {telShown && <a href={`tel:${p.tel}`} className="chip muted">📞 {p.tel}</a>}
+            {emailShown && <a href={`mailto:${p.email}`} className="chip muted">✉️ {p.email}</a>}
+          </div>
+        </div>
+      )}
+
       {(p.strava || p.insta) && (
         <div className="pf-card-links">
           {p.strava && <a href={p.strava} target="_blank" rel="noopener" className="chip muted">Strava ↗</a>}
@@ -269,7 +290,7 @@ const ProfilPage = () => {
           niveau: p.niveau, objectif: p.objectif, strava: p.strava, insta: p.insta,
           techno: p.techno, adhesion: p.adhesion,
           distances: p.distances,
-          terrains: { t: p.terrains, photo: p.photo, photoConsent: p.photoConsent, role: p.role, courses: p.courses, bio: p.bio, tags: p.tags, activites: p.activites, formats: p.formats },
+          terrains: { t: p.terrains, photo: p.photo, photoConsent: p.photoConsent, role: p.role, courses: p.courses, bio: p.bio, tags: p.tags, activites: p.activites, formats: p.formats, tel: p.tel, email: p.email, showTel: p.showTel, showEmail: p.showEmail },
         } });
         setSync("");
       } catch (e) { setSync("Échec de l'enregistrement en ligne (reconnecte-toi ?)."); }
@@ -429,6 +450,16 @@ const ProfilPage = () => {
                 <div className="pf-row2">
                   <Field label="Strava" hint="lien profil"><input className="pf-input" value={p.strava} onChange={(e) => set("strava", e.target.value)} placeholder="https://strava.com/athletes/…" /></Field>
                   <Field label="Instagram"><input className="pf-input" value={p.insta} onChange={(e) => set("insta", e.target.value)} placeholder="https://instagram.com/…" /></Field>
+                </div>
+                <div className="pf-row2">
+                  <Field label="Téléphone" hint="optionnel">
+                    <input className="pf-input" type="tel" value={p.tel} onChange={(e) => set("tel", e.target.value)} placeholder="06 12 34 56 78" />
+                    <label className="pf-visib"><input type="checkbox" checked={p.showTel} onChange={(e) => set("showTel", e.target.checked)} /> Visible dans la meute</label>
+                  </Field>
+                  <Field label="E-mail" hint="optionnel">
+                    <input className="pf-input" type="email" value={p.email} onChange={(e) => set("email", e.target.value)} placeholder="prenom@mail.com" />
+                    <label className="pf-visib"><input type="checkbox" checked={p.showEmail} onChange={(e) => set("showEmail", e.target.checked)} /> Visible dans la meute</label>
+                  </Field>
                 </div>
               </div>
             </div>

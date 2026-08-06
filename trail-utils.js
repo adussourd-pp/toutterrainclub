@@ -5,14 +5,16 @@ window.TTC_TRAIL = (function () {
   function kmEffort(km, dplus) {
     return Math.round((Number(km) || 0) + (Number(dplus) || 0) / 100);
   }
-  // Catégorie UTMB d'après le km-effort (seuils alignés sur la nomenclature
-  // UTMB World Series : 20K / 50K / 100K / 100M).
+  // Catégorie UTMB d'après le km-effort (= somme km + D+/100), catégories
+  // UTMB World Series : 20K / 50K / 100K / 100M. Seuils calés pour que le
+  // dénivelé compte vraiment : ex. 60 km / 3700 D+ = 97 → 100K,
+  // 30 km / 1800 D+ = 48 → 50K, 15 km / 950 D+ = 24 → 20K.
   function utmbCategory(km, dplus) {
     const e = kmEffort(km, dplus);
     if (e < 20) return { code: "—", full: "Sortie courte (< 20K-effort)" };
-    if (e < 50) return { code: "20K", full: "20K · 20–49 km-effort" };
-    if (e < 100) return { code: "50K", full: "50K · 50–99 km-effort" };
-    if (e < 175) return { code: "100K", full: "100K · 100–174 km-effort" };
+    if (e < 45) return { code: "20K", full: "20K · 20–44 km-effort" };
+    if (e < 90) return { code: "50K", full: "50K · 45–89 km-effort" };
+    if (e < 175) return { code: "100K", full: "100K · 90–174 km-effort" };
     return { code: "100M", full: "100M · 175 km-effort et +" };
   }
   // Difficulté (5 crans) d'après le km-effort.

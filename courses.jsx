@@ -29,6 +29,14 @@ function raceMeta(race) {
 // Une distance est un objet {km, dplus}. (compat : anciennes valeurs = string)
 function distLabel(d) { return typeof d === "string" ? d : `${d.km} km · ${d.dplus || 0} D+`; }
 function distCat(d) { return typeof d === "string" ? null : window.TTC_TRAIL.utmbCategory(d.km, d.dplus).code; }
+
+// Kilométrages proposés d'une course (ignore les anciennes valeurs string).
+function raceKms(r) {
+  return (r.distances || [])
+    .map((d) => (typeof d === "string" ? 0 : Number(d.km) || 0))
+    .filter((x) => x > 0);
+}
+function raceMaxKm(r) { const k = raceKms(r); return k.length ? Math.max.apply(null, k) : 0; }
 const Chips = ({ items, gpxList, onGpx }) => (
   <span className="ms-dist-chips">{(items || []).map((d, i) => {
     const c = distCat(d);
@@ -491,6 +499,45 @@ const CoursesPage = () => {
   const [adding, setAdding] = React.useState(false);
   const live = window.ttcConfigured();
 
+  // Recherche / tri du calendrier. Par défaut : du plus récent au plus ancien.
+  const [q, setQ] = React.useState("");
+  const [sort, setSort] = React.useState("date-desc");
+  const [dateFrom, setDateFrom] = React.useState("");
+  const [dateTo, setDateTo] = React.useState("");
+  const [kmMin, setKmMin] = React.useState("");
+  const [kmMax, setKmMax] = React.useState("");
+  const hasFilters = !!(q || dateFrom || dateTo || kmMin !== "" || kmMax !== "" || sort !== "date-desc");
+  const resetFilters = () => { setQ(""); setSort("date-desc"); setDateFrom(""); setDateTo(""); setKmMin(""); setKmMax(""); };
+
+  const visible = React.useMemo(() => {
+    const nq = q.trim().toLowerCase();
+    const kMin = kmMin === "" ? null : Number(kmMin);
+    const kMax = kmMax === "" ? null : Number(kmMax);
+    const list = (races || []).filter((r) => {
+      if (nq && !((r.name || "") + " " + (r.location || "")).toLowerCase().includes(nq)) return false;
+      const d = r.date_start || "";
+      if (dateFrom && (!d || d < dateFrom)) return false;
+      if (dateTo && (!d || d > dateTo)) return false;
+      if (kMin != null || kMax != null) {
+        const ok = raceKms(r).some((km) => (kMin == null || km >= kMin) && (kMax == null || km <= kMax));
+        if (!ok) return false;
+      }
+      return true;
+    });
+    return list.slice().sort((a, b) => {
+      if (sort === "km-desc") return raceMaxKm(b) - raceMaxKm(a);
+      if (sort === "km-asc") return raceMaxKm(a) - raceMaxKm(b);
+      // tri par date : les courses sans date passent toujours en dernier.
+      const da = a.date_start || "", db = b.date_start || "";
+      if (!da && !db) return 0;
+      if (!da) return 1;
+      if (!db) return -1;
+      if (da === db) return 0;
+      const asc = da < db ? -1 : 1;
+      return sort === "date-asc" ? asc : -asc;
+    });
+  }, [races, q, sort, dateFrom, dateTo, kmMin, kmMax]);
+
   // Upload d'un GPX depuis une course → crée la trace dans la banque et renvoie son id.
   const uploadGpx = async (payload) => {
     if (!live) return null;
@@ -549,9 +596,34 @@ const CoursesPage = () => {
           {races.length === 0 && state !== "loading" && (
             <div className="ms-empty">Aucune course pour l'instant. <button className="btn btn-sm btn-primary" onClick={() => setAdding(true)}>Ajoute la première →</button></div>
           )}
+          {races.length > 0 && (
+            <div className="ms-filters">
+              <input className="pf-input ms-filters-q" value={q} onChange={(e) => setQ(e.target.value)} placeholder="🔎 Rechercher une course, un lieu…" />
+              <label className="ms-filters-field"><span>Trier</span>
+                <select className="pf-input" value={sort} onChange={(e) => setSort(e.target.value)}>
+                  <option value="date-desc">Date · récent → ancien</option>
+                  <option value="date-asc">Date · ancien → récent</option>
+                  <option value="km-desc">Distance · longue → courte</option>
+                  <option value="km-asc">Distance · courte → longue</option>
+                </select>
+              </label>
+              <label className="ms-filters-field"><span>Du</span>
+                <input type="date" className="pf-input" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} /></label>
+              <label className="ms-filters-field"><span>Au</span>
+                <input type="date" className="pf-input" value={dateTo} onChange={(e) => setDateTo(e.target.value)} /></label>
+              <label className="ms-filters-field"><span>km min</span>
+                <input type="number" className="pf-input ms-filters-km" value={kmMin} onChange={(e) => setKmMin(e.target.value)} placeholder="0" /></label>
+              <label className="ms-filters-field"><span>km max</span>
+                <input type="number" className="pf-input ms-filters-km" value={kmMax} onChange={(e) => setKmMax(e.target.value)} placeholder="∞" /></label>
+              {hasFilters && <button type="button" className="btn btn-sm ms-filters-reset" onClick={resetFilters}>Réinitialiser</button>}
+            </div>
+          )}
           <div className="ms-races">
-            {races.map((r) => <RaceCard key={r.id} race={r} members={members} gpxList={gpxList} onUploadGpx={uploadGpx} onJoin={joinRace} onLeave={leaveRace} onEdit={editRace} onDelete={deleteRace} />)}
+            {visible.map((r) => <RaceCard key={r.id} race={r} members={members} gpxList={gpxList} onUploadGpx={uploadGpx} onJoin={joinRace} onLeave={leaveRace} onEdit={editRace} onDelete={deleteRace} />)}
           </div>
+          {races.length > 0 && visible.length === 0 && (
+            <div className="ms-empty">Aucune course ne correspond à ta recherche. <button className="btn btn-sm" onClick={resetFilters}>Réinitialiser les filtres</button></div>
+          )}
         </div>
       </section>
     </React.Fragment>

@@ -339,10 +339,14 @@ const FooterPublic = () => /*#__PURE__*/React.createElement("footer", {
 }, "Communauté"))), /*#__PURE__*/React.createElement("div", {
   className: "footer-col"
 }, /*#__PURE__*/React.createElement("h4", null, "Le club"), /*#__PURE__*/React.createElement("a", {
-  href: "#"
+  href: "charte-des-valeurs.html"
 }, "Charte des valeurs"), /*#__PURE__*/React.createElement("a", {
   href: "mentions-legales.html"
 }, "Mentions légales"), /*#__PURE__*/React.createElement("a", {
+  href: "confidentialite.html"
+}, "Confidentialité · RGPD"), /*#__PURE__*/React.createElement("a", {
+  href: "espace-membre.html"
+}, "Espace orga"), /*#__PURE__*/React.createElement("a", {
   href: "mailto:toutterrainclub@gmail.com"
 }, "toutterrainclub@gmail.com"))), /*#__PURE__*/React.createElement("div", {
   className: "footer-base"
