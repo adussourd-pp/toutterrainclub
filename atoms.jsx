@@ -240,7 +240,7 @@ const FooterPublic = () => (
         </div>
         <div className="footer-col">
           <h4>Le club</h4>
-          <a href="#">Charte des valeurs</a>
+          <a href="charte-des-valeurs.html">Charte des valeurs</a>
           <a href="mentions-legales.html">Mentions légales</a>
           <a href="espace-membre.html">Espace orga</a>
           <a href="mailto:toutterrainclub@gmail.com">toutterrainclub@gmail.com</a>
