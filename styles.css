@@ -2682,8 +2682,11 @@ section.join {
      (jamais coupé à gauche), avec cibles tactiles confortables. */
   .nav {
     order: 3;
-    width: auto;
+    width: 100%;
     gap: 26px;
+    /* flex-start (pas center) : sinon, quand le menu déborde, les premiers
+       liens passent hors-écran à gauche et deviennent impossibles à faire
+       défiler. En flex-start, on peut scroller depuis le tout début. */
     justify-content: flex-start;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
