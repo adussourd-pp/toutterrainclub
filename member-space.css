@@ -587,6 +587,14 @@ select.pf-input { cursor: pointer; }
 .ms-form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
 
 /* courses */
+.ms-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin: 0 0 16px; padding: 14px 16px; border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper-2); }
+.ms-filters .pf-input { margin: 0; }
+.ms-filters-q { flex: 1 1 220px; min-width: 180px; align-self: stretch; }
+.ms-filters-field { display: flex; flex-direction: column; gap: 4px; }
+.ms-filters-field span { font-family: var(--f-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.ms-filters-field .pf-input { width: auto; }
+.ms-filters-km { width: 76px; }
+.ms-filters-reset { align-self: flex-end; }
 .ms-races { display: flex; flex-direction: column; gap: 14px; }
 .ms-race { border: 1px solid var(--rule); border-radius: var(--radius-lg); background: var(--paper); overflow: hidden; }
 .ms-race-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 18px 20px; }
