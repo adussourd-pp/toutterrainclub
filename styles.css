@@ -2864,6 +2864,16 @@ section.join {
 .legal-source { font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; color: var(--muted); margin-top: 34px; }
 @media (max-width: 860px) { .legal-grid { grid-template-columns: 1fr; gap: 44px; } }
 
+/* ===== Charte des valeurs ===== */
+.charte-block { max-width: 760px; }
+.charte-sec { margin-top: 44px; }
+.charte-sec h2 { font-family: var(--f-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; margin: 0 0 18px; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+.charte-num { color: var(--green); }
+.charte-sec p { margin: 0 0 12px; color: var(--ink-2, #333); font-size: 15px; line-height: 1.65; }
+.charte-sub { font-family: var(--f-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin: 22px 0 8px; }
+.charte-list { margin: 0 0 12px; padding-left: 22px; color: var(--ink-2, #333); font-size: 15px; line-height: 1.65; }
+.charte-list li { margin-bottom: 6px; }
+
 /* ===== Avatar du bandeau + carte membre en surimpression ===== */
 .hdr-ava { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; border: 2px solid var(--green); background: var(--green-soft);
   cursor: pointer; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; flex: none;
