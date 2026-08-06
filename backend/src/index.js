@@ -132,6 +132,21 @@ export default {
         }
       }
 
+      // ---- RGPD : suppression de SON compte + de toutes ses données -------
+      // Effacement définitif à la demande du membre (droit à l'effacement).
+      // On repart de zéro : fiche (dont la photo), réactions et commentaires
+      // GPX rattachés à son id. Le code d'accès est révoqué pour de bon.
+      if (path === "/api/members/me/delete" && write) {
+        if (!meId) return json({ error: "unauthorized" }, 401, origin);
+        await ensureGpxSocial(env); // garantit l'existence des tables sociales
+        await env.DB.prepare("DELETE FROM gpx_done WHERE member_id=?").bind(meId).run();
+        await env.DB.prepare("DELETE FROM gpx_comments WHERE member_id=?").bind(meId).run();
+        await env.DB.prepare("DELETE FROM members WHERE id=?").bind(meId).run();
+        // meId = "c-" + CODE : on révoque le code pour que l'accès soit clos.
+        if (meId.slice(0, 2) === "c-") await env.DB.prepare("UPDATE invites SET revoked=1 WHERE code=?").bind(meId.slice(2)).run();
+        return json({ ok: true }, 200, origin);
+      }
+
       if (path === "/api/races") {
         if (req.method === "GET") {
           const races = (await env.DB.prepare("SELECT * FROM races ORDER BY date_start ASC").all()).results;

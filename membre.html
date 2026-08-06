@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <meta name="robots" content="noindex,nofollow" />
 <title>Tout Terrain Club — Espace membre</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,17 +19,21 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 <script type="text/babel" src="data.jsx"></script>
-<script type="text/babel" src="atoms.jsx?v=11"></script>
+<script type="text/babel" src="atoms.jsx?v=12"></script>
 <script type="text/babel" src="member-shell.jsx?v=5"></script>
 <script type="text/babel" src="profil.jsx?v=18"></script>
-<script type="text/babel" src="membre.jsx?v=11"></script>
+<script type="text/babel" src="membre.jsx?v=12"></script>
+<script type="text/babel" src="onboarding.jsx?v=2"></script>
 <script type="text/babel">
 function App() {
   return (
     <div className="page">
       <HeaderPublic active="Espace membre" />
       <window.MS.MSGate>
-        <window.HUB.MemberHub />
+        <React.Fragment>
+          <window.HUB.MemberHub />
+          <window.ONB.Onboarding />
+        </React.Fragment>
       </window.MS.MSGate>
       <FooterPublic />
     </div>

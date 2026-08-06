@@ -54,7 +54,7 @@ const MOMENTS = ["Tôt le matin", "Pause midi", "Après le taf", "Week-end"];
 const ADHESION = ["Sympathisant", "Don de soutien", "Adhérent", "Adhérent + Licence FFA"];
 
 const EMPTY = {
-  prenom: "", pseudo: "", ville: "Nice", avatar: "🐣", photo: "", role: "", email: "",
+  prenom: "", pseudo: "", ville: "Nice", avatar: "🐣", photo: "", photoConsent: false, role: "", email: "",
   niveau: "Poussin des sentiers", distances: [], terrains: [],
   tags: [], activites: [], formats: [], objectif: "", courses: "", bio: "",
   strava: "", insta: "", techno: "Petit tapeur de pied", adhesion: "Adhérent",
@@ -91,7 +91,7 @@ function fromServer(m) {
     niveau: m.niveau || "Poussin des sentiers", objectif: m.objectif || "", strava: m.strava || "", insta: m.insta || "",
     techno: m.techno || "Petit tapeur de pied", adhesion: m.adhesion || "Adhérent",
     distances: Array.isArray(m.distances) ? m.distances : [],
-    terrains: Array.isArray(t.t) ? t.t : [], photo: t.photo || "", role: t.role || "",
+    terrains: Array.isArray(t.t) ? t.t : [], photo: t.photo || "", photoConsent: !!t.photoConsent, role: t.role || "",
     courses: t.courses || "", bio: t.bio || "",
     tags: Array.isArray(t.tags) ? t.tags : [], activites: Array.isArray(t.activites) ? t.activites : [], formats: Array.isArray(t.formats) ? t.formats : [],
   });
@@ -255,6 +255,11 @@ const ProfilPage = () => {
   });
 
   const save = async () => {
+    // RGPD : une photo n'est enregistrée/partagée que si le consentement est coché.
+    if (p.photo && !p.photoConsent) {
+      setSync("Pour enregistrer ta photo, coche la case de consentement — ou retire-la.");
+      return;
+    }
     try { localStorage.setItem(PF_KEY, JSON.stringify(p)); } catch (e) {}
     if (auth && window.ttcConfigured && window.ttcConfigured()) {
       setSync("Enregistrement…");
@@ -264,13 +269,28 @@ const ProfilPage = () => {
           niveau: p.niveau, objectif: p.objectif, strava: p.strava, insta: p.insta,
           techno: p.techno, adhesion: p.adhesion,
           distances: p.distances,
-          terrains: { t: p.terrains, photo: p.photo, role: p.role, courses: p.courses, bio: p.bio, tags: p.tags, activites: p.activites, formats: p.formats },
+          terrains: { t: p.terrains, photo: p.photo, photoConsent: p.photoConsent, role: p.role, courses: p.courses, bio: p.bio, tags: p.tags, activites: p.activites, formats: p.formats },
         } });
         setSync("");
       } catch (e) { setSync("Échec de l'enregistrement en ligne (reconnecte-toi ?)."); }
     }
     setSaved(true);
     window.setTimeout(() => setSaved(false), 2600);
+  };
+
+  // RGPD — droit à l'effacement : le membre supprime lui-même son compte.
+  const deleteAccount = async () => {
+    if (!window.confirm("Supprimer définitivement ton compte, ta carte et ta photo ? Cette action est irréversible et ton code d'accès sera désactivé.")) return;
+    if (auth && window.ttcConfigured && window.ttcConfigured()) {
+      setSync("Suppression en cours…");
+      try {
+        await window.ttcApi("/api/members/me/delete", { method: "POST", body: {} });
+      } catch (e) { setSync("Échec de la suppression en ligne — écris à toutterrainclub@gmail.com."); return; }
+    }
+    try { localStorage.removeItem(PF_KEY); } catch (e) {}
+    window.ttcAuth.logout();
+    window.alert("Ton compte et tes données ont été supprimés. À bientôt !");
+    window.location.href = "index.html";
   };
 
   const reset = () => {
@@ -341,9 +361,15 @@ const ProfilPage = () => {
                     <div className={`pf-photo-prev ${p.photo ? "has" : ""}`}>{p.photo ? <img src={p.photo} alt="" /> : <span>{trailRank(p.niveau).e}</span>}</div>
                     <div className="pf-photo-btns">
                       <label className="btn btn-sm">Choisir…<input type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) resizeImage(f, (d) => set("photo", d)); }} /></label>
-                      {p.photo && <button type="button" className="pf-reset" onClick={() => set("photo", "")}>Retirer</button>}
+                      {p.photo && <button type="button" className="pf-reset" onClick={() => setP((s) => ({ ...s, photo: "", photoConsent: false }))}>Retirer</button>}
                     </div>
                   </div>
+                  {p.photo && (
+                    <label className="pf-consent">
+                      <input type="checkbox" checked={p.photoConsent} onChange={(e) => set("photoConsent", e.target.checked)} />
+                      <span>J'accepte que ma photo soit <strong>visible par les membres du club</strong> dans l'espace membre. Je peux la retirer à tout moment. <a href="confidentialite.html" target="_blank" rel="noopener">En savoir plus</a></span>
+                    </label>
+                  )}
                 </Field>
                 {isOrga() ? (
                   <Field label="Rôle dans l'orga" hint="réservé au bureau">
@@ -423,6 +449,10 @@ const ProfilPage = () => {
                 </div>
                 {sync && <div className="pf-note">{sync}</div>}
                 <p className="pf-note">Enregistre, et tu retrouves ta carte depuis <b>n'importe quel appareil</b>. Elle apparaît dans <b>la meute</b> et se met à jour pour tout le monde.</p>
+                <div className="pf-danger">
+                  <button type="button" className="pf-danger-btn" onClick={deleteAccount}>Supprimer mon compte et mes données</button>
+                  <p className="pf-note">Effacement définitif de ta carte, ta photo et tes contributions (droit à l'oubli). Voir la <a href="confidentialite.html" target="_blank" rel="noopener">politique de confidentialité</a>.</p>
+                </div>
               </div>
             </aside>
           </div>
