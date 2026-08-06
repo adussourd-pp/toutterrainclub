@@ -36,9 +36,34 @@ const MeuteModal = ({ p, onClose }) => {
   );
 };
 
+// Carte « en attente » : membre logué mais fiche pas encore remplie.
+const PendingCard = ({ me }) => (
+  <div className="pf-card pf-card-pending">
+    <div className="pf-card-top">
+      <div className="pf-avatar">🐣</div>
+      <div className="pf-card-id">
+        <div className="pf-card-name">Nouveau·elle membre</div>
+        <div className="pf-card-meta"><span className="pf-pending-badge">⏳ Profil à compléter</span></div>
+      </div>
+    </div>
+    {me
+      ? <p className="pf-card-bio">C'est toi ! <a href="profil.html">Complète ta carte →</a></p>
+      : <p className="pf-card-bio">Vient de rejoindre la meute — sa carte arrive bientôt.</p>}
+  </div>
+);
+
 const MeuteCard = ({ m, me, live }) => {
   const p = toCard(m, live);
+  const incomplete = !(p.prenom || p.pseudo);
   const [open, setOpen] = React.useState(false);
+  if (incomplete) {
+    return (
+      <div className={`ms-mcard-wrap pending ${me ? "me" : ""}`}>
+        {me && <span className="ms-mcard-you">C'est toi</span>}
+        <PendingCard me={me} />
+      </div>
+    );
+  }
   return (
     <React.Fragment>
       <div className={`ms-mcard-wrap clickable ${me ? "me" : ""}`} role="button" tabIndex={0}

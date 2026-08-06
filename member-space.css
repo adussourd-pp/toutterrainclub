@@ -912,11 +912,24 @@ select.pf-input { cursor: pointer; }
   border: 1px solid rgba(255,94,26,.3); border-radius: 999px; padding: 3px 10px; }
 
 /* Meute : cartes repliables (compact ↔ carte complète) */
-.ms-mcard-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; }
-.ms-mcard-wrap .pf-card { width: 100%; }
+/* Toutes les cartes de la meute font la même taille : lignes de grille égales
+   + la carte remplit sa cellule (contenu aligné en haut). */
+.ms-members { grid-auto-rows: 1fr; }
+.ms-mcard-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; height: 100%; }
+.ms-mcard-wrap .pf-card { width: 100%; height: 100%; display: flex; flex-direction: column; }
 .ms-mcard-wrap.me .pf-card { border-color: var(--green-3); box-shadow: 0 0 0 1px var(--green-3) inset; }
 .ms-see { align-self: center; }
 .ms-mcard-wrap.open { grid-column: 1 / -1; max-width: 440px; margin: 0 auto; }
+
+/* Carte « en attente » : logué mais fiche vide */
+.pf-card-pending { border-style: dashed; background: var(--paper); }
+.pf-card-pending .pf-avatar { border-style: dashed; }
+.pf-pending-badge { font-family: var(--f-mono); font-size: 11px; letter-spacing: .04em; color: var(--muted); background: var(--paper-2); border: 1px solid var(--rule); border-radius: 999px; padding: 3px 9px; }
+.pf-card-pending .pf-card-bio a { color: var(--green-3); font-weight: 600; }
+
+/* Interrupteur « visible dans la meute » sous un champ */
+.pf-visib { display: flex; align-items: center; gap: 7px; margin-top: 6px; font-size: 12.5px; color: var(--muted); cursor: pointer; }
+.pf-visib input { width: 15px; height: 15px; accent-color: var(--green-3); cursor: pointer; }
 
 /* Carte : les 2 totems côte à côte */
 .pf-card-totems { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
